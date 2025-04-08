@@ -186,7 +186,8 @@ Brrr… Terrifiant, hein ? Voilà, vous avez maintenant une petite idée de ce �
 
 Ceci dit, plusieurs remarques :
 
-  - aujourd'hui on sait afficher de la couleur, tout n'est donc pas en noir et blanc comme on pourrait le croire ;
+  - aujourd'hui on sait afficher de la couleur, tout n'est donc pas en noir et blanc comme on pourrait le 
+    croire ;
 
   - la console est assez peu accueillante pour un débutant ;
 
@@ -337,7 +338,8 @@ Après un temps d'attente insupportable (la compilation), votre premier programm
 
    1. Le programme affiche "Hello world!" (sur la première ligne).
 
-   2. Les lignes en dessous (générées par l'IDE) indiquent que le programme s'est bien exécuté et combien de temps s'est écoulé depuis le lancement.
+   2. Les lignes en dessous (générées par l'IDE) indiquent que le programme s'est bien exécuté et combien de 
+      temps s'est écoulé depuis le lancement.
 
 Appuyez sur n'importe quelle touche du clavier pour fermer la fenêtre : votre programme s'arrête alors. Oui je sais, ce n'est pas transcendant. Mais bon, quand même ! C'est un premier programme, un instant dont vous vous souviendrez toute votre vie, non ?
 
@@ -435,3 +437,133 @@ C'est déjà un peu mieux, non ?
 
 Vous pouvez écrire à la suite du \n sans aucun problème, et ce sera placé sur la deuxième ligne. Vous pourriez donc vous entraîner à écrire printf("Bonjour\nAu Revoir\n");. Cela affichera "Bonjour" sur la première ligne et "Au revoir" sur la ligne suivante.
 
+Le syndrome de Gérard
+
+Bonjour, je m'appelle Gérard et j'ai voulu essayer de modifier le programme pour qu'il me dise "Bonjour Gérard". J'ai l'impression que l'accent de Gérard ne s'affiche pas correctement… Que faire ?
+
+Tout d'abord, bonjour Gérard. C'est une question très intéressante que vous nous posez là. Je tiens en premier lieu à vous féliciter pour votre esprit d'initiative, c'est très bien d'avoir eu l'idée de modifier un peu le programme. C'est en bidouillant les programmes que je vous donne que vous allez en apprendre le plus. Ne vous contentez pas de ce que vous lisez, essayez un peu vos propres modifications des programmes que nous voyons ensemble !
+
+Bien ! Maintenant, j'ai une bien triste nouvelle à vous annoncer : la console de Windows ne gère pas les accents. Par contre la console de Linux, oui.
+
+À partir de là, vous avez deux solutions.
+
+  - Passer à Linux. C'est une solution un peu radicale, et il me faudrait un cours entier pour vous expliquer 
+    comment vous servir de Linux. Si vous n'avez pas le niveau, oubliez cette possibilité pour le moment.
+
+  - Ne pas utiliser d'accents. C'est malheureusement la solution que vous risquez de choisir. La console de 
+    Windows a ses défauts, que voulez-vous. Il va vous falloir prendre l'habitude d'écrire sans accents. Bien 
+    entendu, comme plus tard vous ferez probablement des programmes avec des fenêtres, vous ne rencontrerez 
+    plus ce problème-là. Je vous recommande donc de ne pas utiliser d'accents temporairement, pendant votre 
+    apprentissage dans la console. Vos futurs programmes professionnels n'auront pas ce problème, rassurez-
+    vous.
+
+Pour ne pas être gêné, vous devrez donc écrire sans accent :
+
+  1. printf("Bonjour Gerard\n");
+
+On remercie notre ami Gérard de nous avoir soulevé ce problème !
+
+Si d'aventure vous vous appelez Gérard, sachez que je n'ai rien contre ce prénom. C'est simplement le premier prénom avec un accent qui m'est passé par la tête… Et puis, il faut toujours que quelqu'un prenne pour les autres, que voulez-vous !
+
+Commentez votre code
+
+Quel que soit le langage de programmation, on a la possibilité d'ajouter des commentaires à son code. Le langage C n'échappe pas à la règle.
+
+Qu'est-ce que ça veut dire, "commenter" ?
+
+Cela veut dire taper du texte au milieu de votre programme pour indiquer ce qu'il fait, à quoi sert telle ligne de code, etc. C'est indispensable car, même en étant un génie de la programmation, on a besoin de faire quelques annotations par-ci par-là. Les commentaires sont utiles :
+
+  - pour vous y retrouver plus tard : on ne dirait pas comme ça, mais on oublie vite comment fonctionnent les 
+    programmes qu'on a écrits ;
+
+  - si vous donnez votre projet à quelqu'un d'autre (qui ne connaît à priori pas votre code source), cela lui 
+    permettra de se familiariser avec bien plus rapidement ;
+
+  - pour moi, pour annoter les codes source de ce cours afin de mieux vous expliquer à quoi peut servir telle 
+    ou telle ligne de code.
+
+Il y a plusieurs manières d'insérer un commentaire :
+
+  1. Votre commentaire est court : il tient sur une seule ligne, il ne fait que quelques mots. Dans ce cas, 
+     vous devez taper un double slash // suivi de votre commentaire :
+
+
+       1. // Ceci est un commentaire
+
+Vous pouvez aussi bien écrire un commentaire seul sur sa ligne, ou bien à droite d'une instruction. C'est d'ailleurs très pratique pour indiquer à quoi sert la ligne sur laquelle il est :
+
+   1. printf("Bonjour"); // Cette instruction affiche Bonjour à l'écran
+
+Votre commentaire est long : vous avez besoin d'écrire plusieurs phrases qui tiennent sur plusieurs lignes. Dans ce cas, vous devez taper un code qui signifie "début de commentaire" et un autre code qui signifie "fin de commentaire" :
+
+  - pour indiquer le début du commentaire : tapez un slash suivi d'une étoile : /* ;
+
+  - pour indiquer la fin du commentaire : tapez une étoile suivie d'un slash : */.
+
+Vous écrirez donc par exemple :
+
+  1. /* Ceci est
+  2. un commentaire
+  3. sur plusieurs lignes */
+
+Reprenons notre code source qui écrit "Bonjour", et ajoutons-lui quelques commentaires juste pour s'entraîner :
+
+/*
+Ci-dessous, ce sont des directives de préprocesseur.
+Ces lignes permettent d'ajouter des fichiers au projet, 
+fichiers que l'on appelle bibliothèques.
+Grâce à ces bibliothèques, on disposera de fonctions toutes prêtes pour afficher
+par exemple un message à l'écran.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+Ci-dessous, vous avez la fonction principale du programme, appelée main.
+C'est par cette fonction que tous les programmes commencent.
+Ici, ma fonction se contente d'afficher Bonjour à l'écran.
+*/
+
+int main()
+{
+  printf("Bonjour"); // Cette instruction affiche Bonjour à l'écran
+  return 0;          // Le programme renvoie le nombre 0 puis s'arrête
+}
+
+Voilà ce que donnerait notre programme avec quelques commentaires. Oui, il a l'air d'être plus gros, mais c'est le même que tout à l'heure.
+
+Lors de la compilation, tous les commentaires seront ignorés. Ces commentaires n'apparaîtront pas dans le programme final, ils servent seulement aux programmeurs.
+
+Normalement, on ne commente pas chaque ligne du programme.
+
+C'est important de mettre des commentaires dans un code source, mais il faut savoir doser : commenter chaque ligne ne servira la plupart du temps à rien.
+
+À force, vous saurez que printf permet d'afficher un message à l'écran, pas besoin de l'indiquer à chaque fois.
+
+Le mieux est de commenter plusieurs lignes à la fois, c'est-à-dire d'indiquer à quoi sert une série d'instructions, histoire d'avoir une idée. Après, si le programmeur veut se pencher plus en détail dans ces instructions, il est assez intelligent pour y arriver tout seul.
+
+En résumé
+
+  - Les programmes peuvent communiquer avec l'utilisateur via une console ou une fenêtre.
+
+  - Il est beaucoup plus facile pour nos premiers programmes de travailler avec la console, bien que celle-ci 
+    soit moins attirante pour un débutant. Cela ne nous empêchera pas par la suite de travailler avec des 
+    fenêtres dans la partie III. Tout vient à point à qui sait attendre. 
+
+  - Un programme est constitué d'instructions qui se terminent toutes par un point-virgule.
+
+  - Les instructions sont contenues dans des fonctions qui permettent de les classer, comme dans des boîtes.
+
+  - La fonction main est la fonction par laquelle démarre votre programme. C'est la seule qui soit 
+    obligatoire, aucun programme ne peut être compilé sans elle.
+
+  - printf est une fonction toute prête qui permet d'afficher un message à l'écran dans une console. Elle se 
+    trouve dans une bibliothèque où l'on retrouve de nombreuses autres fonctions prêtes à l'emploi.
+
+  - Les commentaires doivent guider le programmeur dans son code source, lui permettre de se repérer. Il vaut 
+    mieux commenter un ensemble de lignes plutôt que toutes les lignes une par une.
+
+C’est très sympa d’afficher des messages sur la console, mais ce n’est pas suffisant pour créer un vrai programme. Nous allons maintenant voir le rôle des variables dans le code de votre programme. On se donne rendez-vous dans le prochain chapitre pour voir le monde des variables.
+
+##############################################################################################################

@@ -13,6 +13,6 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     printf("Hello, World!\n");  // afficher le message
-    printf("Bonjour :)\n");
+    printf("Bonjour Génie :)\n");
     return 0;  // retourne le code de sortie 0
 }
