@@ -211,3 +211,227 @@ Selon l'IDE que vous avez choisi dans le chapitre précédent, la méthode pour 
 
 Dans la vidéo suivante, nous allons voir comment créer le code minimum à l’aide d'un IDE. Nous analyserons ce code afin de comprendre l'intérêt de chaque ligne. Pour terminer, nous allons tester le code en le compilant et l'exécutant.
 
+Voici le code le minimal en langage C dont on a besoin :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
+
+Notez que la ligne :
+
+int main()
+… peut aussi s'écrire :
+
+int main(int argc, char *argv[])
+Les deux écritures sont possibles, mais la seconde (la compliquée) est la plus courante. C'est celle que j'utiliserai dans les prochains chapitres.
+
+Que l'on utilise l'une ou l'autre des écritures, ça ne changera rien pour nous. Inutile donc de s'y attarder, surtout que nous n'avons pas encore le niveau pour analyser ce que ça signifie.
+
+Si vous êtes sous un autre IDE, copiez ce code source dans votre fichier main.c pour que nous ayons le même code.
+
+Enregistrez le tout. Oui je sais, on n'a encore rien fait, mais enregistrez quand même, c'est une bonne habitude à prendre. Normalement, vous n'avez qu'un seul fichier source appelé main.c ; le reste, ce sont des fichiers de projet générés par votre IDE.
+
+
+Analysez le code minimal
+
+Ce code minimal n'est rien d'autre que du chinois pour vous, j'imagine. Et pourtant, moi je vois là un programme console qui affiche un message à l'écran. Il va falloir apprendre à lire tout ça !
+
+Commençons par les deux premières lignes qui se ressemblent beaucoup :
+
+  1. #include <stdio.h>
+  2. #include <stdlib.h>
+
+Ce sont des lignes spéciales que l'on ne voit qu'en haut des fichiers source. Ces lignes sont facilement reconnaissables car elles commencent par un dièse #. Ces lignes spéciales, on les appelle directives de préprocesseur (un nom compliqué, n'est-ce pas ?). Ce sont des lignes qui seront lues par un programme appelé "préprocesseur", un programme qui se lance au début de la compilation.
+
+Oui mais elles signifient quoi, ces lignes ? 
+
+Le mot include en anglais signifie "inclure" en français. Ces lignes demandent d'inclure des fichiers au projet, c'est-à-dire d'ajouter des fichiers pour la compilation.
+
+Il y a deux lignes, donc deux fichiers inclus :
+
+  1. stdio.h 
+
+  2. stdlib.h
+
+On appelle ces fichiers des bibliothèques (certains parlent aussi de librairies, mais c'est un anglicisme), et ils contiennent du code tout prêt qui permet d'afficher du texte à l'écran.
+
+Sans ces fichiers, écrire du texte à l'écran aurait été mission impossible. L'ordinateur à la base ne sait rien faire, il faut tout lui dire. Vous voyez la galère dans laquelle on est !
+
+Bref, en résumé les deux premières lignes incluent les bibliothèques qui vont nous permettre (entre autres) d'afficher du texte à l'écran assez facilement.
+
+
+Passons à la suite :
+
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
+
+Ce que vous voyez là, entre les accolades, c'est ce qu'on appelle une fonction. Pour le moment, notre programme n'en contient qu'une seule.
+
+Un programme en langage C est constitué de fonctions.
+
+Chaque fonction permet de rassembler plusieurs commandes à l'ordinateur qui permettent de faire quelque chose de précis.
+
+Par exemple, on peut créer une fonction ouvrir_fichier qui contiendra une suite d'instructions pour l'ordinateur, lui expliquant comment ouvrir un fichier.
+
+L'avantage, c'est qu'une fois la fonction écrite, vous n'aurez plus qu'à dire ouvrir_fichier et votre ordinateur saura comment faire sans que vous ayez à tout répéter !
+
+Sans rentrer dans les détails de la construction d'une fonction (il est trop tôt), analysons quand même ses grandes parties. La première ligne contient le nom de la fonction, c'est le deuxième mot.
+Oui : notre fonction s'appelle donc main. C'est un nom de fonction particulier qui signifie "principal". main est la fonction principale de votre programme, c'est toujours par la fonction main que le programme commence.
+
+Une fonction a un début et une fin, délimités par des accolades {  et }. Toute la fonction main se trouve donc entre ces accolades. Si vous avez bien suivi, notre fonction main contient deux lignes :
+
+{
+    printf("Hello world!\n");
+    return 0;
+}
+
+Ces lignes à l'intérieur d'une fonction ont un nom. On les appelle instructions (ça en fait du vocabulaire qu'il va falloir retenir). Chaque instruction est une commande à l'ordinateur. Chacune de ces lignes demande à l'ordinateur de faire quelque chose de précis.
+
+En regroupant intelligemment (c'est le travail du programmeur) les instructions dans des fonctions, on crée des "bouts de programmes tout prêts".
+
+Un programme, ce n'est au bout du compte rien d'autre qu'une série d'instructions : "fais ceci", "fais cela". Vous donnez des ordres à votre ordinateur et il les exécute. Du moins si vous l'avez bien dressé.
+
+Toute instruction se termine obligatoirement par un point-virgule ;.
+
+C'est d'ailleurs comme ça qu'on reconnaît une instruction. Si vous oubliez de mettre un point-virgule à la fin d'une instruction, votre programme ne compilera pas !
+
+printf("Hello world!\n");  demande à afficher le message "Hello world!" à l'écran. Quand votre programme arrivera à cette ligne, il va donc afficher un message à l'écran, puis passer à l'instruction suivante :
+
+return 0;
+
+Cette ligne indique qu'on arrive à la fin de notre fonction main, et demande de renvoyer la valeur 0.
+
+Pourquoi mon programme renverrait-il le nombre 0 ?
+
+Chaque programme, une fois terminé, renvoie une valeur, pour dire que tout s'est bien passé, par exemple.
+
+En pratique, 0 signifie tout s'est bien passé.
+
+Et n'importe quelle autre valeur signifie qu'il y a une erreur.
+
+La plupart du temps, cette valeur n'est pas vraiment utilisée, mais il faut quand même en renvoyer une. Votre programme aurait marché sans le return 0, mais on va dire que c'est plus propre et plus sérieux de le mettre, donc on le met.
+
+Comme je suis de bonne humeur, je vous fais un schéma qui récapitule le vocabulaire qu'on vient d'apprendre :
+
+Testez votre programme
+
+Tout ce que vous avez à faire, c'est de compiler le projet, puis de l'exécuter. Cliquez sur Build & Run .
+
+Si vous ne l'avez pas encore fait, on vous demandera d'enregistrer les fichiers. Faites-le.
+
+Si la compilation ne fonctionne pas et que vous avez une erreur de ce type :"My-program - Release" uses an invalid compiler. Skipping... Nothing to be done
+
+... cela signifie que vous avez téléchargé la version de Code::Blocks sans mingw  (le compilateur).
+
+Retournez sur le site de Code::Blocks pour télécharger la version avec mingw.
+
+Après un temps d'attente insupportable (la compilation), votre premier programme apparaît :
+
+   1. Le programme affiche "Hello world!" (sur la première ligne).
+
+   2. Les lignes en dessous (générées par l'IDE) indiquent que le programme s'est bien exécuté et combien de temps s'est écoulé depuis le lancement.
+
+Appuyez sur n'importe quelle touche du clavier pour fermer la fenêtre : votre programme s'arrête alors. Oui je sais, ce n'est pas transcendant. Mais bon, quand même ! C'est un premier programme, un instant dont vous vous souviendrez toute votre vie, non ?
+
+Écrivez un message à l'écran
+
+À partir de maintenant, on va modifier nous-mêmes le code de ce programme minimal.
+Votre mission, si vous l'acceptez : afficher le message "Bonjour" à l'écran.
+
+Si vous partez du code qui a été donné plus haut, il vous suffit simplement de remplacer "Hello world!" par "Bonjour" dans la ligne qui fait appel à printf.
+
+printf est une instruction. Elle commande à l'ordinateur :
+
+"Affiche-moi ce message à l'écran".
+
+C'est une fonction qui a déjà été écrite par d'autres programmeurs avant vous.
+
+Cette fonction, où se trouve-t-elle ? Moi je ne vois que la fonction main!
+
+Vous vous souvenez de ces deux lignes ?
+
+  1. #include <stdio.h>
+  2. #include <stdlib.h>
+
+Elles permettaient d'ajouter des bibliothèques dans votre programme. Ce sont en fait des fichiers avec des tonnes de fonctions toutes prêtes à l'intérieur.
+
+stdio.h et stdlib.h contiennent la plupart des fonctions de base dont on a besoin dans un programme.
+
+stdio.h en particulier contient des fonctions permettant d'afficher des choses à l'écran (comme printf), mais aussi de demander à l'utilisateur de taper quelque chose (ce sont des fonctions que l'on verra plus tard).
+
+Dites bonjour au monsieur
+Dans notre fonction main, on fait donc appel à la fonction printf.
+
+C'est une fonction qui en appelle une autre : main appelle printf.
+
+Vous allez voir que c'est tout le temps comme ça que ça se passe en langage C : une fonction contient des instructions qui appellent d'autres fonctions, et ainsi de suite.
+
+Pour faire appel à une fonction, il suffit d'écrire son nom, suivi de  ()  , puis de  ; .
+
+  1. printf();
+
+C'est bien, mais ce n'est pas suffisant. Il faut indiquer quoi écrire à l'écran, en donnant à la fonction printf le texte à afficher :
+
+Ouvrez des guillemets à l'intérieur des parenthèses.
+
+Tapez le texte à afficher entre ces guillemets, comme cela avait déjà été fait sur le code minimal :
+
+  1. printf("Bonjour");
+
+J'espère que vous n'avez pas oublié le point-virgule à la fin : il indique que l'instruction s'arrête là.
+
+Voici le code source que vous devriez avoir sous les yeux :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+  printf("Bonjour");
+  return 0;
+}
+
+On a donc deux instructions qui commandent dans l'ordre à l'ordinateur :
+
+  1. Affiche "Bonjour" à l'écran.
+
+  2. La fonction main est terminée, renvoie 0. Le programme s'arrête alors :
+
+La ligne du "Bonjour" est un peu collée au reste du texte, contrairement à tout à l'heure.
+
+Une solution pour rendre notre programme plus présentable serait de faire un retour à la ligne après "Bonjour" (comme si on appuyait sur la touche "Entrée"). Mais bien sûr, ce serait trop simple de taper "Entrée" dans notre code source pour qu'une entrée soit effectuée à l'écran ! Il va falloir utiliser ce qu'on appelle des caractères spéciaux…
+
+Utilisez des caractères spéciaux
+
+Les caractères spéciaux permettent d'indiquer qu'on veut aller à la ligne, faire une tabulation, etc.
+
+Ils sont faciles à reconnaître : c'est un ensemble de deux caractères :
+
+  1. Le premier est toujours un anti-slash   \  ;
+
+  2. Le second, un nombre ou une lettre.
+
+Voici deux caractères spéciaux courants que vous aurez probablement besoin d'utiliser :
+
+  - \n: retour à la ligne (= "Entrée") ;
+
+  - \t: tabulation.
+
+Pour faire une entrée, il suffit donc de taper\n pour créer un retour à la ligne :
+
+  1. printf("Bonjour\n");
+
+Votre ordinateur comprend qu'il doit afficher "Bonjour" suivi d'un retour à la ligne :
+
+C'est déjà un peu mieux, non ?
+
+Vous pouvez écrire à la suite du \n sans aucun problème, et ce sera placé sur la deuxième ligne. Vous pourriez donc vous entraîner à écrire printf("Bonjour\nAu Revoir\n");. Cela affichera "Bonjour" sur la première ligne et "Au revoir" sur la ligne suivante.
+
