@@ -1,0 +1,213 @@
+                            Partie 1 : Faites vos premiers pas avec le langage C
+
+Tirez un maximum de ce cours
+
+Débutez la programmation avec le C
+
+Doit-on commencer la programmation par un langage en particulier comme Java, Python, PHP avant de faire du C ?
+
+Non pas du tout. Vous pouvez commencer par le langage de votre choix.
+
+Ce qu'il faut seulement savoir c'est le C est un langage un peu plus compliqué que le Python par exemple.
+
+Les langages un peu plus "compliqués", on les appelle des langages "bas niveau".
+
+Plus un langage est haut niveau, plus il est proche de votre langue comme le français. Un langage de haut niveau est donc facile à utiliser.
+
+Le C est un langage bas niveau. C’est donc a priori plus difficile. Mais grâce à ces bases solides, vous serez ensuite capable d'apprendre beaucoup plus rapidement un autre langage de programmation si vous le désirez. Et avec plus d’autonomie !
+
+Par ailleurs, le C est un langage très populaire. Il est utilisé pour programmer une grande partie des logiciels que vous connaissez. C'est un des langages les plus connus et les plus utilisés qui existent. Il est très fréquent qu'il soit enseigné lors d'études supérieures en informatique. Le langage C est à la base des plus grands systèmes d'exploitation tels UNIX (et donc Linux et Mac OS) ou Windows.
+
+J'ai entendu parler de C++ aussi, mais quelle est la différence avec le C ?
+
+Le langage C et le langage C++ sont très similaires. Ils sont tous les deux toujours très utilisés. Pour bien comprendre comment ils sont nés, il faut faire un peu d'histoire.
+
+À l'époque où les ordinateurs pesaient des tonnes et faisaient la taille de votre maison, on a commencé à inventer un langage de programmation appelé l'Algol. Puis on a créé un nouveau langage appelé le CPL, qui évolua lui-même en BCPL, qui prit ensuite le nom de langage B. Un beau jour, on en est arrivé à créer un autre langage encore, qu'on a appelé… le langage C. Ce langage, s'il a subi quelques modifications, reste encore un des plus utilisés aujourd'hui. Un peu plus tard, on a proposé d'y ajouter des choses : une sorte d'amélioration, si vous voulez. Ce nouveau langage, que l'on a appelé « C++ », est entièrement basé sur le C. Le langage C++ n'est en fait rien d'autre que le langage C avec des ajouts permettant de programmer d'une façon différente.
+
+Le C++ n'est pas meilleur que le langage C, il permet juste de programmer différemment.
+
+En fait, il permet de programmer un peu plus efficacement, et de mieux hiérarchiser le code de son programme. Si vous voulez passer au C++ par la suite, j'ai créé un cours sur le sujet !
+
+Rencontrez vos professeurs
+
+Mathieu Nebra, Co-fondateur d’OpenClassrooms et Directeur de l'innovation
+
+Faut-il encore vous présenter Mathieu ? Le premier enseignant de la plateforme ! Tous ses cours sont très suivis et appréciés. Nous les mettons progressivement à jour pour qu’ils correspondent à ce que nous savons faire de mieux en termes de multimédia et de pédagogie.
+
+Mathieu vous accompagne pour vous présenter les notions clés : vous le retrouverez dans le texte du cours et en vidéo face caméra !
+
+Ranga a enregistré rien que pour vous des vidéos tutorées, pour vous permettre de plonger dans le monde du C et d'avancer de façon guidée, pas à pas, dans votre apprentissage !
+
+Apprenez en pratiquant
+
+Dans ce cours, vous retrouverez :
+
+  - Des vidéos d’introduction qui font la synthèse des principales informations à retenir.
+
+  - Du texte qui apporte des explications complémentaires et des exemples concrets, présente des outils 
+    spécifiques et liste des ressources externes à consulter, ou encore des fichiers à télécharger.
+
+  - Des screencasts tutoriels. Ce sont des vidéos de démonstration qui permettent de suivre étape par étape la 
+    réalisation d’un point du cours directement sur l’ordinateur de l’expert-formateur.
+
+  - Des exercices dans les sections "À vous de jouer". C’est l’occasion de mettre en pratique ; ils sont 
+    précieux pour accélérer votre apprentissage !
+
+  - Des quiz pour vous permettre de valider ce que vous avez appris.
+
+Vous êtes prêt ? Allez, c’est parti !
+
+Dans le prochain chapitre, vous allez installer les outils nécessaires pour coder votre premier programme !
+
+#############################################################################################################
+
+Installez les outils nécessaires pour programmer
+
+
+Voici le strict minimum pour un programmeur :
+
+  - un éditeur de texte pour écrire le code source du programme. En théorie un logiciel comme le bloc-notes sous Windows, ou "vi" sous Linux, fait l'affaire. L'idéal, c'est d'avoir un éditeur de texte intelligent qui colore tout seul le code, ce qui vous permet de vous y repérer bien plus facilement ;
+
+  - un compilateur pour transformer (compiler) votre source en binaire ;
+
+  - un débogueur pour vous aider à traquer les erreurs dans votre programme. 
+
+Soit on récupère chacun de ces trois programmes séparément. C'est la méthode la plus compliquée, mais elle fonctionne. Soit on utilise un IDE (environnement de développement). C'est un programme 3-en-1 qui combine éditeur de texte, compilateur et débogueur. 
+
+Il existe plusieurs environnements de développement. Au début, vous aurez peut-être un peu de mal à choisir celui qui vous plaît. Une chose est sûre en tout cas : vous pouvez réaliser n'importe quel type de programme, quel que soit l'IDE que vous choisissez.
+
+Choisissez votre environnement de développement
+
+Voici quelques IDE parmi les plus connus. Tous sont disponibles gratuitement.
+
+- Code::Blocks (Windows, Mac et Linux)
+Il fonctionne sur la plupart des systèmes d'exploitation.
+
+Note pour les utilisateurs de Linux : il existe de nombreux IDE sous Linux, mais les programmeurs expérimentés préfèrent parfois se passer d'IDE et compiler à la main, ce qui est un peu plus difficile. 
+
+- Visual Studio (Windows uniquement)
+Il existe à la base en version payante (chère !), mais il existe heureusement une version gratuite intitulée Visual Studio Community qui est vraiment très bien (il y a peu de différences avec la version payante). Il est très complet et possède un puissant module de correction des erreurs (débogage). 
+
+- Xcode (Mac OS X uniquement)
+Sur Mac OS X, vous pouvez utiliser Xcode, généralement fourni sur le CD d'installation de Mac OS X. C'est un IDE très apprécié par tous ceux qui font de la programmation sur Mac.
+
+Xcode est l'IDE le plus utilisé sous Mac, créé par Apple lui-même. Les plus grands logiciels, comme iPhoto et Keynote, ont été codés à l'aide de Xcode. C'est réellement l'outil de développement de choix quand on a un Mac !
+
+Quel est le meilleur de tous ces IDE ?
+
+Tous ces IDE vous permettront de programmer et de suivre le reste de ce cours sans problème. Certains sont plus complets au niveau des options, d'autres un peu plus intuitifs à utiliser, mais dans tous les cas, les programmes que vous créerez seront les mêmes, quel que soit l'IDE que vous utilisez. Ce choix n'est donc pas si crucial qu'on pourrait le croire.
+
+Installez l'un de ces IDE, au choix, en suivant le tutoriel.
+
+Installez Code::Blocks (Windows, Mac OS, Linux)
+Code::Blocks n'est disponible pour le moment qu'en anglais, mais cela ne devrait pas vous dissuader de l'utiliser. Quand on programme, on est de toute façon confronté à des documentations (bien souvent) en anglais.
+
+Rendez-vous sur la page de téléchargement de Code::Blocks.
+
+- Si vous êtes sous Windows, téléchargez le logiciel en prenant le programme qui contient mingw-setup dans le nom (ex. :codeblocks-10.05mingw-setup.exe). 
+
+- Si vous êtes sous Linux, choisissez le package qui correspond à votre distribution.
+
+- Si vous êtes sous Mac, choisissez le fichier le plus récent de la liste.
+
+L'installation est simple et rapide (laissez toutes les options par défaut et lancez le programme). Voyons comment faire et profitons-en pour créer notre premier projet :
+
+
+Installez Visual Studio (Windows seulement)
+C'est l'IDE de Microsoft. Il est à la base payant, mais Microsoft a sorti une version gratuite intitulée Visual Studio Community. Il permet de programmer en C, en C++ et en bien d’autres langages.
+
+Nous allons bien entendu voir ici la version gratuite, Visual Studio Community.
+
+Quelles sont les différences avec le "vrai" Visual ?
+
+Il n'y a pas l'éditeur de ressources qui vous permet de dessiner des images, des icônes ou des fenêtres. Mais bon, ça, entre nous, on s'en moque bien parce qu'on n'aura pas besoin de s'en servir dans ce cours. Ce ne sont pas des fonctionnalités indispensables.
+
+Pour télécharger Visual Studio Community, rendez-vous sur le site web de Visual Studio Community. Sélectionnez ensuite Téléchargez Visual Studio un peu plus bas sur la page.
+
+Visual Studio Community est disponible en français et totalement gratuit. Ce n'est donc pas une version d'essai limitée dans le temps. C'est une chance d'avoir un IDE aussi puissant que celui de Microsoft disponible gratuitement, ne la laissez donc pas passer.
+
+L'installation devrait normalement se passer sans encombre. Le programme d'installation va télécharger la dernière version de Visual sur Internet.
+
+Il faut vous enregistrer dans les 30 jours.
+
+Pas de panique, c'est gratuit et rapide ; mais il faut le faire.
+
+Cliquez sur le lien qui vous est donné : vous arrivez sur le site de Microsoft. Connectez-vous avec votre compte Windows Live ID (équivalent du compte Hotmail ou Outlook), ou créez-en un si vous n'en avez pas.
+
+Allez, démarrons l'installation et puis ensuite nous créerons notre premier projet :
+
+
+Installez Xcode (Mac OS seulement)
+Xcode est disponible sur App Store. Commencez donc par le récupérer là-bas.
+
+Je vous conseille de mettre dans vos favoris la page dédiée aux développeurs sur le site d'Apple. Vous y trouverez une foule d'informations utiles pour le développement sous Mac. Vous pourrez notamment y télécharger plusieurs logiciels pour développer.
+
+N'hésitez pas à vous inscrire à l'ADC ("Apple Development Connection"), c'est gratuit et vous serez ainsi tenu au courant des nouveautés.
+
+Allez c'est parti ! Installons Xcode et créons notre premier projet :
+
+En résumé
+
+Les programmeurs ont besoin de trois outils : un éditeur de texte, un compilateur et un débogueur.
+
+Il est possible d'installer ces outils séparément, mais il est courant aujourd'hui d'avoir un package trois-en-un que l'on appelle IDE, l'environnement de développement.
+
+Code::Blocks, Visual Studio Community et Xcode comptent parmi les IDE les plus célèbres.
+
+La configuration de votre environnement de développement est enfin terminée. Nous allons pouvoir passer aux choses sérieuses et créer votre premier programme en C !
+
+##############################################################################################################
+
+Écrivez votre premier programme
+
+
+On a préparé le terrain jusqu'ici, maintenant il serait bien de commencer à programmer un peu, et on va commencer par quelque chose de très simple !
+
+Écrivez un programme en console
+Dans le chapitre précédent, notre IDE nous demandait quel type de programme nous voulions créer, et je vous avais dit de répondre console.
+
+Il faut savoir qu'en fait il existe deux types de programmes, pas plus :
+
+  1. Les programmes graphiques.
+
+  2. Les programmes en console.
+
+Les programmes graphiques sont des programmes qui affichent des fenêtres que l'on peut ouvrir, réduire, fermer, agrandir… Ce sont ceux que vous connaissez sûrement le mieux : Word ou encore Paint sont des programmes graphiques, par exemple.
+
+Les programmeurs parlent de GUI (Graphical User Interface – interface utilisateur graphique, en français). 
+
+Les programmes en console ont été les premiers à apparaître. À l'époque, l'ordinateur ne gérait que le noir et blanc, et il n'était pas assez puissant pour créer des fenêtres comme on le fait aujourd'hui.
+
+Bien entendu, le temps a passé depuis. Si l'ordinateur est devenu grand public, c'est principalement grâce à une simplicité accrue de l'utilisation des fenêtres sur Windows et macOS dès la deuxième moitié des années 1980. Aujourd'hui, beaucoup de monde a oublié ce qu'était la console. Oui vous, là, ne regardez pas derrière vous, je sais que vous vous demandez ce que c'est !
+
+J'ai une grande nouvelle : la console n'est pas morte ! En effet, Linux l'a remise au goût du jour :
+
+Brrr… Terrifiant, hein ? Voilà, vous avez maintenant une petite idée de ce à quoi ressemble une console.
+
+Ceci dit, plusieurs remarques :
+
+  - aujourd'hui on sait afficher de la couleur, tout n'est donc pas en noir et blanc comme on pourrait le croire ;
+
+  - la console est assez peu accueillante pour un débutant ;
+
+  - c'est pourtant un outil puissant quand on sait le maîtriser.
+
+Créer des programmes en mode console comme ici, c'est très facile et c'est idéal pour débuter.
+
+Et sous Windows ? Il n'y a pas de console ?
+
+Si, mais elle est un peu cachée, on va dire.
+
+Vous pouvez avoir une console en faisant Démarrer / Accessoires / Invite de commandes, ou bien encore en faisant Démarrer / Exécuter… et en tapant ensuite cmd:
+
+Si vous êtes sous Windows, sachez que c'est dans une fenêtre qui ressemble à ça que nous ferons nos premiers programmes. Si j'ai choisi de commencer par des petits programmes en console, ce n'est pas pour vous ennuyer, bien au contraire ! En commençant par là, vous apprendrez les bases nécessaires pour pouvoir ensuite créer des fenêtres.
+
+Tapez un minimum de code
+
+C'est ce "code minimum" que nous allons découvrir maintenant. Il devrait servir de base pour la plupart de vos programmes en langage C.
+
+Demandez le code minimal à votre IDE
+Selon l'IDE que vous avez choisi dans le chapitre précédent, la méthode pour créer un nouveau projet n'est pas la même. Relisez-le si vous avez oublié comment faire.
+
+Dans la vidéo suivante, nous allons voir comment créer le code minimum à l’aide d'un IDE. Nous analyserons ce code afin de comprendre l'intérêt de chaque ligne. Pour terminer, nous allons tester le code en le compilant et l'exécutant.
+
