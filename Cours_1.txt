@@ -1224,3 +1224,120 @@ Je vous conseille de faire la même chose avec les autres opérations pour vous 
 
 Dans la vidéo suivante, on récapitule comment faire des calculs en utilisant les variables :
 
+Utilisez les raccourcis
+
+Il existe en C des techniques permettant de raccourcir l'écriture des opérations.
+
+C'est pratique quand on a des opérations répétitives. Vous allez voir ce que je veux dire par là tout de suite, avec ce qu'on appelle l'incrémentation.
+
+L'incrémentation
+
+Vous serez souvent amenés à ajouter 1 à une variable : au fur et à mesure du programme, vous aurez des variables qui augmentent de 1 en 1.
+
+Imaginons que votre variable s'appelle nombre. Sauriez-vous comment faire pour ajouter 1 à cette variable, sans savoir quel est le nombre qu'elle contient ? Voici comment on doit faire :
+
+  1.nombre = nombre + 1;
+
+On fait le calcul nombre + 1, et on range ce résultat dans la variable… nombre! Du coup, si notre variable nombre valait 4, elle vaut maintenant 5. Si elle valait 8, elle vaut maintenant 9, etc.
+
+Cette opération est répétitive. Les informaticiens étant des gens particulièrement fainéants, ils n'avaient guère envie de taper deux fois le même nom de variable. Ils ont donc inventé un raccourci pour cette opération : l'incrémentation.
+
+Cette instruction produit exactement le même résultat que le code qu'on vient de voir :
+
+  1.nombre++;
+
+Cette ligne, bien plus courte que celle de tout à l'heure, signifie :
+
+« Ajoute 1 à la variable nombre».
+
+Il suffit d'écrire le nom de la variable à incrémenter, de mettre deux signes  +  , et bien entendu, de ne pas oublier le point-virgule  ;  .
+
+Vous avez peut-être remarqué que le signe  ++  se trouve dans le nom du langage C++. C'est un clin d'œil des programmeurs, et vous êtes maintenant capable de le comprendre !
+
+C++ signifie qu'il s'agit du langage C "incrémenté", c'est-à-dire, du langage C à un niveau "supérieur". En pratique, le C++ permet surtout de programmer différemment, mais il n'est pas "meilleur" que le C : juste différent.
+
+La décrémentation
+C'est tout bêtement l'inverse de l'incrémentation : on enlève 1 à une variable.
+
+Même si on fait plus souvent des incrémentations que des décrémentations, cela reste une opération pratique que vous utiliserez de temps en temps.
+
+La décrémentation, si on l'écrit en forme « longue », ça donne :
+
+  1.nombre = nombre - 1;
+
+Et maintenant en forme « raccourcie » :
+
+  1.nombre--;
+
+Au lieu de mettre un++, vous mettez un-- : si votre variable vaut 6, elle vaudra 5 après l'instruction de décrémentation.
+
+Les autres raccourcis
+
+Il existe d'autres raccourcis qui fonctionnent sur le même principe, pour toutes les opérations de base :+ - * / %.
+
+Cela permet d'éviter une répétition du nom d'une variable sur une même ligne. Ainsi, si vous voulez multiplier par deux une variable :
+
+  1.nombre = nombre * 2;
+
+Vous pouvez l'écrire d'une façon raccourcie comme ceci :
+
+  1.nombre *= 2;
+
+Si le nombre vaut 5 au départ, il vaudra 10 après cette instruction.
+
+Pour les autres opérations de base, cela fonctionne de la même manière :
+
+  1.int nombre = 2;
+  2.
+  3.nombre += 4; // nombre vaut 6...
+  4.nombre -= 3; // ... nombre vaut maintenant 3
+  5.nombre *= 5; // ... nombre vaut 15
+  6.nombre /= 3; // ... nombre vaut 5
+  7.nombre %= 3; // ... nombre vaut 2 (car 5 = 1 * 3 + 2)
+
+
+On peut utiliser toutes les opérations de base, et ajouter, soustraire, multiplier par n'importe quel nombre. Ce sont des raccourcis à connaître si vous avez un jour des lignes répétitives à taper dans un programme.
+
+Puisez dans la bibliothèque mathématique
+En langage C, il existe ce qu'on appelle des bibliothèques "standard", c'est-à-dire des bibliothèques toujours utilisables. Ce sont en quelque sorte des bibliothèques de base qu'on utilise très souvent.
+
+Les bibliothèques sont des ensembles de fonctions toutes prêtes. Ces fonctions ont été écrites par des programmeurs avant vous, elles vous évitent en quelque sorte d'avoir à réinventer la roue à chaque nouveau programme.
+
+Vous avez déjà utilisé les fonctions printf et scanf de la bibliothèque stdio.h. Mais il existe une autre bibliothèque qui contient de nombreuses fonctions mathématiques toutes prêtes : math.h .
+
+En effet, les cinq opérations de base que l'on a vues sont loin d'être suffisantes !
+
+Tenez par exemple, on ne peut pas faire de puissances en C ! Comment calculer un simple carré ? Vous pouvez toujours essayer de taper 5$^2$  dans votre programme, mais votre ordinateur ne le comprendra jamais car il ne sait pas ce que c'est… À moins que vous le lui expliquiez en lui indiquant la bibliothèque mathématique !
+
+Pour pouvoir utiliser les fonctions de la bibliothèque mathématique, il est indispensable de mettre la directive de préprocesseur suivante en haut de votre programme :
+
+  1.#include <math.h>
+
+Une fois que c'est fait, vous pouvez utiliser toutes les fonctions de cette bibliothèque.
+
+Je vous présente les fonctions les plus importantes dans ce document. 
+
+Vous n'avez peut-être pas tout le niveau en maths pour comprendre ce que font ces fonctions. Si c'est votre cas, pas d'inquiétude. Lisez juste, cela ne vous pénalisera pas pour la suite.
+
+En résumé
+
+  - Les opérations connues par votre ordinateur sont très basiques : l'addition, la soustraction, la 
+    multiplication, la division et le modulo (le reste de la division).
+
+  - Il est possible d'effectuer des calculs entre des variables. C'est d'ailleurs ce qu'un ordinateur sait 
+    faire de mieux : il le fait bien et vite.
+
+  - L'incrémentation consiste à ajouter 1 à une variable. On écrit variable++.
+
+  - La décrémentation est l'opération inverse : on retire 1 à une variable avec variable--.
+
+  - Pour augmenter le nombre d'opérations connues par votre ordinateur, il faut charger la bibliothèque 
+    mathématique (c'est-à-dire #include <math.h>).
+
+  - Cette bibliothèque contient des fonctions mathématiques plus avancées, telles que la puissance, la racine 
+    carrée, l'arrondi, l'exponentielle, le logarithme, etc.
+
+Vous êtes maintenant plus efficace que votre calculatrice ! Mais si vous voulez prévoir différents comportements de votre programme en fonction du résultat des calculs, comment allez-vous faire ? C’est le rôle des structures conditionnelles. Vous verrez cela dans la prochaine partie, mais en attendant, un petit quiz !
+
+##############################################################################################################
+
