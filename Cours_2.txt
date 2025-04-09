@@ -494,3 +494,161 @@ Si vous avez compris les structures conditionnelles, je vous attends au chapitre
 
 ##############################################################################################################
 
+Répétez des instructions grâce aux boucles
+
+Une boucle est une technique permettant de répéter les mêmes instructions plusieurs fois.
+
+Comme pour les conditions, il y a plusieurs façons de réaliser des boucles. Nous allons voir trois types de boucles courantes en C :
+
+  1. while
+
+  2. do… while
+
+  3. for
+
+Dans tous les cas, le principe est le même :
+
+Voici ce qu'il se passe, dans l'ordre :
+
+  1. L'ordinateur lit les instructions de haut en bas (comme d'habitude).
+
+  2. Puis, une fois arrivé à la fin de la boucle, il repart à la première instruction.
+
+  3. Il recommence alors à lire les instructions de haut en bas…
+
+  4. … Et il repart au début de la boucle.
+
+Le problème dans ce système c'est que si on ne l'arrête pas, l'ordinateur est capable de répéter les instructions à l'infini ! Il n'est pas du genre à se plaindre, vous savez : il fait ce qu'on lui dit de faire… Il pourrait très bien se bloquer dans une boucle infinie, c'est d'ailleurs une des nombreuses craintes des programmeurs.
+
+Et c'est là qu'on retrouve… les conditions !
+
+Quand on crée une boucle, on indique toujours une condition !
+
+Cette condition signifiera « Répète la boucle tant que cette condition est vraie ».
+
+Comme je vous l'ai dit, il y a plusieurs manières de s'y prendre. Voyons voir sans plus tarder comment on réalise une boucle de type while en C.
+
+Créez un boucle  while
+
+Voici comment on construit une boucle while  :
+
+while (/* Condition */)
+{
+    // Instructions à répéter
+}
+while signifie « Tant que ».
+
+On dit donc à l'ordinateur :
+
+« Tant que la condition est vraie, répète les instructions entre accolades ».
+
+Faisons un test simple : on va demander à l'utilisateur de taper le nombre 47. Tant qu'il n'a pas tapé le nombre 47, on lui redemande le nombre. Le programme ne pourra s'arrêter que si l'utilisateur tape le nombre 47 (je sais, je sais, je suis diabolique) :
+
+int nombreEntre = 0;
+
+while (nombreEntre != 47)
+{
+    printf("Tapez le nombre 47 ! ");
+    scanf("%d", &nombreEntre);
+}
+
+Voici maintenant le test que j'ai fait (j'ai fait exprès de me tromper 2-3 fois avant de taper le bon nombre) :
+
+
+Tapez le nombre 47 ! 10
+Tapez le nombre 47 ! 27
+Tapez le nombre 47 ! 40
+Tapez le nombre 47 ! 47
+
+Cette boucle while se répète donc tant qu'on n'a pas tapé 47.
+
+Maintenant, essayons quelque chose de plus intéressant : on veut que notre boucle se répète un certain nombre de fois. On va pour cela créer une variable compteur qui vaudra 0 au début du programme et que l'on va incrémenter au fur et à mesure.
+
+C'est quoi déjà, l'incrémentation ?
+
+Ça consiste à ajouter 1 à la variable en faisant variable++;.
+
+Regardez attentivement ce bout de code et, surtout, essayez de le comprendre :
+
+int compteur = 0;
+
+while (compteur < 10)
+{
+    printf("Bienvenue sur OpenClassrooms !\n");
+    compteur++;
+}
+
+Résultat :
+
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+Bienvenue sur OpenClassrooms !
+
+Ce code répète 10 fois l'affichage de "Bienvenue sur OpenClassrooms !".
+
+Comment ça marche exactement ?
+
+Au départ, on a une variable compteur initialisée à 0. Elle vaut donc 0 au début du programme.
+
+La boucle while ordonne la répétition TANT QUE compteur est inférieur à 10. Comme compteur vaut 0 au départ, on rentre dans la boucle.
+
+On affiche la phrase « Bienvenue sur OpenClassrooms ! » via un printf.
+
+Grâce à compteur++; , on incrémente la valeur de la variable compteur (qui valait 0, elle vaut maintenant 1).
+
+On arrive à la fin de la boucle (accolade fermante) : on repart donc au début, au niveau du while pour refaire le test : « Est-ce que compteur est toujours inférieure à 10 ? ». Oui car compteur vaut 1. On recommence donc les instructions de la boucle.
+
+Et ainsi de suite : compteur va valoir progressivement 0, 1, 2, 3… 8, 9, et 10. Lorsque compteur vaut 10, la condition compteur < 10 est fausse. Comme l'instruction est fausse, on sort de la boucle.
+
+On pourrait d'ailleurs voir que la variable compteur augmente au fur et à mesure dans la boucle, en l'affichant dans le printf:
+
+
+int compteur = 0;
+
+while (compteur < 10)
+{
+    printf("La variable compteur vaut %d\n", compteur);
+    compteur++;
+}
+
+La variable compteur vaut 0
+La variable compteur vaut 1
+La variable compteur vaut 2
+La variable compteur vaut 3
+La variable compteur vaut 4
+La variable compteur vaut 5
+La variable compteur vaut 6
+La variable compteur vaut 7
+La variable compteur vaut 8
+La variable compteur vaut 9
+
+Voilà : si vous avez compris ça, vous avez tout compris !
+
+Vous pouvez vous amuser à augmenter la limite du nombre de boucles : < 100  au lieu de < 10. Cela m'aurait été d'ailleurs utile plus jeune pour rédiger les punitions que je devais réécrire 100 fois.
+
+Attention aux boucles infinies !
+
+Lorsque vous créez une boucle, assurez-vous qu'elle puisse s'arrêter à un moment ! Si la condition est toujours vraie, votre programme ne s'arrêtera jamais !
+
+Voici un exemple de boucle infinie :
+
+while (1)
+{
+    printf("Boucle infinie\n");
+}
+
+Souvenez-vous des booléens : 1 = vrai, 0 = faux. Ici, la condition est toujours vraie, ce programme affichera donc « Boucle infinie » sans arrêt !
+
+Que faire si on a lancé une boucle infinie par erreur ?
+
+Pour arrêter un tel programme sous Windows, vous n'avez pas d'autre choix que de fermer la console en cliquant sur la croix en haut à droite. Sous mac ou Linux, faites Ctrl + C.
+
+Nous allons voir dans la vidéo suivante comment créer votre première boucle while en faisant attention à ne pas tomber dans le piège de la boucle infinie :
+
