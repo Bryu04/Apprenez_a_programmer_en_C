@@ -426,3 +426,71 @@ Votre mission (si vous l'acceptez) :
 Alors, vous avez réussi ?
 
 Je vous propose une correction dans ce screencast, et nous allons aussi pouvoir voir en bonus les bonnes pratiques pour correctement mettre en place un switch case :
+
+Découvrez les conditions condensées : les ternaires
+Il existe une troisième façon de faire des conditions, plus rare : les expressions ternaires.
+
+Les ternaires ne sont pas du tout indispensables ; personnellement je les utilise peu, car ils peuvent rendre la lecture d'un code source un peu difficile. Cela dit, il vaut mieux les connaître pour le jour où vous tomberez sur un code plein de ternaires !
+
+Concrètement, c'est comme un if... else, sauf qu'on fait tout tenir sur une seule ligne.
+
+Comme un exemple vaut mieux qu'un long discours, je vais vous donner deux fois la même condition :
+
+  1. La première avec un if... else.
+
+  2. Et la seconde, identique, mais sous forme d'une expression ternaire.
+
+1. Analysez cette condition en if... else 
+
+Exemple : on a une variable booléenne majeur qui vaut vrai (1) si on est majeur, et faux (0) si on est mineur. On veut changer la valeur de la variable age en fonction du booléen, pour mettre "18" si on est majeur, "17" si on est mineur. C'est un exemple complètement stupide, je suis d'accord, mais ça me permet de vous montrer comment on peut se servir des expressions ternaires.
+
+Voici comment faire cela avec un if... else  :
+
+if (majeur)
+  age = 18;
+else
+  age = 17;
+
+Notez que j'ai enlevé les accolades, car elles sont facultatives s'il n'y a qu'une instruction.
+
+2. Analysez cette même condition en ternaire
+
+Voici un code qui fait exactement la même chose que le précédent, mais sous forme ternaire :
+
+  1.age = (majeur) ? 18 : 17;
+
+Les ternaires permettent, sur une seule ligne, de changer la valeur d'une variable en fonction d'une condition.
+
+Ici la condition est tout simplementmajeur  , mais ça pourrait être n'importe quelle condition plus longue, bien entendu.
+
+Un autre exemple ?
+
+autorisation = (age >= 18) ? 1 : 0;
+
+Le point d'interrogation permet de dire « est-ce que tu es majeur ? ». Si oui, alors on met la valeur 18 dans age. Sinon (le : signifie else ici), on met la valeur 17.
+
+En résumé
+
+  - Les conditions sont à la base de tous les programmes. C'est un moyen pour l'ordinateur de prendre une 
+    décision en fonction de la valeur d'une variable.
+
+  - Les mots-clés if  , else if  , else signifient respectivement « si », « sinon si », « sinon ». On peut 
+    écrire autant de else if que l'on veut.
+
+  - Un booléen est une variable qui peut avoir deux états : vrai (1) ou faux (0) (toute valeur différente de 0 
+    est en fait considérée comme « vraie »). On utilise des int pour stocker des booléens, car ce ne sont en 
+    fait rien d'autre que des nombres.
+
+  - Le switch est une alternative au if quand il s'agit d'analyser la valeur d'une variable. Il permet de 
+    rendre un code source plus clair si vous vous apprêtez à tester de nombreux cas. Si vous utilisez de 
+    nombreux else if  , c'est en général le signe qu'un switch serait plus adapté pour rendre le code source 
+    plus lisible.
+
+  - Les ternaires sont des conditions très concises qui permettent d'affecter rapidement une valeur à une 
+    variable en fonction du résultat d'un test. On les utilise avec parcimonie, car le code source a tendance 
+    à devenir moins lisible avec elles.
+
+Si vous avez compris les structures conditionnelles, je vous attends au chapitre suivant. Sinon, c’est reparti pour un tour avec ce chapitre !
+
+##############################################################################################################
+
