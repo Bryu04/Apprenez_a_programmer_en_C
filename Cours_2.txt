@@ -652,3 +652,85 @@ Pour arrêter un tel programme sous Windows, vous n'avez pas d'autre choix que d
 
 Nous allons voir dans la vidéo suivante comment créer votre première boucle while en faisant attention à ne pas tomber dans le piège de la boucle infinie :
 
+Créez une boucle  do… while
+
+Ce type de boucle est moins utilisé. La seule chose qui change par rapport à une boucle while  , c'est la position de la condition : au lieu d'être au début de la boucle, la condition est à la fin :
+
+int compteur = 0;
+
+do
+{
+    printf("Bienvenue sur OpenClassrooms !\n");
+    compteur++;
+} while (compteur < 10);
+
+Qu'est-ce que ça change ?
+
+La boucle while peut très bien ne jamais être exécutée si la condition est fausse dès le départ. Par exemple, si on avait initialisé le compteur à 50, la condition aurait été fausse dès le début, et on ne serait jamais rentré dans la boucle.
+
+Pour la boucle do… while, c'est différent : cette boucle s'exécutera toujours au moins une fois. En effet, le test se fait à la fin, comme vous pouvez le voir. Si on initialise compteur à 50, la boucle s'exécutera une fois.
+
+Il est donc parfois utile de faire des boucles de ce type, pour s'assurer que l'on rentre au moins une fois dans la boucle.
+
+Attention : il y a un  ;  à la fin de la boucle do… while .
+
+N'oubliez pas d'en mettre un après le while, sinon votre programme plantera à la compilation !
+
+La vidéo montre la différence entre la boucle while et la boucle do...while :
+
+Créez une boucle  for
+
+En théorie, while permet de réaliser toutes les boucles que l'on veut.
+
+Toutefois, comme switch pour les conditions, il est parfois utile d'avoir un autre système de boucle, plus « condensé », plus rapide à écrire. Pour cela, on a les boucles  for  .
+
+Sachez que vous utiliserez certainement autant de for que de while  , si ce n'est plus ; il vous faudra donc savoir manipuler ces deux types de boucles.
+
+Pour rappel, voici un exemple de boucle while que nous avons vu tout à l'heure :
+
+int compteur = 0;
+
+while (compteur < 10)
+{
+    printf("Bienvenue sur OpenClassrooms !\n");
+    compteur++;
+}
+
+Voici maintenant l'équivalent en boucle for :
+
+int compteur;
+
+for (compteur = 0 ; compteur < 10 ; compteur++)
+{
+    printf("Bienvenue sur OpenClassrooms !\n");
+}
+
+Quelles différences y a-t-il ?
+
+  - On n'a pas initialisé la variable compteur à 0 dès sa déclaration (mais on aurait pu le faire).
+
+  - Il y a beaucoup de choses entre les parenthèses après for  (nous allons détailler ça après).
+
+  - Il n'y a plus de compteur++;  dans la boucle.
+
+Intéressons-nous à ce qui se trouve entre les parenthèses, car c'est là que réside tout l'intérêt de la boucle for : il y a trois instructions condensées, séparées par un point-virgule :
+
+  1. L'initialisation : cette première instruction est utilisée pour préparer notre variable compteur. Dans 
+     notre cas, on initialise la variable à 0.
+
+  2. La condition : comme pour la boucle while, c'est la condition qui dit si la boucle doit être répétée ou 
+     non. Tant que la condition est vraie, la boucle for continue.
+
+  3. L'incrémentation : cette dernière instruction est exécutée à la fin de chaque tour de boucle pour mettre 
+     à jour la variable compteur. La plupart du temps, on fera une incrémentation, mais on peut aussi faire 
+     une décrémentation (variable--), ou encore n'importe quelle autre opération (variable += 2; pour avancer 
+     de 2 en 2, par exemple).
+
+Bref ! for n'est rien d'autre qu'un condensé. 
+
+L’instruction  break  permet d'arrêter l’exécution d’une boucle, elle permet de sortir prématurément de la boucle et de lancer l’instruction suivante.
+
+L’instruction  continue  permet de passer directement à l’itération suivante sans exécuter les lignes de l’itération courante.
+
+Pour terminer ce chapitre, je vous propose une dernière vidéo qui montre comment utiliser une boucle  for   , et les erreurs à éviter :
+
