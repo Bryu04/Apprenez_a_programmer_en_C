@@ -896,3 +896,125 @@ Vous devriez reconnaître ce qui se passe dans votre programme.
 Bref, c'est plutôt simple.
 
 Je vous propose tout de même de regarder cette vidéo qui résume comment créer et utiliser une variable :
+
+Affichez plusieurs variables dans un même printf
+
+Il est possible d'afficher la valeur de plusieurs variables dans un seul printf.
+Il suffit d'indiquer des %d ou des %f là où vous voulez, puis d'indiquer les variables correspondantes dans le même ordre, séparées par des virgules :
+
+  1.printf("Vous avez %d vies et vous etes au niveau n° %d", nombreDeVies, niveau);
+
+Veillez à indiquer vos variables dans le bon ordre.
+
+  1. Le premier %d sera remplacé par la première variable : nombreDeVies.
+
+  2. Et le second %d par la seconde variable : niveau.
+
+Si vous vous trompez d'ordre, votre phrase ne voudra plus rien dire.
+
+Allez, un petit test maintenant. Notez que j'enlève les lignes tout en haut (les directives de préprocesseur commençant par un #) ; je vais supposer que vous les mettez à chaque fois, maintenant :
+
+int main(int argc, char *argv[])
+{
+  int nombreDeVies = 5, niveau = 1;
+  
+  printf("Vous avez %d vies et vous etes au niveau n° %d\n", nombreDeVies, niveau);
+  
+  return 0;
+}
+
+Ce qui affichera :
+
+Vous avez 5 vies et vous etes au niveau n° 1
+
+Récupérez une saisie
+
+Les variables commencent à devenir intéressantes maintenant. On va apprendre à demander à l'utilisateur de taper un nombre dans la console. Ce nombre, on va le récupérer et le stocker dans une variable. Une fois que ça sera fait, on pourra faire tout un tas de choses avec, vous verrez.
+
+Pour demander à l'utilisateur d'entrer quelque chose dans la console, on va utiliser scanf.
+
+Cette fonction ressemble beaucoup à printf :
+
+  1. Vous devez mettre un format pour indiquer ce que l'utilisateur doit entrer : int, float...
+
+  2. Ensuite, vous devez indiquer le nom de la variable qui va recevoir le nombre.
+
+Voici comment faire, par exemple :
+
+  1.int age = 0;
+  2.scanf("%d", &age);
+
+On doit mettre :
+
+  - %d entre guillemets ;
+
+  - &  devant le nom de la variable qui va recevoir la valeur.
+
+Attention, il y a une petite divergence de format entre  printf  et  scanf  !
+
+Pour récupérer un float, c'est le format "%f" qu'il faut utiliser.
+
+Mais pour le type double, c'est le format "%lf".
+
+  1.double poids = 0;
+  2.scanf("%lf", &poids);
+
+Revenons à notre programme.
+
+Lorsque celui-ci arrive à un scanf, il se met en pause et attend que l'utilisateur entre un nombre. Ce nombre sera stocké dans la variable age.
+
+Voici un petit programme simple qui demande l'âge de l'utilisateur et qui le lui affiche ensuite :
+
+int main(int argc, char *argv[])
+{
+  int age = 0; // On initialise la variable à 0
+  
+  printf("Quel age avez-vous ? ");
+  scanf("%d", &age); // On demande d'entrer l'âge avec scanf
+  printf("Ah ! Vous avez donc %d ans !\n\n", age);
+       
+  return 0;
+}
+
+Quel age avez-vous ? 20
+Ah ! Vous avez donc 20 ans !
+
+Le programme se met donc en pause après avoir affiché la question "Quel age avez-vous ?". Le curseur apparaît à l'écran, vous devez taper un nombre entier (votre âge). Tapez ensuite sur "Entrée" pour valider, et le programme continuera à s'exécuter.
+
+Ici, tout ce qu'il fait après, c'est afficher la valeur de la variable age  à l'écran :
+
+"Ah ! Vous avez donc 20 ans !".
+
+Vous avez compris le principe : grâce à la fonction scanf  , on peut donc commencer à interagir avec l'utilisateur.
+
+Notez que rien ne vous empêche de taper autre chose qu'un nombre entier :
+
+  - si vous rentrez un nombre décimal, comme 2.9, il sera automatiquement tronqué, c'est-à-dire que seule la 
+    partie entière sera conservée. Dans ce cas, c'est le nombre 2 qui aurait été stocké dans la variable ;
+
+  - si vous tapez des lettres au hasard ("éèydf"), la variable ne changera pas de valeur. Ce qui est bien ici, 
+    c'est qu'on avait initialisé notre variable à 0 au début. De ce fait, le programme affichera "0 ans" si ça 
+    n'a pas marché. Si on n'avait pas initialisé la variable, le programme aurait pu afficher n'importe quoi !
+
+En résumé
+
+  - Nos ordinateurs possèdent plusieurs types de mémoire comme les registres, la mémoire cache, la mémoire 
+    vive et le disque dur. Pour « retenir » des informations, notre programme a besoin de stocker des données 
+    dans la mémoire. Il utilise pour cela la mémoire vive.
+
+  - Dans notre code source, les variables sont des données stockées temporairement en mémoire vive. La valeur 
+    de ces données peut changer au cours du programme.
+
+  - À l'opposé, on parle de constantes pour des données stockées en mémoire vive. La valeur de ces données ne 
+    peut pas changer.
+
+  - Il existe plusieurs types de variables, qui occupent plus ou moins d'espace en mémoire. Certains types 
+    comme int sont prévus pour stocker des nombres entiers, tandis que d'autres comme double stockent des 
+    nombres décimaux.
+
+  - La fonction scanf permet de demander à l'utilisateur de saisir un nombre. 
+
+Maintenant que vous avez fait connaissance avec les variables, vous allez voir comment les utiliser pour faire des calculs. Je ne vous en dis pas plus, vous allez voir c'est magique !
+
+##############################################################################################################
+

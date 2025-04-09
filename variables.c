@@ -14,5 +14,12 @@ int main(int argc, const char * argv[]) {
     //printf("Point d'attaque augmentE : %d\n",Attack);
     //ça ne marche pas parce que la variable Attack est une 
     //constante
+
+    // Récupérer un nombre avec scanf
+    int age = 0;
+    printf("Quel age avez-vous ? :");
+    scanf("%d",&age);
+    printf("Ah ! Vous avez donc %d ans !\n", age);
+
     return 0;
 }
