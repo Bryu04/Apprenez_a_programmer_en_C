@@ -1341,3 +1341,296 @@ Vous êtes maintenant plus efficace que votre calculatrice ! Mais si vous voulez
 
 ##############################################################################################################
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! QUIZ : Faire ses premiers pas avec le langage C !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Compétences évaluées
+Créer un programme en C qui compile
+
+Question 1
+
+À quoi servent les directives de préprocesseur, vous savez, ces lignes qui commencent par  #include  ?
+
+  - Elles demandent d'inclure des fichiers au projet, c'est-à-dire d'ajouter des fichiers pour la 
+    compilation. (o) (B)
+
+  - Elles représentent des fonctions et rassemblent plusieurs commandes demandées à l'ordinateur.
+
+  - Elles permettent d'allouer la mémoire nécessaire pour le programme lors de la compilation.
+
+  - Elles permettent d'inclure le compilateur dans le projet afin de créer un exécutable.
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+
+Ce sont des lignes qui sont lues par un programme appelé "préprocesseur", un programme qui se lance au début de la compilation. Elles demandent d'inclure des fichiers au projet, c'est-à-dire d'ajouter des fichiers pour la compilation.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 2
+
+Pour l'instant, nous avons inclus ceux deux lignes dans notre premier programme :
+
+  1. #include <stdio.h> 
+
+  2. #include <stdlib.h>
+
+De quoi s'agit-il ?
+
+  - Ce sont des variables.
+
+  - Ce sont des bibliothèques. (o) (B)
+
+  - Ce sont des fonctions.
+
+  - Ce sont des pointeurs
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+
+On appelle ces fichiers des bibliothèques (certains parlent aussi de librairies, mais c'est un anglicisme), et ils contiennent du code tout prêt qui permet d'afficher du texte à l'écran.
+
+Sans ces fichiers, écrire du texte à l'écran aurait été mission impossible. L'ordinateur à la base ne sait rien faire, il faut tout lui dire. Vous voyez la galère dans laquelle on est !
+
+Bref, en résumé ces deux premières lignes incluent les bibliothèques qui vont nous permettre (entre autres) d'afficher du texte à l'écran assez facilement.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 3
+
+Dans le programme ci-dessous, comment appelle-t-on les lignes qui se trouvent entre les accolades  { }  ?
+
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
+
+  - Ce sont des variables.
+
+  - Ce sont les directives de préprocesseur.
+
+  - Ce sont des instructions. (o) (B)
+ 
+  - Ce sont des fonctions.
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+
+Les lignes qui se trouvent entre les accolades s'appellent les instructions. Chaque instruction est une commande à l'ordinateur. Chacune de ces lignes demande à l'ordinateur de faire quelque chose de précis.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 4
+
+Cochez les cases dont le code compile sans erreur : 
+
+Attention, plusieurs réponses sont possibles.
+
+
+  - #include <stdio.h>
+
+int main()
+{
+    int variable = 5
+    printf("variable  = %d", variable)
+    return 0
+}
+
+  - #include <stdio.h> (o) (B)
+
+int main()
+{
+    int variable = 5;
+    printf("variable  = %d", variable);
+    return 0;
+}
+
+  - #include <stdio.h>
+
+int variable = 5;
+printf("variable  = %d", variable);
+return 0;
+ 
+
+  - #include <stdio.h> (o) (B)
+
+int main()
+{
+    int variable = 0;
+    variable = 5;
+    printf("variable  = %d", variable);
+    return 0;
+}
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+Voici les points à ne pas oublier pour coder avec le langage C: 
+
+  1. Les instructions doivent se trouver dans une fonction et le programme commence par la fonctionmain().
+  2. Une variable doit être déclarée en spécifiant le type de la variable.
+  3. Toute instruction se termine obligatoirement par un point-virgule ;.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 5
+
+Dans un programme, que signifie la ligne  return 0;  ?
+
+Attention, plusieurs réponses sont possibles.
+
+  - Cette ligne indique qu'on arrive à la fin de la fonction. (o) (B)
+
+  - Cette ligne demande de renvoyer la valeur 0. (o) (B)
+
+  - Cette ligne signale qu'il y a eu une erreur.
+
+  - Cette ligne indique le début du programme.
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+Chaque programme, une fois terminé, renvoie une valeur, pour dire que tout s'est bien passé, par exemple.
+
+En pratique, 0 signifie tout s'est bien passé.
+
+Et n'importe quelle autre valeur signifie qu'il y a une erreur.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 6
+
+Quelles sont les bonnes méthodes pour ajouter des commentaires dans le code ?
+
+Attention, plusieurs réponses sont possibles.
+
+  - #include <stdio.h> # Inclut la bibliothèque stdio
+
+    # Fonction principale main
+    # Tous les programmes commencent par la fonction main
+
+int main()
+{
+    printf("J'adore ce QUIZ !\n"); # Affiche un message
+    return 0; # Termine la fonction main et donc le programme
+}
+ 
+
+  - #include <stdio.h> // Inclut la bibliothèque stdio  (o) (B)
+
+    // Fonction principale main
+    // Tous les programmes commencent par la fonction main
+
+int main()
+{
+    printf("J'adore ce QUIZ !\n"); // Affiche un message
+    return 0; // Termine la fonction main et donc le programme
+}
+ 
+
+  - #include <stdio.h> // Inclut la bibliothèque stdio  (o) (B)
+
+    /*
+    Fonction principale main
+    Tous les programmes commencent par la fonction main
+    */
+
+int main()
+{
+    printf("J'adore ce QUIZ !\n"); // Affiche un message
+    return 0; // Termine la fonction main et donc le programme
+}
+ 
+
+  - #include <stdio.h> """ Inclut la bibliothèque iostream """
+
+    """ Fonction principale main """
+    """ Tous les programmes commencent par la fonction main """
+
+int main()
+{
+    printf("J'adore ce QUIZ !\n"); """ Affiche un message """
+    return 0; """ Termine la fonction main et donc le programme """
+}
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+On peut ajouter des commentaires dans son code source pour expliquer son fonctionnement. En C, il y a deux méthodes, ils prennent soit la forme // Commentaire ou soit la forme /* Commentaire */.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 7
+
+Quelles règles s'appliquent pour nommer correctement une variable ?
+
+Attention, plusieurs réponses sont possibles.
+
+  - Les chiffres sont interdits.
+
+  - Les minuscules et les majuscules sont autorisées. (o) (B)
+
+  - Le nom de la variable doit commencer par une lettre. (o) (B)
+
+  - Les accents ("é", "à", "ê", etc) et les symboles (+, -, *, /, %, =) sont interdits. (B)
+
+  - Les espaces sont autorisés, tout comme le caractère  _  pour séparer des mots. 
+
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+Voici les règles pour nommer correctement une variable :
+
+  - il ne peut y avoir que des minuscules, des majuscules et des chiffres ;
+
+  - votre nom de variable doit commencer par une lettre ;
+
+  - les espaces sont interdits mais on peut utiliser le caractère  _  pour séparer des mots. C'est le seul 
+    caractère différent des lettres et chiffres autorisé ;
+
+  - les accents ("é", "à", "ê", etc) et les symboles (+, -, *, /, %, =) sont interdits.
+
+De plus, le langage C fait la différence entre les majuscules et les minuscules. Pour votre culture, sachez qu'on dit que c'est un langage qui respecte la casse.
+
+Les variables largeur  , LARGEUR ou encore LArgEuR sont trois variables différentes en langage C, même si pour nous ça a l'air de signifier la même chose !
+
+Voici quelques exemples de noms de variables corrects :nombreDeVies  , prenom  ,nom  ,numero_de_telephone  ,numeroDeTelephone.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+Question 8
+
+Que faut-il écrire, dans l'ordre, pour déclarer une variable ?
+
+  - 1.Le nom de la variable.
+    2.Le type de la variable.
+    3.Un point virgule.
+
+  - 1.Une accolade ouvrante.
+    2.Le type et le nom de la variable.
+    3.Une accolade fermante.
+
+  - 1.Le type de la variable. (o) (B)
+    2.Le nom de la variable.
+    3.Un point virgule.
+
+  - 1.Le type de la variable.
+    2.La valeur de la variable.
+    3.Un point virgule.
+
+""""""""""""""""""""" Réponse """""""""""""""""""""""
+Pour déclarer une variable, il suffit de taper :
+
+  1. le type de la variable que l'on veut créer,
+
+  2. le nom que vous voulez donner à la variable (attention, il y a un espace entre le type et le nom de la 
+     variable),
+
+  3. et enfin, ne pas oublier le point-virgule.
+
+Par exemple, si je veux créer ma variable nombreDeVies de type int, je dois taper la ligne suivante :
+
+  1.int nombreDeVies;
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+##############################################################################################################
