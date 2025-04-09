@@ -1173,3 +1173,54 @@ C'est là que les choses commencent à devenir très intéressantes. Tenez, il m
 
 À vous de jouer
 
+Imaginez un programme qui demande deux nombres à l'utilisateur :
+
+  1. Stockez ces deux nombres dans des variables.
+
+  2. Faites la somme de ces variables.
+
+  3. Stockez le résultat dans une variable appelée resultat.
+
+  4. Vous n'avez plus qu'à afficher le résultat du calcul à l'écran, sous les yeux ébahis de l'utilisateur qui 
+     n'aurait jamais été capable de calculer cela de tête aussi vite.
+
+Essayez de coder vous-même ce petit programme, c'est facile et ça vous entraînera !
+
+La réponse est ci-dessous :
+
+int main(int argc, char *argv[])
+{
+  int resultat = 0, nombre1 = 0, nombre2 = 0;
+  
+  // On demande les nombres 1 et 2 à l'utilisateur :
+  
+  printf("Entrez le nombre 1 : ");
+  scanf("%d", &nombre1);
+  printf("Entrez le nombre 2 : ");
+  scanf("%d", &nombre2);
+  
+  // On fait le calcul :
+  
+  resultat = nombre1 + nombre2;
+  
+  // Et on affiche l'addition à l'écran :
+  
+  printf ("%d + %d = %d\n", nombre1, nombre2, resultat);
+       
+  return 0;
+}
+
+Entrez le nombre 1 : 30
+Entrez le nombre 2 : 25
+30 + 25 = 55
+
+Notre programme est capable d'additionner deux nombres et d'afficher le résultat de l'opération !
+
+Vous pouvez essayer avec n'importe quel nombre (du moment que vous ne dépassez pas les limites d'un type int), votre ordinateur effectuera le calcul en un éclair. 
+
+Je vous conseille de faire la même chose avec les autres opérations pour vous entraîner (soustraction, multiplication…). Vous ne devriez pas avoir trop de mal, vu qu'il y a juste un ou deux signes à changer. Vous pouvez aussi ajouter une troisième variable et faire l'addition de trois variables à la fois, ça fonctionne sans problème :
+
+  1.resultat = nombre1 + nombre2 + nombre3;
+
+Dans la vidéo suivante, on récapitule comment faire des calculs en utilisant les variables :
+
