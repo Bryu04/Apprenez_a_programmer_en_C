@@ -1018,3 +1018,158 @@ Maintenant que vous avez fait connaissance avec les variables, vous allez voir c
 
 ##############################################################################################################
 
+Faites des calculs avec des variables
+
+Comme nous l'avons vu dans le chapitre précédent, votre ordinateur n'est en fait qu'une grosse machine à calculer. Que vous soyez en train d'écouter de la musique, regarder un film ou jouer à un jeu vidéo, votre ordinateur ne fait que des calculs.
+
+Dans ce chapitre, on va apprendre à réaliser la plupart des calculs qu'un ordinateur sait faire. Nous réutiliserons ce que nous venons tout juste d'apprendre pour faire des calculs :
+
+  - ajouter des variables entre elles ;
+
+  - les multiplier ;
+
+  - enregistrer le résultat dans une autre variable, etc.
+
+Même si vous n'êtes pas fan des mathématiques, ce chapitre vous sera utile pour la suite.
+
+Revoyez les calculs de base
+
+Votre ordinateur est une calculatrice très basique, puisqu'on ne peut faire que des opérations très simples :
+
+  - addition ;
+
+  - soustraction ;
+
+  - multiplication ;
+
+  - division ;
+
+  - modulo (je vous expliquerai ce que c'est si vous ne savez pas, pas de panique).
+
+Si vous voulez faire des opérations plus compliquées :
+
+  - carrés ;
+
+  - puissances ;
+
+  - logarithmes et autres joyeusetés,
+
+il vous faudra les programmer, c'est-à-dire expliquer à l'ordinateur comment les faire.
+
+Fort heureusement, nous verrons plus loin dans ce chapitre qu'il existe une bibliothèque mathématique livrée avec le langage C, qui contient des fonctions mathématiques toutes prêtes. Vous n'aurez donc pas à les réécrire, à moins que vous souhaitiez volontairement passer un sale quart d'heure (ou que vous soyez prof de maths).
+
+L'addition, la soustraction et la multiplication
+Pour faire une addition, on utilise le signe  +  (sans blague !).
+
+Vous devez mettre le résultat de votre calcul dans une variable. On va donc par exemple créer une variable resultat de type int et faire un calcul :
+
+  1.int resultat = 0;
+  2.
+  3.resultat = 5 + 3;
+
+Pas besoin d'être un pro du calcul mental pour deviner que la variable resultat contiendra la valeur 8 après exécution.
+
+Bien sûr, rien ne s'affiche à l'écran avec ce code. Si vous voulez voir la valeur de la variable, rajoutez un printf comme vous savez maintenant si bien le faire :
+
+  1.printf("5 + 3 =  %d", resultat);
+
+À l'écran, cela donnera :
+
+5 + 3 = 8
+
+Pour les autres opérations, c'est la même chose, seul le signe utilisé change :
+
+Opération          Signe
+
+Addition             +
+
+Soustraction         -
+
+Multiplication       *
+
+Division             /
+
+Modulo               %
+
+Il n'y a pas de difficulté particulière pour ces opérations, à part pour les deux dernières (la division et le modulo). Nous allons donc parler un peu plus en détail de chacune d'elles.
+
+La division
+
+Les divisions fonctionnent normalement sur un ordinateur quand il n'y a pas de "reste" :6 / 3font 2, votre ordinateur vous donnera la réponse juste. 
+
+Mais prenons maintenant une division avec reste, comme5 / 2… Le résultat devrait être 2.5. Et pourtant ! Regardez ce que fait ce code :
+
+  1.int resultat = 0;
+  2.    
+  3.resultat = 5 / 2;
+  4.printf ("5 / 2 = %d", resultat);
+
+5 / 2 = 2
+
+Il y a un gros problème : on a demandé5 / 2, on s'attend à avoir "2.5", et l'ordinateur nous dit que ça fait "2" !
+
+En fait, quand il voit les chiffres 5 et 2, votre ordinateur fait une division de nombres entiers (aussi appelée « division euclidienne »). Cela veut dire qu'il tronque le résultat, il ne garde que la partie entière (le 2).
+
+Hé mais je sais pourquoi ! C'est parce que resultat est un int! Si ça avait été un double, il aurait pu stocker un nombre décimal à l'intérieur, c'est ça ?
+
+Eh non, ce n'est pas la raison ! Essayez le même code en transformant juste resultat endouble, et vous verrez qu'on vous affiche quand même 2. Parce que les nombres de l'opération sont des nombres entiers, l'ordinateur répond par un nombre entier.
+
+Si on veut que l'ordinateur affiche le bon résultat, il va falloir transformer les nombres 5 et 2 de l'opération en nombres décimaux, c'est-à-dire écrire 5.0 et 2.0 (ce sont les mêmes nombres, mais l'ordinateur considère que ce sont des nombres décimaux, donc il fait une division de nombres décimaux) :
+
+  1.double resultat = 0;
+  2.  
+  3.resultat = 5.0 / 2.0;
+  4.printf ("5 / 2 = %lf", resultat);
+
+5 / 2 = 2.500000
+
+Là, le nombre est correct. Bon : il affiche des tonnes de zéros derrière si ça lui chante, mais le résultat reste quand même correct.
+
+Cette propriété de la division de nombres entiers est très importante. Il faut que vous reteniez que pour un ordinateur : 5 / 2 = 2. C'est un peu surprenant, mais c'est sa façon de calculer avec des entiers.
+
+Si vous voulez avoir un résultat décimal, il faut que les nombres de l'opération soient décimaux : 5.0 / 2.0 = 2.5.
+
+En fait, en faisant une division d'entiers comme5 / 2, votre ordinateur répond à la question « Combien y a-t-il de fois 2 dans le nombre 5 ? ». La réponse est deux fois.
+
+Mais alors comment on fait pour récupérer le reste de la division ?
+
+C'est là que super-modulo intervient.
+
+Le modulo
+
+Le modulo est une opération mathématique qui permet d'obtenir le reste d'une division.
+
+C'est peut-être une opération moins connue que les quatre autres, mais pour votre ordinateur ça reste une opération de base… probablement pour combler le problème de la « division d'entiers » qu'on vient de voir.
+
+Le modulo se représente par le signe %.
+
+Voici quelques exemples de modulos :
+
+  - 5 % 2 = 1 ;
+
+  - 14 % 3 = 2 ;
+
+  - 4 % 2 = 0.
+
+Le modulo 5 % 2  est le reste de la division 5 / 2, c'est-à-dire 1. L'ordinateur calcule que5 = 2 * 2 + 1(c'est ce 1, le reste, que le modulo renvoie).
+
+De même, pour 14 % 3 , le calcul est 14 = 3 * 4 + 2(modulo renvoie le 2).
+
+Enfin, pour 4 % 2, la division tombe juste, il n'y a pas de reste, donc modulo renvoie 0.
+
+Bon, j'ai une bonne nouvelle : on a vu toutes les opérations de base. Finis les cours de maths !
+
+Faites des calculs entre variables
+
+Maintenant que vous savez faire les cinq opérations de base, on va s'entraîner à faire des calculs entre plusieurs variables.
+
+En effet, rien ne vous empêche de faire :
+
+  1.resultat = nombre1 + nombre2;
+
+Cette ligne fait la somme des variables nombre1 et nombre2, et stocke le résultat dans la variable resultat.
+
+C'est là que les choses commencent à devenir très intéressantes. Tenez, il me vient une idée. Vous avez maintenant déjà le niveau pour réaliser une mini-calculatrice. Si, si, je vous assure !
+
+À vous de jouer
+
