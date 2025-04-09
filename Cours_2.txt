@@ -734,3 +734,17 @@ L’instruction  continue  permet de passer directement à l’itération suivan
 
 Pour terminer ce chapitre, je vous propose une dernière vidéo qui montre comment utiliser une boucle  for   , et les erreurs à éviter :
 
+En résumé
+
+  - Les boucles sont des structures qui nous permettent de répéter une série d'instructions plusieurs fois.
+
+  - Il existe plusieurs types de boucles : while, do… while et for. Certaines sont plus adaptées que d'autres 
+    selon les cas.
+
+  - for est probablement celle qu'on utilise le plus. On y fait très souvent des incrémentations ou des 
+    décrémentations de variables.
+
+Vous êtes maintenant au point avec l’ensemble des concepts de base du langage. Voyons maintenant une notion très importante de la programmation. Comment créer une fonction ?
+
+##############################################################################################################
+
