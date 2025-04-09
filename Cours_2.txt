@@ -748,3 +748,159 @@ Vous êtes maintenant au point avec l’ensemble des concepts de base du langage
 
 ##############################################################################################################
 
+Découpez votre programme en fonctions
+
+Nous allons apprendre à organiser notre code en fonctions. Il s'agit en fait de découper nos programmes en petits morceaux. Chaque petit morceau sera ce qu'on appelle une fonction.
+
+Une fonction exécute des actions et renvoie un résultat. C'est un morceau de code qui sert à faire quelque chose de précis. On dit qu'une fonction possède une entrée et une sortie.
+
+Créez une fonction
+
+Voilà comment on représente une fonction, schématiquement (c'est un modèle à connaître !) :
+
+type nomFonction(parametres)
+{
+    // Insérez vos instructions ici
+}
+
+
+type  (correspond à la sortie) : c'est le type de la fonction.
+
+Si la fonction renvoie un nombre décimal, vous mettrez sûrement double  ; si elle renvoie un entier, vous mettrez int ou long par exemple. Mais il est aussi possible de créer des fonctions qui ne renvoient rien, elles seront alors de type void  ("vide", en français).
+
+nomFonction  : c'est le nom de votre fonction.
+
+Vous pouvez appeler votre fonction comme vous voulez, du moment que vous respectez les mêmes règles que pour les variables (pas d'accents, pas d'espaces, etc.).
+
+parametres  (correspond à l'entrée) : ce sont les paramètres de la fonction.
+
+Ils sont entre parenthèses. Ce sont en fait des valeurs avec lesquelles la fonction va travailler.
+
+Maintenant que vous savez ça, voyons un exemple pratique ! Disons que :
+
+  - notre fonction triple reçoit un nombre entier de type  int  ;
+
+  - et qu'elle renvoie un nombre entier également de type int.
+
+Elle calcule le triple du nombre qu'on lui donne :
+
+int triple(int nombre)
+{
+    int resultat = 0;
+
+    resultat = 3 * nombre;  // On multiplie le nombre fourni par 3
+    return resultat;       // On retourne la variable resultat qui vaut le triple de nombre
+}
+
+La fonction est de type int. Elle doit donc renvoyer une valeur de type int.
+
+Entre les parenthèses, vous avez les variables que la fonction reçoit. Ici, notre fonction triple reçoit une variable de type int appelée nombre.
+
+La ligne qui donne pour consigne de "renvoyer une valeur" est celle qui contient le return. Cette ligne se trouve généralement à la fin de la fonction, après les calculs. 
+
+Ce code signifie pour la fonction :
+
+« Arrête-toi là et renvoie le nombre resultat».
+
+Cette variable resultat DOIT être de type int, car la fonction renvoie un int .
+
+La variable resultat est déclarée (= créée) dans la fonction triple. Cela signifie qu'elle n'est utilisable que dans cette fonction, et pas dans une autre (comme la fonction main par exemple). C'est donc une variable propre à la fonction triple.
+
+Mais est-ce la façon la plus courte d'écrire notre fonction triple  ?
+
+Non, on peut faire tout cela en une ligne :
+
+int triple(int nombre)
+{
+    return 3 * nombre;
+}
+
+Cette fonction fait exactement la même chose que la fonction de tout à l'heure, elle est juste plus rapide à écrire.
+
+Généralement, vos fonctions contiendront plusieurs variables pour effectuer leurs calculs et leurs opérations ; rares seront les fonctions aussi courtes que triple.
+
+Affectez (ou non) des paramètres à une fonction
+
+Vous pouvez envoyer autant de paramètres que vous le voulez. Vous pouvez aussi n'envoyer aucun paramètre à la fonction, mais ça se fait plus rarement.
+
+Affectez plusieurs paramètres à une fonction
+
+Notre fonction triple contient un paramètre, mais il est possible de créer des fonctions acceptant plusieurs paramètres, comme par exemple une fonction addition qui additionne deux nombres a et b  :
+
+int addition(int a, int b)
+{
+    return a + b;
+}
+
+Il suffit de séparer les différents paramètres par une virgule, comme vous le voyez.
+
+N'affectez aucun paramètre à fonction
+
+Certaines fonctions, plus rares, ne prennent aucun paramètre en entrée. Ces fonctions feront généralement toujours la même chose. En effet, si elles n'ont pas de nombres sur lesquels travailler, vos fonctions serviront juste à effectuer certaines actions, comme afficher du texte à l'écran. Et encore, ce sera forcément toujours le même texte, puisque la fonction ne reçoit aucun paramètre susceptible de modifier son comportement !
+
+Imaginons une fonction bonjour qui affiche juste "Bonjour" à l'écran :
+
+void bonjour()
+{
+    printf("Bonjour");
+}
+
+Je n'ai rien mis entre parenthèses car la fonction ne prend aucun paramètre. De plus, j'ai utilisé le type void dont je vous ai parlé plus haut.
+
+En effet, ma fonction n'a pas non plus de return : elle ne retourne rien.
+
+Une fonction qui ne retourne rien est de type void.
+
+Appelez une fonction
+
+Nous allons reprendre notre fonction triple  (décidément, je l'aime bien) pour calculer le triple d'un nombre.
+
+Pour le moment, écrivez la fonction triple AVANT la fonction main  (si vous la placez après, ça ne marchera pas, je vous expliquerai pourquoi par la suite).
+
+Testez donc ce code pour comprendre :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int triple(int nombre)
+{
+    return 3 * nombre;
+}    
+
+int main(int argc, char *argv[])
+{
+    int nombreEntre = 0, nombreTriple = 0;
+    
+    printf("Entrez un nombre... ");
+    scanf("%d", &nombreEntre);
+    
+    nombreTriple = triple(nombreEntre);
+    printf("Le triple de ce nombre est %d\n", nombreTriple);
+    
+    return 0;
+}
+
+Notre programme commence par la fonction main :
+
+  1. On demande à l'utilisateur d'entrer un nombre.
+
+  2. On envoie ce nombre qu'il a entré à la fonction triple  .
+
+  3. Et on récupère le résultat dans la variable nombreTriple  .
+
+Regardez en particulier cette ligne, c'est la plus intéressante car c'est l'appel de la fonction :
+
+  1.nombreTriple = triple(nombreEntre);
+
+Entre parenthèses, on envoie à la fonction triple une variable en entrée (c'est le nombre sur lequel elle va travailler).
+
+Cette fonction renvoie une valeur qu'on récupère dans la variable nombreTriple  .
+
+Dans cette ligne de code, on ordonne donc à l'ordinateur :
+
+« Demande à la fonction triple de me calculer le triple de nombreEntre  ,
+
+et stocke le résultat dans la variable nombreTriple  ».
+
+Dans la vidéo suivante, nous allons reprendre le même exemple, et voir les différentes étapes pour créer la fonction  triple  et l’appeler dans le  main  :
+
