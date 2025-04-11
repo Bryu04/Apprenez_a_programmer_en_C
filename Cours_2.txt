@@ -1157,4 +1157,17 @@ La fonction menu affiche à nouveau le menu tant que l'utilisateur n'a pas entr�
 
 Dans le main, vous avez vu qu'on fait un switch(menu())  : une fois que la fonction menu()est terminée, elle renvoie le choix de l'utilisateur directement dans le switch. C'est une méthode rapide et pratique.
 
+En résumé
+
+  - Les fonctions s'appellent entre elles. Ainsi, le main peut appeler des fonctions toutes prêtes telles que 
+    printf ou scanf, mais aussi des fonctions que nous avons créées.
+
+  - Une fonction récupère en entrée des variables qu'on appelle les paramètres.
+
+  - Elle effectue certaines opérations avec ces paramètres, puis retourne en général une valeur à l'aide de 
+    l'instruction return.
+
+Dans le prochain chapitre, vous allez vous initiez à la programmation modulaire… J'espère que cela vous plaira ! Cela nous permettra de clôturer cette partie avant de nous attaquer à un gros morceau : les pointeurs.
+
+##############################################################################################################
 
