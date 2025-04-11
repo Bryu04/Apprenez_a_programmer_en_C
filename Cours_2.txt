@@ -1171,3 +1171,200 @@ Dans le prochain chapitre, vous allez vous initiez à la programmation modulaire
 
 ##############################################################################################################
 
+Initiez-vous à la programmation modulaire
+
+Jusqu'ici nous n'avons travaillé que dans un seul fichier : main.c.
+
+C'était acceptable car nos programmes étaient tout petits, mais ils vont bientôt être composés de nombreuses fonctions. On va donc passer à la programmation modulaire : plutôt que de placer tout le code d'un programme dans un seul fichier main.c, nous le séparons en plusieurs petits fichiers.
+
+Lorsque vous faites appel à la fonction dans le main, l'ordinateur connaît la fonction et sait où aller la chercher.
+
+En revanche, si vous mettez votre fonction après le main, ça ne marchera pas… Mais rassurez-vous, les programmeurs ont prévu le coup.
+
+Grâce à ce que je vais vous apprendre maintenant, vous pourrez positionner vos fonctions dans n'importe quel ordre dans le code source !
+
+Annoncez une fonction à l'aide d'un prototype
+Nous allons annoncer nos fonctions à l'ordinateur en écrivant des prototypes. 
+
+Regardez la première ligne de notre fonction aireRectangle  :
+
+double aireRectangle(double largeur, double hauteur)
+{
+    return largeur * hauteur;
+}
+
+Copiez la première ligne tout en haut de votre fichier source, juste après les #include  .
+
+Rajoutez un point-virgule à la fin de cette nouvelle ligne, comme ceci : 
+
+  1.double aireRectangle(double largeur, double hauteur);
+
+Voilà ! Maintenant, vous pouvez placer votre fonction aireRectangle après la fonction main si vous le voulez ! 
+
+Vous devriez avoir le code suivant sous les yeux :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// La ligne suivante est le prototype de la fonction aireRectangle :
+double aireRectangle(double largeur, double hauteur);
+
+int main(int argc, char *argv[])
+{   
+    printf("Rectangle de largeur 5 et hauteur 10. Aire = %f\n", aireRectangle(5, 10));
+    printf("Rectangle de largeur 2.5 et hauteur 3.5. Aire = %f\n", aireRectangle(2.5, 3.5));
+    printf("Rectangle de largeur 4.2 et hauteur 9.7. Aire = %f\n", aireRectangle(4.2, 9.7));
+   
+    return 0;
+}
+
+// Notre fonction aireRectangle peut maintenant être mise n'importe où dans le code source :
+double aireRectangle(double largeur, double hauteur)
+{
+    return largeur * hauteur;
+}
+
+Ce qui a changé ici, c'est l'ajout du prototype en haut du code source.
+
+Un prototype, c'est en fait une indication pour l'ordinateur, qui lui permet de s'organiser et de savoir qu'il existe une fonction (par exemple appelée aireRectangle ) qui prend tels paramètres en entrée et renvoie une sortie du type que vous indiquez. 
+
+La fonction main est la seule qui n'a pas besoin de prototype, parce que l'ordinateur la connaît (c'est toujours la même pour tous les programmes).
+
+Exceptée  main  (qui n'en a pas besoin), écrivez toujours les prototypes de vos fonctions, car vos programmes vont commencer à utiliser de nombreuses fonctions.
+
+N'oubliez JAMAIS de mettre un point-virgule à la fin d'un prototype. C'est ce qui permet à l'ordinateur de différencier un prototype du véritable début d'une fonction. Si vous ne le faites pas, vous risquez d'avoir des erreurs incompréhensibles lors de la compilation.
+
+Créez les fichiers d'en-tête (header) de vos projets
+
+Un projet, c'est l'ensemble des fichiers sources de votre programme. En général, on crée plusieurs fichiers par projet.
+
+Pour le moment, nos projets n'étaient composés que d'un fichier source : main.c.
+
+Voyons comment structurer un vrai projet à l’aide de fichiers d’en-tête (ou "header", en anglais)
+
+Créez plusieurs fichiers par projet
+
+L'idée, c'est d'avoir plusieurs fichiers (dont le fichier main.c  qui contient la fonction main ) :
+
+
+- Workspace
+   => Sources
+         --> controller.c
+         --> main.c
+         --> model.c
+         --> view.c
+   => Headers
+         --> constants.h
+         --> controller.h
+         --> model.h
+         --> view.h
+
+
+
+Pourquoi plusieurs ? Combien de fichiers je dois créer pour mon projet ?
+
+En général, on regroupe dans un même fichier des fonctions ayant le même thème :
+
+  - dans le fichier view.c j'ai regroupé toutes les fonctions concernant l'interface graphique ;
+
+  - dans le fichier controller.c, j'ai regroupé toutes les fonctions concernant la logique de l'application.
+
+Faites la différence entre les fichiers .h et .c
+
+Il y a deux types de fichiers différents :
+
+  1. .h: fichiers header, ils contiennent les prototypes des fonctions.
+
+  2. .c: les fichiers source, ils contiennent les fonctions elles-mêmes.
+
+En général, on met donc rarement les prototypes dans les fichiers .c comme on l'a fait tout à l'heure dans le main.c (sauf si votre programme est tout petit).
+
+Pour chaque fichier .c   , il y a donc son équivalent .h qui contient les prototypes des fonctions :
+
+  - controller.c (le code des fonctions) et controller.h(les prototypes des fonctions) ;
+
+  - view.c et view.h  , etc.
+
+Mais comment faire pour que l'ordinateur sache que les prototypes sont dans un autre fichier que le .c?
+
+Il faut inclure le fichier .h grâce à une directive de préprocesseur. Attention, préparez-vous à comprendre beaucoup de choses d'un coup !
+
+Regardez par exemple le début de mon fichier view.c:
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "view.h"
+
+void menu()
+{
+// ...
+
+L'inclusion se fait grâce à la directive de préprocesseur #include que vous connaissez bien maintenant. Regardez les premières lignes du code source :
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "view.h" // On inclut view.h
+
+On inclut trois fichiers .h:
+
+  1. stdio ;
+
+  2. stdlib ;
+
+  3. view .
+
+Les fichiers que vous avez créés et placés dans le répertoire de votre projet doivent être inclus avec des guillemets ("view.h").
+
+Tandis que les fichiers correspondant aux bibliothèques (qui sont généralement installés, eux, dans le répertoire de votre IDE) sont inclus entre chevrons (<stdio.h>).
+
+
+Vous utiliserez donc :
+
+les chevrons  < >  pour inclure un fichier se trouvant dans le répertoire "include" de votre IDE ;
+
+les guillemets" " pour inclure un fichier se trouvant dans le répertoire de votre projet (à côté des .c, généralement).
+
+La commande #include demande d'insérer le contenu du fichier dans le .c. C'est donc une commande qui dit « Insère ici le fichier view.h», par exemple.
+
+Et dans le fichier view.h, on retrouve les prototypes des fonctions du fichier view.c!
+
+/*
+view.h
+-----
+
+Rôle : prototypes des fonctions de view.
+*/
+
+void menu();
+int choixUtilisateur();
+void afficherInfos(const char* infos);
+
+Voilà comment fonctionne un vrai projet ! Un prototype, c'est donc le mode d'emploi de la fonction pour l'ordinateur. Tout est une question d'ordre :
+
+  - Si vous placez vos prototypes dans des .h inclus en haut des .c, votre ordinateur connaîtra le mode d'emploi de toutes vos fonctions dès le début de la lecture du fichier, et vous n'aurez ainsi pas à vous soucier de l'ordre dans lequel les fonctions se trouvent dans vos fichiers .c.
+
+  - Si maintenant vous faites un petit programme contenant deux ou trois fonctions, vous vous rendrez peut-être compte que les prototypes semblent facultatifs (ça marche sans). Mais ça ne durera pas longtemps ! Dès que vous aurez un peu plus de fonctions, si vous ne mettez pas vos prototypes de fonctions dans des .h, la compilation échouera sans aucun doute.
+
+Lorsque vous appellerez une fonction située dans fonctions.c depuis le fichier main.c, vous aurez besoin d'inclure les prototypes de fonctions.c dans main.c. Il faudra donc mettre un #include "fonctions.h"  en haut de main.c.
+
+À chaque fois que vous faites appel à une fonction X dans un fichier, il faut que vous ayez inclus les prototypes de cette fonction dans votre fichier. Cela permet au compilateur de vérifier si vous l'avez correctement appelée.
+
+Comment puis-je ajouter des fichiers .c et .h à mon projet ?
+
+Ça dépend de l'IDE que vous utilisez, mais globalement la procédure est la même :Fichier / Nouveau / Fichier source.
+
+Cela crée un nouveau fichier vide.
+
+Ce fichier n'est pas encore de type .c  ou .h, il faut que vous l'enregistriez pour le dire. Enregistrez donc ce nouveau fichier (même s'il est encore vide), puis nommez le fichier :
+
+  - si vous l'appelez fichier.c, ce sera un.c;
+
+  - si vous l'appelez fichier.h, ce sera un.h.
+
+C'est aussi simple que cela. Enregistrez votre fichier dans le répertoire dans lequel se trouvent les autres fichiers de votre projet (le même dossier que main.c). Généralement, vous enregistrerez tous vos fichiers dans le même répertoire, les .c comme les .h.
+Avec Code::Block, cochez la case "Add file to active project" pour l’ajouter à votre projet. Sinon il faudra l’ajouter manuellement. Pour l'ajouter au projet, faites un clic droit sur le nom de votre projet dans la partie à gauche de l'écran (où il y a la liste des fichiers du projet), et choisissez "Add files".
+
+Le dossier du projet regroupe des .c  et des .h ensemble.
+
+Maintenant que vous avez compris la théorie, il est temps de pratiquer un peu. Je vous propose de suivre la vidéo suivante, et d’effectuer les mêmes manipulations pour créer un fichier "header" et placer le prototype d'une fonction dedans. Nous allons reprendre l’exemple de la fonction "aireRectangle" :
+
