@@ -904,3 +904,257 @@ et stocke le résultat dans la variable nombreTriple  ».
 
 Dans la vidéo suivante, nous allons reprendre le même exemple, et voir les différentes étapes pour créer la fonction  triple  et l’appeler dans le  main  :
 
+Comprenez le sens de lecture d'une fonction
+
+Le code ci-dessous est commenté de manière un peu particulière. C'est pour vous montrer dans quel ordre le code est "lu". Commencez donc par lire la ligne commentée 1, puis 2, puis 3 (vous avez compris 🤣) :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int triple(int nombre) // 6
+{
+    return 3 * nombre; // 7
+}    
+
+int main(int argc, char *argv[]) // 1
+{
+    int nombreEntre = 0, nombreTriple = 0; // 2
+    
+    printf("Entrez un nombre... "); // 3
+    scanf("%d", &nombreEntre); // 4
+    
+    nombreTriple = triple(nombreEntre); // 5
+    printf("Le triple de ce nombre est %d\n", nombreTriple); // 8
+    
+    return 0; // 9
+}
+
+Voici ce qui se passe, ligne par ligne.
+
+  1. Le programme commence par la fonction main.
+
+  2. Il lit les instructions dans la fonction, une par une, dans l'ordre.
+
+  3. Il lit l'instruction suivante et fait ce qui est demandé (printf).
+
+  4. De même, il lit l'instruction et fait ce qui est demandé (scanf).
+
+  5. Il lit l'instruction… Ah ! On appelle la fonction triple, on doit donc sauter à la ligne de la fonction 
+     triple plus haut.
+
+  6. On saute à la fonction triple et on récupère un paramètre (nombre).
+
+  7. On fait des calculs sur le nombre et on termine la fonction :return signifie la fin de la fonction, et 
+     permet d'indiquer le résultat à renvoyer.
+
+  8. On retourne dans main pour prendre l'instruction suivante.
+
+  9. Un return : la fonction  main  se termine, et donc le programme est terminé.
+
+Si vous avez compris dans quel ordre l'ordinateur lit les instructions, vous avez déjà compris le principal.
+
+Parfois, une fonction ne prend aucun paramètre en entrée ; ou au contraire elle en prend plusieurs (je vous ai expliqué ça un peu plus haut).
+
+De même, parfois une fonction renvoie une valeur, parfois elle ne renvoie rien (dans ce cas, il n'y a pas de return).
+
+Voici un exemple d'utilisation du programme :
+
+Entrez un nombre... 10
+Le triple de ce nombre est 30
+
+Vous n'êtes pas obligé de stocker le résultat d'une fonction dans une variable ! Vous pouvez directement envoyer le résultat de la fonction triple à une autre fonction, comme si triple(nombreEntre) était une variable.
+
+Regardez bien ceci, c'est le même code mais il y a un changement au niveau du dernier printf. De plus, on n'a pas déclaré de variable nombreTriple car on ne s'en sert plus :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int triple(int nombre)
+{
+    return 3 * nombre;
+}    
+
+int main(int argc, char *argv[])
+{
+    int nombreEntre = 0;
+    
+    printf("Entrez un nombre... ");
+    scanf("%d", &nombreEntre);
+
+    // Le résultat de la fonction est directement envoyé au printf et n'est pas stocké dans une variable
+    printf("Le triple de ce nombre est %d\n", triple(nombreEntre));
+     
+    return 0;
+}
+
+
+triple(nombreEntre)  est directement envoyé au printf.
+
+Que fait l'ordinateur quand il tombe sur cette ligne ?
+
+Il voit que la ligne commence par printf, il va donc appeler la fonction printf.
+
+Il envoie à la fonction printf tous les paramètres qu'on lui donne :
+
+  1. Le premier paramètre est le texte à afficher.
+
+  2. Et le second est un nombre.
+
+Votre ordinateur voit qu'il doit d'abord appeler la fonction triple pour envoyer ce nombre à la fonction printf :
+
+  1. Il appelle triple.
+
+  2. Il effectue les calculs de triple.
+
+  3. Et une fois qu'il a le résultat, il l'envoie directement dans la fonction printf !
+
+C'est un peu une imbrication de fonctions. Et le plus fin dans tout ça, c'est qu'une fonction peut en appeler une autre à son tour : notre fonction triple pourrait appeler une autre fonction, qui elle-même appellerait une autre fonction, etc. C'est ça le principe de la programmation en C : tout est combiné, comme dans un jeu de LEGO.
+
+Le plus dur sera d'écrire vos fonctions.
+
+Une fois que vous les aurez écrites, vous n'aurez plus qu'à appeler les fonctions sans vous soucier des calculs qu'elles peuvent bien faire à l'intérieur.
+
+Ça va permettre de simplifier considérablement l'écriture de nos programmes et ça, croyez-moi, on en aura bien besoin !
+
+Intégrez le principe en pratique avec ces exemples
+Je vais donc maintenant vous montrer plusieurs exemples d'utilisation de fonctions, pour que vous ayez une idée de leur intérêt. Je vais m'efforcer de faire des cas différents à chaque fois, pour que vous puissiez avoir des exemples de tous les types de fonctions qui peuvent exister.
+
+Je ne vous apprendrai rien de nouveau, mais ce sera l'occasion de voir des exemples pratiques. Si vous avez déjà compris tout ce que j'ai expliqué avant, c'est très bien, et normalement aucun des exemples qui vont suivre ne devrait vous surprendre.
+
+Analysez une fonction qui prend 1 paramètre
+
+Intéresserons-nous à une fonction qui ne renvoie rien (pas de sortie). Imaginons une fonction qui copie des lignes, comme les punitions que l'on avait lorsqu'on était petit :
+
+void punition(int nombreDeLignes)
+{
+    int i;
+    
+    for (i = 0 ; i < nombreDeLignes ; i++)
+    {
+        printf("Je ne dois pas copier sur mon voisin\n");
+    }    
+}    
+
+int main(int argc, char *argv[])
+{    
+    punition(10);
+    
+    return 0;
+}
+
+C'est une fonction qui affiche le même message à l'écran autant de fois qu'on lui demande. Elle prend un paramètre en entrée : le nombre de fois où il faut afficher la punition.
+
+Résultat :
+
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+Je ne dois pas copier sur mon voisin
+
+On a ici affaire à une fonction qui ne renvoie aucune valeur. Cette fonction se contente juste d'effectuer des actions (ici, elle affiche des messages à l'écran).
+
+Il aurait été bien plus intéressant de créer une fonction punition qui s'adapte à n'importe quelle sanction. On lui aurait envoyé deux paramètres : le texte à répéter, et le nombre de fois qu'il doit être répété.
+
+Le problème, c'est qu'on ne sait pas encore gérer le texte en C (au cas où vous n'auriez pas vu, je vous rappelle qu'on n'a fait que manipuler des variables contenant des nombres depuis le début du cours !). D'ailleurs à ce sujet, je vous annonce que nous ne tarderons pas à apprendre à utiliser des variables qui retiennent du texte. C'est plus compliqué qu'il n'y paraît, et on ne pouvait pas l'apprendre dès le début du cours !
+
+Analysez une fonction qui prend 2 paramètres en entrée
+
+Imaginons une fonction qui calcule l'aire d'un rectangle. L'aire d'un rectangle est facile à calculer :largeur * hauteur.
+Notre fonction nommée aireRectangle va prendre deux paramètres : la largeur et la hauteur pour renvoyer l'aire :
+
+double aireRectangle(double largeur, double hauteur)
+{
+    return largeur * hauteur;
+}    
+
+int main(int argc, char *argv[])
+{    
+    printf("Rectangle de largeur 5 et hauteur 10. Aire = %f\n", aireRectangle(5, 10));
+    printf("Rectangle de largeur 2.5 et hauteur 3.5. Aire = %f\n", aireRectangle(2.5, 3.5));
+    printf("Rectangle de largeur 4.2 et hauteur 9.7. Aire = %f\n", aireRectangle(4.2, 9.7));
+      
+    return 0;
+}
+
+
+Rectangle de largeur 5 et hauteur 10. Aire = 50.000000
+Rectangle de largeur 2.5 et hauteur 3.5. Aire = 8.750000
+Rectangle de largeur 4.2 et hauteur 9.7. Aire = 40.740000
+
+Pourrait-on afficher directement la largeur, la hauteur et l'aire dans la fonction ?
+
+Bien sûr ! Dans ce cas, la fonction ne renverrait plus rien, elle se contenterait de calculer l'aire et de l'afficher immédiatement :
+
+void aireRectangle(double largeur, double hauteur)
+{
+    double aire = 0;
+    
+    aire = largeur * hauteur;
+    printf("Rectangle de largeur %f et hauteur %f. Aire = %f\n", largeur, hauteur, aire);
+}    
+
+int main(int argc, char *argv[])
+{    
+    aireRectangle(5, 10);
+    aireRectangle(2.5, 3.5);
+    aireRectangle(4.2, 9.7);
+       
+    return 0;
+}
+
+printf est à l'intérieur de la fonction aireRectangle et produit le même affichage que tout à l'heure. C'est juste une façon différente de procéder.
+
+Analysez une fonction qui ne prend aucun paramètre en entrée
+
+Ce code est plus intéressant et concret : on crée une fonction menu qui ne prend aucun paramètre en entrée. Cette fonction se contente d'afficher le menu, et demande à l'utilisateur de faire un choix. La fonction renvoie le choix de l'utilisateur.
+
+int menu()
+{
+    int choix = 0;
+    
+    while (choix < 1 || choix > 4)
+    {
+        printf("Menu :\n");
+        printf("1 : Poulet de dinde aux escargots rotis a la sauce bearnaise\n");
+        printf("2 : Concombres sucres a la sauce de myrtilles enrobee de chocolat\n");
+        printf("3 : Escalope de kangourou saignante et sa gelee aux fraises poivree\n");
+        printf("4 : La surprise du Chef (j'en salive d'avance...)\n");
+        printf("Votre choix ? ");
+        scanf("%d", &choix);
+    }    
+    
+    return choix;
+}    
+
+int main(int argc, char *argv[])
+{    
+    switch (menu())
+    {
+        case 1:
+            printf("Vous avez pris le poulet\n");
+            break;
+        case 2:
+            printf("Vous avez pris les concombres\n");
+            break;
+        case 3:
+            printf("Vous avez pris l'escalope\n");
+            break;
+        case 4:
+            printf("Vous avez pris la surprise du Chef. Vous etes un sacre aventurier dites donc !\n");
+            break;    
+    }
+       
+    return 0;
+}
+
+La fonction menu affiche à nouveau le menu tant que l'utilisateur n'a pas entré un nombre compris entre 1 et 4. Comme ça, aucun risque que la fonction renvoie un nombre qui ne figure pas au menu !
+
+Dans le main, vous avez vu qu'on fait un switch(menu())  : une fois que la fonction menu()est terminée, elle renvoie le choix de l'utilisateur directement dans le switch. C'est une méthode rapide et pratique.
+
+
