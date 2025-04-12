@@ -1567,3 +1567,265 @@ Je vous sens prêt pour attaquer un gros morceau du langage C : les pointeurs ! 
 
 ##############################################################################################################
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!! QUIZ : Découvrir les bases de la programmation en C !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Compétences évaluées
+
+Créer des algorithmes simples en C
+
+Description
+
+Dans ce quiz, vous allez construire au fur et à mesure des questions un jeu regroupant ce que vous avez pu apprendre lors de cette première partie. Il s'agit d'un petit jeu que j'appelle "Plus ou moins" ; le principe est le suivant :
+
+  1. L'ordinateur tire au sort un nombre entre 1 et 100.
+  2. Il vous demande de deviner le nombre. Vous entrez donc un nombre entre 1 et 100.
+  3. L'ordinateur compare le nombre que vous avez entré avec le nombre « mystère » qu'il a tiré au sort. Il 
+     vous dit si le nombre mystère est supérieur ou inférieur à celui que vous avez entré.
+  4. Puis l'ordinateur vous redemande le nombre.
+  5. … Et il vous indique si le nombre mystère est supérieur ou inférieur.
+  6. Et ainsi de suite, jusqu'à ce que vous trouviez le nombre mystère.
+
+Le but du jeu, bien sûr, est de trouver le nombre mystère en un minimum de coups. Allez c'est parti !
+
+Prenez le temps dont vous avez besoin avant de répondre à chaque question. Vous retrouverez le corrigé du programme complet dans la réponse à la dernière question de ce quiz. Bonne chance !
+
+
+Question 1
+
+Quelles sont les deux bibliothèques qu’il faut absolument inclure dans notre programme pour utiliser les fonctions d’affichage et de conversion de types ?
+
+  - 1.#include <stdio>
+    2.#include <stdlib>
+
+  - 1.#include <iostream>
+    2.#include <string>
+
+  - 1.#include <stdio.h> (o)
+  - 2.#include <stdlib.h>
+
+  - 1.#include <display.h>
+    2.#include <conversion.h>
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+ - #include <stdio.h>  : Cette bibliothèque contient l’ensemble des informations relatives aux fonctions 
+                         d’entrée et de sortie, par exemple la fonction  printf()  ou le  scanf()  .
+ -  #include <stdlib.h>  : Cette librairie propose des fonctions pour répondre à différentes problématiques 
+                           liées à la conversion de données et à l’allocation dynamique de mémoire.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 2
+
+Quel est le nom de la fonction principale qui constituera le point d’entrée de notre programme ?
+
+  - start
+
+  - main (o)
+
+  - entry
+
+  - run
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+Le  main  est une fonction prédéfinie en C. C'est la première fonction de chaque programme C qui est responsable du démarrage de l'exécution et de la fin du programme.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 3
+
+Dans notre super jeu, l’ordinateur va devoir enregistrer un nombre mystère qu’il aura tiré au sort entre un intervalle d’entier. Pour générer un nombre aléatoire, on va utiliser une nouvelle fonction : rand() . Pour cela, vous devez au préalable inclure la librairie  time.h . Cette fonction génère un nombre au hasard. Mais nous, on veut que ce nombre soit compris entre 1 et 100 par exemple.
+
+Pour ce faire, on va utiliser la formule suivante  :
+
+  1.srand(time(NULL));
+  2.nombreMystere = (rand() % (MAX - MIN + 1)) + MIN;
+
+Je vous recommande de définir ces constantes au début du programme pour définir le maximum et le minimum, comme ceci :
+
+  1.const int MAX = 100, MIN = 1;
+
+La fonction  rand()  retourne un entier et nous souhaitons enregistrer cette valeur dans une variable jusqu'à la fin du jeu. Quelle est la bonne méthode pour déclarer cette variable ?
+
+  - nombreMystere int = 0;
+
+  - nombreMystere int = 0
+
+  - nombreMystere = 0 int;
+
+  - int nombreMystere = 0; (o)
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+La fonction  rand()  renvoie un entier, il faut donc que la variable soit de type  int  , il faut ensuite préciser le nom de cette variable  nombreMystere  et pour terminer vous pouvez initialiser cette variable grâce à l’opérateur  =  avec un entier.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 4
+
+Nous allons maintenant devoir créer une boucle dans le code pour demander à l’utilisateur d'entrer un entier afin de le comparer le nombre mystère.
+
+Quels types de boucles sont les plus adaptées pour notre jeu sachant qu’on ne connaît pas à l’avance le nombre d’itérations ?
+
+Attention, plusieurs réponses sont possibles.
+
+  - loop
+
+  - while (o)
+
+  - for
+
+  - do…while (o)
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+La boucle  while  et la boucle  do…while  sont utilisées pour répéter une section de code un nombre inconnu de fois jusqu'à ce qu'une condition spécifique soit remplie.
+
+La boucle  for  est répétée un nombre spécifique de fois, déterminé par le programme ou l'utilisateur.
+
+Et la boucle  loop  n’existe pas.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 5
+
+Nous allons devoir :
+
+  1. stocker la valeur de l’utilisateur dans une variable,
+  2. et demander à l’utilisateur d'entrer un entier afin de l’assigner à cette variable. 
+
+Ajoutons alors cette variable avant la boucle : 
+
+  1.int nombreEntre = 0;
+ 
+
+Quelle condition doit-on utiliser pour itérer dans notre boucle tant que nous n’avons pas trouvé le nombre mystère ?
+
+  - nombreEntre == nombreMystere
+
+  - nombreEntre >= nombreMystere
+
+  - nombreEntre != nombreMystere (o)
+
+  - nombreEntre = nombreMystere
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+Nous devons arrêter notre boucle lorsque le nombre mystère enregistré dans la variable  nombreMystere  est égale à la variable  nombreEntre  qui contient la valeur entrée par l’utilisateur. Donc la condition pour rester à l’intérieur de la boucle est que  nombreEntre  soit différent de  nombreMystere  :  nombreEntre != nombreEntre
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 6
+
+Quelle fonction permet de récupérer la saisie d’un utilisateur et de la stocker dans la variable  nombreEntre  ?
+
+  - scanf("%d", &nombreEntre); (o)
+
+  - scanf("%f", &nombreEntre);
+
+  - input("%d", &nombreEntre);
+
+  - input("%int", &nombreEntre);
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+La fonction  scanf()  permet de lire les informations tapées au clavier par l'utilisateur selon un certain format. Les informations lues sont converties en caractères, entiers ou réels suivant le format attendu. Il faut préciser le format dans le premier paramètre et l’adresse de la variable où l’on souhaite stocker la saisie dans le deuxième paramètre. Dans notre cas, la variable est un  int  donc le format est  %d  et l’adresse de la variable est  &nombreEntre  .
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 7
+
+Une fois la saisie de l’utilisateur récupérée, nous devons vérifier s'il est plus petit ou plus grand, ou alors s’il a trouvé le chiffre mystère. Nous devons donc créer une structure conditionnelle pour vérifier tout cela.
+
+Quelle est la structure conditionnelle la plus adaptée à notre besoin ? 
+
+  - if (nombreMystere < nombreEntre)
+        printf("C'est plus !\n\n");
+    else if (nombreMystere > nombreEntre)
+        printf("C'est moins !\n\n");
+    else
+        printf ("Bravo, vous avez trouve le nombre mystere
+
+  - if (nombreMystere > nombreEntre) (o)
+        printf("C'est plus !\n\n");
+    else if (nombreMystere < nombreEntre)
+        printf("C'est moins !\n\n");
+    else
+        printf ("Bravo, vous avez trouve le nombre mystere !!!\n\n");
+
+  - if (nombreMystere <= nombreEntre)
+        printf("C'est plus !\n\n");
+    else if (nombreMystere >= nombreEntre)
+        printf("C'est moins !\n\n");
+    else
+        printf ("Bravo, vous avez trouve le nombre mystere !!!\n\n");
+
+  - if (nombreEntre > nombreMystere)
+            printf("C'est plus !\n\n");
+        else if (nombreEntre < nombreMystere)
+            printf("C'est moins !\n\n");
+        else if (nombreEntre == nombreMystere)
+      printf ("Bravo, vous avez trouve le nombre mystere !!!\n\n");
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+Si  nombreMystere  est plus grand que  nombreEntre  il faut afficher  C’est plus !  car l’utilisateur va devoir entrer un nombre plus grand pour se rapprocher ou trouver le nombre mystère.
+
+Si  nombreMystere  est plus petit que  nombreEntre  il faut afficher  C’est moins !  car l’utilisateur va devoir entrer un nombre plus petit pour se rapprocher ou trouver le nombre mystère.
+
+Sinon, l’utilisateur a gagné et on affiche  Bravo, vous avez trouve le nombre mystere !!!  .
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Question 8
+
+Par quelle instruction la fonction main doit se terminer avant de fermer les accolades ?
+
+  - end;
+
+  - end function;
+
+  - return 0; (o)
+
+  - stop 0;
+
+"""""""""""""""""""""" Réponse """"""""""""""""""""""""
+L’instruction  return 0  indique qu'on arrive à la fin de notre fonction  main  et demande de renvoyer la valeur 0. En fait, chaque programme une fois terminé renvoie une valeur, par exemple pour dire que tout s'est bien passé. En pratique, 0 signifie "tout s'est bien passé" et n'importe quelle autre valeur signifie "erreur". La plupart du temps, cette valeur n'est pas vraiment utilisée, mais il faut quand même en renvoyer une.
+
+C'est la fin de ce petit exercice ! Sympa non ?
+
+Si vous avez rencontré des blocages c'est normal, alors je vous propose une correction (aussi disponible sur github) :
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main ( int argc, char** argv )
+{
+    int nombreMystere = 0, nombreEntre = 0;
+    const int MAX = 100, MIN = 1;
+
+    // Génération du nombre aléatoire
+
+    srand(time(NULL));
+    nombreMystere = (rand() % (MAX - MIN + 1)) + MIN;
+
+    /* La boucle du programme. Elle se répète tant que l'utilisateur n'a pas trouvé le nombre mystère */
+
+    do
+    {
+        // On demande le nombre
+        printf("Quel est le nombre ? ");
+        scanf("%d", &nombreEntre);
+
+        // On compare le nombre entré avec le nombre mystère
+
+        if (nombreMystere > nombreEntre)
+            printf("C'est plus !\n\n");
+        else if (nombreMystere < nombreEntre)
+            printf("C'est moins !\n\n");
+        else
+            printf ("Bravo, vous avez trouve le nombre mystere !!!\n\n");
+    } while (nombreEntre != nombreMystere);
+    
+    return 0;
+}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+##############################################################################################################
