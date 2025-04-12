@@ -1368,3 +1368,202 @@ Le dossier du projet regroupe des .c  et des .h ensemble.
 
 Maintenant que vous avez compris la théorie, il est temps de pratiquer un peu. Je vous propose de suivre la vidéo suivante, et d’effectuer les mêmes manipulations pour créer un fichier "header" et placer le prototype d'une fonction dedans. Nous allons reprendre l’exemple de la fonction "aireRectangle" :
 
+Les include des bibliothèques standard
+
+Si on inclut les fichiers stdio.h et stdlib.h, c'est donc qu'ils existent quelque part et qu'on peut aller les chercher, non ?
+
+Oui ! Ils sont normalement installés là où se trouve votre IDE.
+
+Il faut généralement chercher un dossier include : dedans, vous trouverez de très nombreux fichiers ; ce sont des headers (.h) des bibliothèques standard, c'est-à-dire des bibliothèques disponibles partout (que ce soit sous Windows, Mac, Linux…). Vous y retrouverez donc stdio.h et stdlib.h, entre autres.
+
+Vous pouvez les ouvrir si vous voulez, mais ça risque de piquer un peu les yeux. En effet, c'est un peu compliqué (il y a pas mal de choses qu'on n'a pas encore vues). Si vous cherchez bien, vous verrez que ce fichier est rempli de prototypes de fonctions standard, comme printf par exemple.
+
+OK, je sais maintenant où se trouvent les prototypes des fonctions standard. Mais comment pourrai-je voir le code source de ces fonctions ? Où sont les .c?
+
+Vous ne les avez pas ! En fait, les fichiers .c sont déjà compilés (en code binaire, c'est-à-dire en code machine). Il est donc totalement impossible de les lire.
+
+Vous pouvez retrouver les fichiers compilés dans un répertoire appelé lib(c'est l'abréviation de library qui signifie "bibliothèque", en français). 
+
+Les fichiers compilés des bibliothèques ont l'extension .a sous Code::Blocks (qui utilise le compilateur appelé mingw), et ont l'extension .lib sous Visual Studio (qui utilise le compilateur Visual). N'essayez pas de les lire : ce n'est absolument pas digeste pour un humain.
+
+Retenez que dans vos fichiers .c, vous incluez les .h des bibliothèques standard pour pouvoir utiliser des fonctions standard comme printf. Votre ordinateur a ainsi les prototypes sous les yeux, et peut vérifier si vous appelez les fonctions correctement, par exemple que vous n'oubliez pas de paramètres.
+
+Découvrez le fonctionnement de la compilation séparée
+
+--> vidéo
+
+Comprenez la portée des fonctions et des variables
+
+Nous allons voir quand les variables et les fonctions sont accessibles, c'est-à-dire quand on peut faire appel à elles.
+
+Les variables propres aux fonctions
+
+Lorsque vous déclarez une variable dans une fonction, elle est supprimée de la mémoire à la fin de la fonction :
+
+int triple(int nombre)
+{
+    int resultat = 0; // La variable resultat est créée en mémoire
+ 
+    resultat = 3 * nombre;
+    return resultat;
+} // La fonction est terminée, la variable resultat est supprimée de la mémoire
+
+Une variable déclarée dans une fonction n'existe donc que pendant que la fonction est exécutée. Ça veut dire que vous ne pouvez pas y accéder depuis une autre fonction !
+
+Regardez ce code :
+
+int triple(int nombre);
+ 
+int main(int argc, char *argv[])
+{
+    printf("Le triple de 15 est %d\n", triple(15));
+   
+    printf("Le triple de 15 est %d", resultat); // Erreur
+ 
+    return 0;
+}
+ 
+int triple(int nombre)
+{
+    int resultat = 0;
+ 
+    resultat = 3 * nombre;
+    return resultat;
+}
+
+
+Dans le main, j'essaie ici d'accéder à la variable resultat. Or, comme cette variable resultat a été créée dans la fonction triple, elle n'est pas accessible dans la fonction main!
+
+Une variable déclarée dans une fonction n'est accessible qu'à l'intérieur de cette fonction. On dit que c'est une variable locale.
+
+Créez une variable globale accessible uniquement dans un fichier
+
+Il est possible de déclarer des variables qui seront accessibles dans toutes les fonctions de tous les fichiers du projet, mais généralement il faut éviter de le faire : ça aura l'air de simplifier votre code au début, mais ensuite vous risquez de vous retrouver avec de nombreuses variables accessibles partout, ce qui risquera de vous créer des soucis.
+
+Exemple :
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int resultat = 0; // Déclaration de variable globale
+ 
+void triple(int nombre); // Prototype de fonction
+ 
+int main(int argc, char *argv[])
+{
+    triple(15); // On appelle la fonction triple, qui modifie la variable globale resultat
+    printf("Le triple de 15 est %d\n", resultat); // On a accès à resultat
+ 
+    return 0;
+}
+ 
+void triple(int nombre)
+{
+    resultat = 3 * nombre;
+}
+
+Ici, ma fonction triple ne renvoie plus rien (void). Elle se contente de modifier la variable globale resultat que la fonction main peut récupérer.
+
+Ma variable resultat sera accessible dans tous les fichiers du projet, on pourra donc faire appel à elle dans TOUTES les fonctions du programme.
+
+Ce type de choses est à bannir dans un programme en C.
+
+Utilisez plutôt le retour de la fonction (return) pour renvoyer un résultat.
+
+La variable globale que nous venons de voir était accessible dans tous les fichiers du projet.
+
+Il est possible de la rendre accessible uniquement dans le fichier dans lequel elle se trouve. Ça reste une variable globale quand même, mais disons qu'elle n'est globale qu'aux fonctions de ce fichier, et non à toutes les fonctions du programme.
+
+Pour créer une variable globale accessible uniquement dans un fichier, rajoutez simplement le mot-clé static devant :
+
+  1.static int resultat = 0;
+
+Conservez la valeur d'une variable avec  static
+
+Si vous rajoutez le mot-clé static devant la déclaration d'une variable à l'intérieur d'une fonction, ça n'a pas le même sens que pour les variables globales. En fait, la variable static n'est plus supprimée à la fin de la fonction. La prochaine fois qu'on appellera la fonction, la variable aura conservé sa valeur.
+Par exemple :
+
+int triple(int nombre)
+{
+    static int resultat = 0; // La variable resultat est créée la première fois que la fonction est appelée
+ 
+    resultat = 3 * nombre;
+    return resultat;
+} // La variable resultat n'est PAS supprimée lorsque la fonction est terminée.
+
+Cela signifie qu'on pourra rappeler la fonction plus tard, et que la variable resultat contiendra toujours la valeur de la dernière fois.
+
+Voici un petit exemple pour bien comprendre :
+
+int incremente();
+ 
+int main(int argc, char *argv[])
+{
+    printf("%d\n", incremente());
+    printf("%d\n", incremente());
+    printf("%d\n", incremente());
+    printf("%d\n", incremente());
+ 
+    return 0;
+}
+ 
+int incremente()
+{
+    static int nombre = 0;
+    
+    nombre++;
+    return nombre;
+}
+
+1
+2
+3
+4
+
+Ici, la première fois qu'on appelle la fonction incremente, la variable nombre est créée. Elle est incrémentée à 1, et une fois la fonction terminée la variable n'est pas supprimée.
+
+Lorsque la fonction est appelée une seconde fois, la ligne de la déclaration de variable est tout simplement "sautée". On ne recrée pas la variable, on réutilise la variable qu'on avait déjà créée. Comme la variable valait 4, elle vaudra maintenant 5, puis 6, puis 7, etc.
+
+Définissez des fonctions locales à un fichier
+
+Normalement, quand vous créez une fonction, celle-ci est globale à tout le programme. Elle est accessible depuis n'importe quel autre fichier .c.
+
+Il se peut que vous ayez besoin de créer des fonctions qui ne seront accessibles que dans le fichier dans lequel se trouve la fonction. Pour faire cela, rajoutez static devant la fonction :
+
+static int triple(int nombre)
+{
+    // Instructions
+}
+
+Pensez à mettre à jour le prototype aussi :
+
+  1.static int triple(int nombre);
+
+Maintenant, votre fonction static triple ne peut être appelée que depuis une autre fonction du même fichier. Si vous essayez d'appeler la fonction triple depuis une fonction d'un autre fichier, ça ne marchera pas car triple n'y sera pas accessible.
+
+En résumé
+
+  - Un programme contient des fichiers .c. Chaque fichier .c a un petit frère du même nom mais avec 
+    l'extension.h. Le .c contient les fonctions tandis que le .h contient les prototypes.
+
+  - Le contenu des fichiers .h est inclus en haut des .c par un programme appelé préprocesseur. Les .c sont 
+    transformés en fichiers .o binaires par le compilateur. Les .o sont assemblés en un exécutable (.exe) par 
+    le "linker", aussi appelé éditeur de liens.
+
+  - Une variable déclarée dans une fonction est supprimée à la fin de la fonction, elle n'est accessible que 
+    dans cette fonction. Une variable déclarée dans une fonction avec static devant n'est pas supprimée à la 
+    fin de la fonction, elle conserve sa valeur au fur et à mesure de l'exécution du programme.
+
+  - Une variable déclarée en dehors des fonctions est une variable globale, accessible depuis toutes les 
+    fonctions de tous les fichiers source du projet. Une variable globale avec static devant est globale 
+    uniquement dans le fichier dans lequel elle se trouve, elle n'est pas accessible depuis les fonctions des 
+    autres fichiers.
+
+  - Une fonction est par défaut accessible depuis tous les fichiers du projet, on peut donc l'appeler depuis 
+    n'importe quel autre fichier. Si on veut qu'une fonction ne soit accessible que dans le fichier dans 
+    lequel elle se trouve, il faut rajouter static devant.
+
+Je vous sens prêt pour attaquer un gros morceau du langage C : les pointeurs ! J’espère que vous êtes bien attaché, car ce nouveau concept est costaud. Mais pas de panique, c’est loin d’être insurmontable !
+
+##############################################################################################################
+
