@@ -1,0 +1,337 @@
+                          Partie 3 : Utilisez les pointeurs et manipulez les tableaux
+
+
+Créez et initialisez des pointeurs
+
+Comprenez le problème posé
+
+Un des plus gros problèmes avec les pointeurs, en plus d'être assez délicats à assimiler pour des débutants, c'est qu'on a du mal à comprendre à quoi ils peuvent bien servir.
+
+Alors bien sûr, je pourrais vous dire : "Les pointeurs sont totalement indispensables, on s'en sert tout le temps, croyez-moi !", mais je sais que cela ne vous suffira pas.
+
+Je vais donc vous poser un problème que vous ne pourrez pas résoudre sans utiliser de pointeurs. Ce sera en quelque sorte le fil rouge du chapitre.
+
+Voici le problème : je veux écrire une fonction qui renvoie deux valeurs. "Impossible", me direz-vous ! En effet, on ne peut renvoyer qu'une valeur par fonction :
+
+int fonction()
+{
+    return valeur;
+}
+
+Si on indique int  , on renverra un nombre de type int  (grâce à l'instruction return).
+
+On peut aussi écrire une fonction qui ne renvoie aucune valeur avec le mot-clé void:
+
+void fonction()
+{
+
+}
+
+Mais renvoyer deux valeurs à la fois… c'est impossible. On ne peut pas faire deux return.
+
+Supposons que je veuille écrire une fonction à laquelle on envoie un nombre de minutes. Celle-ci renverrait le nombre d'heures et minutes correspondant :
+
+  1. Si on envoie 45, la fonction renvoie 0 heure et 45 minutes.
+
+  2. Si on envoie 60, la fonction renvoie 1 heure et 0 minute.
+
+  3. Si on envoie 90, la fonction renvoie 1 heure et 30 minutes.
+
+Soyons fous, tentons le coup :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Je mets le prototype en haut. Comme c'est un tout
+petit programme je ne le mets pas dans un .h, mais
+en temps normal (dans un vrai programme), j'aurais placé
+le prototype dans un fichier .h bien entendu */
+
+void decoupeMinutes(int heures, int minutes);
+
+int main(int argc, char *argv[])
+{
+    int heures = 0, minutes = 90;
+
+    /* On a une variable minutes qui vaut 90.
+    Après appel de la fonction, je veux que ma variable
+    "heures" vaille 1 et que ma variable "minutes" vaille 30 */
+
+    decoupeMinutes(heures, minutes);
+
+    printf("%d heures et %d minutes", heures, minutes);
+
+    return 0;
+}
+
+void decoupeMinutes(int heures, int minutes)
+{
+    heures = minutes / 60;  // 90 / 60 = 1
+    minutes = minutes % 60; // 90 % 60 = 30
+}
+
+Résultat :
+
+0 heures et 90 minutes
+
+Zut, zut, zut et rezut, ça n'a pas marché !
+
+Que s'est-il passé ?
+
+En fait, quand vous "envoyez" une variable à une fonction, une copie de la variable est réalisée : la variable heures dans la fonction decoupeMinutes n'est pas la même que celle de la fonction main  ! 
+
+Votre fonction decoupeMinutes fait son travail : à l'intérieur de decoupeMinutes  , les variables heures et minutes ont les bonnes valeurs : 1 et 30.
+
+Mais ensuite, la fonction s'arrête lorsqu'on arrive à l'accolade fermante. Comme on l'a appris dans les chapitres précédents, toutes les variables créées dans une fonction sont détruites à la fin de cette fonction. Vos copies de heures et de minutes sont donc supprimées.
+
+On retourne ensuite à la fonction main  , dans laquelle vos variables heures et minutes valent toujours 0 et 90. C'est un échec !
+
+Comme une fonction fait une copie des variables qu'on lui envoie, vous n'êtes pas du tout obligé d'appeler vos variables de la même façon que dans le main : vous pourriez très bien écrire : void decoupeMinutes(int h, int m) avec h pour heures et m pour minutes. Si vos variables ne s'appellent pas de la même façon dans la fonction et dans le main, ça ne pose donc aucun problème !
+
+Bref, vous aurez beau retourner le problème dans tous les sens… vous pouvez essayer de renvoyer une valeur avec la fonction (en utilisant un return et en mettant le type int à la fonction), mais vous n'arriverez à renvoyer qu'une des deux valeurs. Vous ne pouvez pas renvoyer les deux valeurs à la fois. De plus, vous ne pouvez pas utiliser de variables globales car, comme on l'a vu, cette pratique est fortement déconseillée.
+
+Voilà, le problème est posé. Voyons comment les pointeurs vont nous permettre de le résoudre !
+
+Souvenez-vous du chapitre sur les variables
+
+Analysez le schéma de la mémoire vive
+
+
+Adresse     Valeur
+
+0           145
+
+1           3.8028322
+
+2           0.827551
+
+3           3901930
+
+...         ...
+
+3554511     940.5118
+
+
+La première ligne représente la "cellule" du tout début de la mémoire vive.
+
+Chaque cellule a un numéro, c'est son adresse.
+
+La mémoire comporte un grand nombre d'adresses, commençant à l'adresse numéro 0 et se terminant à l'adresse numéro (insérez un très grand nombre ici).
+
+Le nombre d'adresses disponibles dépend en fait de la quantité de mémoire dont dispose votre ordinateur.
+
+À chaque adresse, on peut stocker UN SEUL nombre (et votre mémoire ne peut stocker ni des lettres, ni des phrases).
+
+Pour contourner ce problème, on a inventé une table qui fait la liaison entre les nombres et les lettres. Cette table dit par exemple : « Le nombre 89 représente la lettre Y ».
+
+Rappelez-vous comment faire afficher la valeur d'une variable
+
+Quand vous créez une variable age de type int en tapant ceci :
+
+  1.int age = 10;
+
+… votre programme demande au système d'exploitation (Windows, par exemple) la permission d'utiliser un peu de mémoire. Le système d'exploitation répond en indiquant à quelle adresse en mémoire il vous laisse le droit d'inscrire votre nombre.
+
+C'est d'ailleurs un des rôles principaux d'un système d'exploitation : il alloue de la mémoire aux programmes. C'est un peu lui le chef : il contrôle chaque programme, et vérifie que ce dernier a l'autorisation de se servir de la mémoire à l'endroit où il le fait.
+
+Revenons à notre variable age. La valeur 10 a été inscrite quelque part en mémoire, disons par exemple à l'adresse n° 4655.
+
+Ce qu'il se passe (et c'est le rôle du compilateur), c'est que le mot age dans votre programme est remplacé par l'adresse 4655 à l'exécution. Cela fait que, à chaque fois que vous avez tapé le mot age dans votre code source, il est remplacé par "4655", et votre ordinateur voit ainsi à quelle adresse il doit aller chercher en mémoire ! Du coup, l'ordinateur se rend en mémoire à l'adresse 4655, et répond fièrement : "La variable age vaut 10".
+
+On sait donc comment récupérer la valeur de la variable : il suffit de taper age dans son code source. Si on veut afficher l'âge, on peut utiliser la fonction printf  :
+
+  1.printf("La variable age vaut : %d", age);
+
+Résultat à l'écran :
+
+La variable age vaut : 10
+
+Bon, rien de bien nouveau jusque-là : on sait afficher la valeur de la variable, mais saviez-vous que l'on peut aussi afficher l'adresse correspondante ?
+
+Faites afficher l'adresse d'une variable
+
+Pour afficher l'adresse de la variable, on doit :
+
+  1. Utiliser le symbole%p  (le p du mot « pointeur ») dans le printf  .
+
+  2. Envoyer à la fonction printf non pas la variable age  , mais son adresse… Et pour faire cela, vous devez 
+     mettre le symbole &  devant la variable age  , comme je vous avais demandé de le faire pour les scanf  , 
+     il y a quelque temps, sans vous expliquer pourquoi.
+
+Tapez donc :
+
+  1.printf("L'adresse de la variable age est : %p", &age);
+
+Résultat :
+
+L'adresse de la variable age est : 0x0023FF74
+
+Ce que vous voyez là est l'adresse de la variable age au moment où j'ai lancé le programme sur mon ordinateur. Oui, oui, 0x0023FF74 est un nombre, il est simplement écrit dans le système hexadécimal, au lieu du système décimal dont nous avons l'habitude. Le préfixe "0x" indique que les symboles suivants sont écrits en hexadécimal. Si vous remplacez %p par %d  , vous obtiendrez un nombre décimal que vous connaissez.
+
+Si vous exécutez ce programme sur votre ordinateur, l'adresse sera très certainement différente. Tout dépend de la place que vous avez en mémoire, des programmes que vous avez lancés, etc.
+Il est totalement impossible de prédire à quelle adresse la variable sera stockée chez vous :
+
+  - Si vous lancez votre programme plusieurs fois d'affilée, il se peut que l'adresse soit identique, la 
+    mémoire n'ayant pas beaucoup changé entretemps.
+
+  - Si par contre vous redémarrez votre ordinateur, vous aurez sûrement une valeur différente.
+
+OK, mais où on veut en venir avec tout ça ?
+
+Eh bien en fait, je veux vous faire retenir ceci :
+
+  - age désigne la valeur de la variable ;
+
+  - &age désigne l'adresse de la variable.
+
+Avec  age  , l'ordinateur lit la valeur de la variable en mémoire et vous renvoie cette valeur.
+
+Avec &age  , votre ordinateur vous dit en revanche à quelle adresse se trouve la variable.
+
+Utilisez des pointeurs
+
+Jusqu'ici, nous avons uniquement créé des variables faites pour contenir des nombres. Maintenant, nous allons apprendre à créer des variables faites pour contenir des adresses : ce sont justement ce qu'on appelle des pointeurs.
+
+Mais… Les adresses sont des nombres aussi, non ? Ça revient à stocker des nombres encore et toujours !
+
+C'est exact. Mais ces nombres auront une signification particulière : ils indiqueront l'adresse d'une autre variable en mémoire.
+
+Créez un pointeur et donnez-lui une valeur par défaut
+
+Pour créer une variable de type pointeur, on rajoute le symbole *  devant le nom de la variable.
+
+  1.int *monPointeur;
+
+Notez qu'on peut aussi écrire int* monPointeur; . Cela revient exactement au même.
+
+Cependant, la première méthode est à préférer. En effet, si vous voulez déclarer plusieurs pointeurs sur la même ligne, vous serez obligé de mettre l'étoile devant le nom :int *pointeur1, *pointeur2, *pointeur3;  .
+
+Comme je vous l'ai appris, il est important d'initialiser dès le début ses variables, en leur donnant la valeur 0, par exemple. C'est encore plus important de le faire avec les pointeurs !
+
+Pour initialiser un pointeur, c'est-à-dire lui donner une valeur par défaut, on n'utilise généralement pas le nombre 0 mais le mot-clé NULL  (veillez à l'écrire en majuscules) :
+
+  1.int *monPointeur = NULL;
+
+Là, vous avez un pointeur initialisé à NULL  . Comme ça, vous saurez dans la suite de votre programme que votre pointeur ne contient aucune adresse.
+
+Que se passe-t-il ?
+
+Ce code va réserver une case en mémoire comme si vous aviez créé une variable normale.
+
+Cependant, et c'est ce qui change, la valeur du pointeur est faite pour contenir une adresse. L'adresse… d'une autre variable.
+
+Vous savez maintenant comment indiquer l'adresse d'une variable (au lieu de sa valeur) en utilisant le symbole &  , alors allons-y :
+
+  1.int age = 10;
+  2.int *pointeurSurAge = &age;
+
+Qu'est-ce que ça veut dire ?
+
+  1. La première ligne signifie : "Créer une variable de type int dont la valeur vaut 10".
+
+  2. La seconde ligne signifie : "Créer une variable de type pointeur dont la valeur vaut l'adresse de la 
+     variable age ". La seconde ligne fait donc deux choses à la fois. Si vous le souhaitez, pour ne pas tout 
+     mélanger, sachez qu'on peut la découper en deux temps :
+
+  1.int age = 10;
+  2.int *pointeurSurAge; // 1) signifie "Je crée un pointeur"
+  3.pointeurSurAge = &age; // 2) signifie "pointeurSurAge contient l'adresse de la variable age"
+
+Vous avez remarqué qu'il n'y a pas de type "pointeur" comme il y a un type int et un type double
+
+On n'écrit donc pas pointeur pointeurSurAge; !
+
+Au lieu de ça, on utilise le symbole *  , mais on continue à écrire int  .
+
+Qu'est-ce que ça signifie ?
+
+En fait, on doit indiquer le type de variable pour laquelle le pointeur va contenir l'adresse.
+
+Comme notre pointeur pointeurSurAge va contenir l'adresse de la variable age  (qui est de type int  ), alors mon pointeur doit être de type int*  !
+
+Si ma variable age avait été de type double  , alors j'aurais dû écrire double *monPointeur  .
+
+Vocabulaire : on dit que le pointeur pointeurSurAge  pointe sur la variable age  .
+
+La schéma suivant résume ce qu'il s'est passé dans la mémoire :
+
+Dans ce schéma :
+
+  - la variable age a été placée à l'adresse 177450 (vous voyez d'ailleurs que sa valeur est 10) ;
+
+  - et le pointeur pointeurSurAge a été placé à l'adresse 3 (c'est tout à fait le fruit du hasard).
+
+Lorsque mon pointeur est créé, le système d'exploitation réserve une case en mémoire comme il l'a fait pour age  . La différence ici, c'est que la valeur de pointeurSurAge est un peu particulière. Regardez bien le schéma : c'est l'adresse de la variable age  !
+
+Ceci est le secret absolu de tout programme écrit en langage C. On y est, nous venons de rentrer dans le monde merveilleux des pointeurs !
+
+Et… ça sert à quoi ?
+
+Maintenant, on a un pointeurSurAge qui contient l'adresse de la variable age  .
+
+Essayons de voir ce que contient le pointeur à l'aide d'un printf  :
+
+
+  1.int age = 10;
+  2.int *pointeurSurAge = &age;
+  3.
+  4.printf("%d", pointeurSurAge);
+
+177450
+
+Hum. En fait, cela n'est pas très étonnant. On demande la valeur de pointeurSurAge  , et sa valeur, c'est l'adresse de la variable age  (177450).
+
+Comment faire pour demander à avoir la valeur de la variable se trouvant à l'adresse indiquée dans pointeurSurAge  ?
+
+Il faut placer le symbole *  devant le nom du pointeur :
+
+  1.int age = 10;
+  2.int *pointeurSurAge = &age;
+  3.
+  4.printf("%d", *pointeurSurAge);
+
+10
+
+Hourra ! Nous y sommes arrivés !
+
+En plaçant le symbole *  devant le nom du pointeur, on accède à la valeur de la variable age  . Si au contraire on avait utilisé le symbole &  devant le nom du pointeur, on aurait obtenu l'adresse à laquelle se trouve le pointeur (ici, c'est 3).
+
+Qu'est-ce qu'on y gagne ? On a simplement réussi à compliquer les choses ici. On n'avait pas besoin d'un pointeur pour afficher la valeur de la variable age  !
+
+Cette question (que vous devez inévitablement vous poser) est légitime. Actuellement l'intérêt n'est pas évident, mais petit à petit, tout au long des chapitres suivants, vous comprendrez que tout cela n'a pas été inventé par pur plaisir de compliquer les choses.
+
+Faites l'impasse sur la frustration que vous devez ressentir. Si vous avez compris le principe, c'est l'essentiel. Les choses s'éclairciront d'elles-mêmes par la suite.
+
+Retenez le principe de base d'un pointeur
+
+Voici ce qu'il faut avoir compris et ce qu'il faut retenir pour la suite de ce chapitre :
+
+Sur une variable, comme la variable age  :
+
+  - age signifie : "Je veux la valeur de la variable age  " ;
+
+  - &age signifie : "Je veux l'adresse à laquelle se trouve la variable age  ".
+
+Sur un pointeur, comme pointeurSurAge  :
+
+  - pointeurSurAge signifie : "Je veux la valeur de pointeurSurAge  " (cette valeur étant une adresse) ;
+
+  - *pointeurSurAge signifie : "Je veux la valeur de la variable qui se trouve à l'adresse contenue dans 
+    pointeurSurAge  ".
+
+Contentez-vous de bien retenir ces quatre points. Faites des tests et vérifiez que ça marche.
+
+Ce schéma devrait bien vous aider à situer chacun de ces éléments.
+
+
+Attention à ne pas confondre les différentes significations de l'étoile !
+
+Lorsque vous déclarez un pointeur, l'étoile indique qu'on veut créer un pointeur :int *pointeurSurAge;  .
+
+En revanche, lorsqu'ensuite vous utilisez votre pointeur en écrivant printf("%d", *pointeurSurAge);  , cela ne signifie pas "Je veux créer un pointeur", mais : "Je veux la valeur de la variable sur laquelle pointe mon pointeurSurAge  ".
+
+Ce n’est sans doute pas facile d'assimiler toutes ces notions d’un coup. Je vous propose une petite vidéo pour résumer tous ces points :
+
+Ce que l'on vient de voir est fondamental. Il faut connaître cela par cœur, et surtout le comprendre. N'hésitez pas à lire et relire ce chapitre.
+
+En résumé
