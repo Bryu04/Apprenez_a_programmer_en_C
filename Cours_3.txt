@@ -335,3 +335,19 @@ Ce n’est sans doute pas facile d'assimiler toutes ces notions d’un coup. Je 
 Ce que l'on vient de voir est fondamental. Il faut connaître cela par cœur, et surtout le comprendre. N'hésitez pas à lire et relire ce chapitre.
 
 En résumé
+
+- Chaque variable est stockée à une adresse précise en mémoire.
+
+- Les pointeurs sont semblables aux variables, à ceci près qu'au lieu de stocker un nombre, ils stockent 
+  l'adresse à laquelle se trouve une variable en mémoire.
+
+- Si on place un symbole & devant un nom de variable, on obtient son adresse au lieu de sa valeur (ex. : 
+  &age  ).
+
+- Si on place un symbole * devant un nom de pointeur, on obtient la valeur de la variable stockée à l'adresse 
+  indiquée par le pointeur.
+
+Félicitations, vous êtes arrivé à la fin de ce chapitre ! Dans le prochain, on continue sur notre lancée et on récupère le problème que l'on avait posé pour comprendre l'intérêt des pointeurs. C'est parti !
+
+##############################################################################################################
+
