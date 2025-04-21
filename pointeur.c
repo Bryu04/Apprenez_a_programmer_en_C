@@ -24,4 +24,6 @@ int main(int argc, const char * argv[]) {
 
     //Afficher la valeur contenu dans le pointeur
     printf("La valeur contenue dans mon pointeur est %d\n", *monpointeur);
+
+    return 0;
 }

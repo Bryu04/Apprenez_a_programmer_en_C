@@ -351,3 +351,201 @@ Félicitations, vous êtes arrivé à la fin de ce chapitre ! Dans le prochain, 
 
 ##############################################################################################################
 
+Envoyez des pointeurs
+
+Envoyez un pointeur à une fonction
+
+Le gros intérêt des pointeurs (mais ce n'est pas le seul) est qu'on peut les envoyer à des fonctions pour qu'ils modifient directement une variable en mémoire, et non une copie comme on l'a vu.
+
+Comment ça marche ?
+
+Il y a en fait plusieurs façons de faire.
+
+Envoyez un pointeur dans la fonction triplePointeur 
+
+Voici un premier exemple :
+
+
+void triplePointeur(int *pointeurSurNombre);
+
+int main(int argc, char *argv[])
+{
+    int nombre = 5;
+
+    triplePointeur(&nombre); // On envoie l'adresse de nombre à la fonction
+    printf("%d", nombre); // On affiche la variable nombre. La fonction a directement modifié la valeur de la variable car elle connaissait son adresse
+
+    return 0;
+}
+
+void triplePointeur(int *pointeurSurNombre)
+{
+    *pointeurSurNombre *= 3; // On multiplie par 3 la valeur de nombre
+}
+
+
+15
+
+La fonction triplePointeur prend un paramètre de type int*  (c'est-à-dire un pointeur sur int  ). Voici ce qu'il se passe dans l'ordre, en partant du début du main  :
+
+  1. Une variable nombre est créée dans le main. On lui affecte la valeur 5. Ça, vous connaissez.
+
+  2. On appelle la fonction triplePointeur. On lui envoie en paramètre l'adresse de notre variable nombre.
+
+  3. La fonction triplePointeur reçoit cette adresse dans pointeurSurNombre (à l'intérieur de la fonction 
+     triplePointeur, on a donc un pointeur pointeurSurNombre qui contient l'adresse de la variable nombre ).
+
+  4. Maintenant qu'on a un pointeur sur nombre  , on peut modifier directement la variable nombre en mémoire 
+     avec *pointeurSurNombre pour désigner la variable nombre(pour l'exemple, on fait un simple test : on 
+     multiplie la variable nombre par 3).
+
+  5. De retour dans la fonction main  , notre nombre vaut maintenant 15 car la fonction triplePointeur a 
+     modifié directement la valeur de nombre.
+
+
+Bien sûr, j'aurais pu faire un simple return comme on a appris à le faire dans le chapitre sur les fonctions. Mais l'intérêt, là, c'est que de cette manière, en utilisant des pointeurs, on peut modifier la valeur de plusieurs variables en mémoire (on peut donc « renvoyer plusieurs valeurs »). Nous ne sommes plus limités à une seule valeur !
+
+Quel est l'intérêt maintenant d'utiliser un return dans une fonction, si on peut se servir des pointeurs pour modifier des valeurs ?
+
+Ça dépendra de vous et de votre programme. C'est à vous de décider. Il faut savoir que les return sont toujours utilisés en C. Le plus souvent, on s'en sert pour renvoyer ce qu'on appelle un code d'erreur : la fonction renvoie :
+
+  - "0 success" ;
+
+  - "1 (ou any non-0) failure", s'il y a eu une erreur pendant le déroulement de la fonction.
+
+Alternative : ajoutez un pointeur dans la fonction  main
+
+Dans le code source qu'on vient de voir, il n'y avait pas de pointeur dans la fonction main  . Juste une variable nombre  . Le seul pointeur qu'il y avait vraiment était dans la fonction triplePointeur  (de type int*  ).
+
+Il faut absolument que vous sachiez qu'il y a une autre façon d'écrire le code précédent, en ajoutant un pointeur dans la fonction main  :
+
+
+
+void triplePointeur(int *pointeurSurNombre);
+
+int main(int argc, char *argv[])
+{
+    int nombre = 5;
+    int *pointeur = &nombre; // pointeur prend l'adresse de nombre
+
+    triplePointeur(pointeur); // On envoie pointeur (l'adresse de nombre) à la fonction
+    printf("%d", *pointeur); // On affiche la valeur de nombre avec *pointeur
+
+    return 0;
+}
+
+void triplePointeur(int *pointeurSurNombre)
+{
+    *pointeurSurNombre *= 3; // On multiplie par 3 la valeur de nombre
+}
+
+
+Comparez bien ce code source avec le précédent. Il y a de subtiles différences, et pourtant le résultat est strictement le même :
+
+15
+
+Ce qui compte, c'est d'envoyer l'adresse de la variable nombre à la fonction.
+
+Or, pointeur vaut l'adresse de la variable nombre  , donc c'est bon de ce côté !
+
+On le fait seulement d'une manière différente en créant un pointeur dans la fonction main  .
+
+Dans le printf  (et c'est juste pour l'exercice), j'affiche le contenu de la variable nombre en tapant *pointeur  . Notez qu'à la place, j'aurais pu écrire nombre  : le résultat aurait été identique car *pointeur et nombre désignent la même chose dans la mémoire.
+
+Dans le chapitre "Déclarez des variables", nous avons vu comment récupérer la saisie d’un utilisateur, et nous avons utilisé des pointeurs sans vraiment le savoir.
+
+C'était en fait en appelant la fonction scanf . En effet, cette fonction lit ce que l'utilisateur a entré au clavier et renvoie le résultat.
+
+Pour que la fonction puisse modifier directement le contenu de votre variable afin d'y placer la valeur tapée au clavier, elle a besoin de l'adresse de la variable :
+
+  1.int nombre = 0;
+  2.scanf("%d", &nombre);
+
+La fonction travaille avec un pointeur sur la variable nombre   , et peut ainsi modifier directement le contenu de nombre  .
+
+Comme on vient de le voir, on pourrait créer un pointeur qu'on enverrait à la fonction scanf  :
+
+  1.int nombre = 0;
+  2.int *pointeur = &nombre;
+  3.scanf("%d", pointeur);
+
+Attention à ne pas mettre le symbole & devant pointeur dans la fonction scanf  !
+
+Ici, pointeur contient lui-même l'adresse de la variable nombre , inutile de mettre &.
+
+Si vous faisiez ça, vous enverriez l'adresse où se trouve le pointeur : or, c'est l'adresse de nombre dont on a besoin.
+
+Ce n’est peut-être pas évident de comprendre ces deux méthodes, c’est normal, pas d'inquiétude. C’est pour ça que je vous propose une vidéo qui explique ces deux façons d’envoyer un pointeur à une fonction :
+
+Reprenez notre problème de départ
+
+Il est temps de retrouver notre fil rouge : si vous avez compris ce chapitre, vous devriez être capable de résoudre le problème, maintenant.
+
+Voici la solution :
+
+void decoupeMinutes(int* pointeurHeures, int* pointeurMinutes);
+
+int main(int argc, char *argv[])
+{
+    int heures = 0, minutes = 90;
+
+    // On envoie l'adresse de heures et minutes
+    decoupeMinutes(&heures, &minutes);
+
+    // Cette fois, les valeurs ont été modifiées !
+    printf("%d heures et %d minutes", heures, minutes);
+
+    return 0;
+}
+
+void decoupeMinutes(int* pointeurHeures, int* pointeurMinutes)
+{
+    /* Attention à ne pas oublier de mettre une étoile devant le nom
+    des pointeurs ! Comme ça, vous pouvez modifier la valeur des variables,
+    et non leur adresse ! Vous ne voudriez pas diviser des adresses,
+    n'est-ce pas ? ;o) */
+    *pointeurHeures = *pointeurMinutes / 60;
+    *pointeurMinutes = *pointeurMinutes % 60; 
+}
+
+Résultat :
+
+1 heures et 30 minutes
+
+Rien ne devrait vous surprendre dans ce code source.
+
+Toutefois, comme on n'est jamais trop prudent, voyons ce qui se passe dans le détail :
+
+  1. Les variables heures et minutes sont créées dans le main  .
+
+  2. On envoie à la fonction decoupeMinutes l'adresse de heures et minutes  .
+
+  3. La fonction decoupeMinutes récupère ces adresses dans des pointeurs appeléspointeurHeures et 
+     pointeurMinutes. Notez que, là encore, le nom importe peu. J'aurais pu les appeler h et m, ou même heures 
+     et minutes. Je ne l'ai pas fait car je ne veux pas que vous risquiez de confondre avec les variables 
+     heures et minutes du main, qui ne sont pas les mêmes.
+
+  4. La fonction decoupeMinutes modifie directement les valeurs des variables heures et minutes en mémoire, 
+     car elle possède leurs adresses dans des pointeurs. La seule contrainte, un peu gênante je dois le 
+     reconnaître, c'est qu'il faut impérativement mettre une étoile devant le nom des pointeurs si on veut 
+     modifier la valeur de heures et de minutes. Si on n'avait pas fait ça, on aurait modifié l'adresse 
+     contenue dans les pointeurs, ce qui n'aurait servi… à rien.
+
+Il est possible de résoudre le "problème" sans utiliser de pointeurs, en contournant certaines règles que nous nous sommes fixées :
+
+on peut utiliser des variables globales (mais on l'a dit, c'est mal) ;
+
+ou encore faire un printf dans la fonction decoupeMinutes  (alors que c'est dans le main qu'on veut faire le printf  !).
+
+L'exercice est un peu scolaire et peut donc être contourné si vous êtes malin, ce qui vous fait peut-être douter de l'intérêt des pointeurs. Soyez assuré que cet intérêt vous paraîtra de plus en plus évident au cours des chapitres suivants.
+
+En résumé
+
+  - Les pointeurs constituent une notion essentielle du langage C, mais néanmoins un peu complexe au début. Il 
+    faut prendre le temps de bien comprendre comment ils fonctionnent, car beaucoup d'autres notions sont 
+    basées dessus.
+
+Ce n’est peut-être pas encore clair comme l’eau de roche, mais laissez-vous le temps d’assimiler la notion de pointeur, et n’hésitez pas à vous entraîner à les manipuler. Quand vous serez prêt, je vous retrouve au prochain chapitre pour découvrir la notion de tableau.
+
+##############################################################################################################
+
