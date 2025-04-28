@@ -549,3 +549,111 @@ Ce n’est peut-être pas encore clair comme l’eau de roche, mais laissez-vous
 
 ##############################################################################################################
 
+Créez des variables de type "tableaux"
+
+Ce chapitre est la suite directe des pointeurs, et va vous faire comprendre un peu plus leur utilité.
+
+Les tableaux sont très utilisés en C, car ils permettent d'organiser une série de valeurs.
+
+Comprenez le fonctionnement des tableaux en mémoire
+
+Les tableaux sont une suite de variables de même type, stockées côte à côte en mémoire. Concrètement, il s'agit de "grosses variables" pouvant contenir plusieurs nombres du même type : long  , int  , char  , double  …
+
+Un tableau a une dimension bien précise. Il peut occuper 2, 3, 10, 150, 2 500 cases, c'est vous qui décidez.
+
+Voici le schéma d'un tableau de 4 cases en mémoire qui commence à l'adresse 1600.
+
+
+
+Adresse             Valeur
+
+1600                 10
+
+1601                 23
+
+1602                 505
+
+1603                 8
+
+
+
+Lorsque vous demandez à créer un tableau de 4 cases en mémoire, votre programme demande au système d'exploitation la permission d'utiliser 4 cases en mémoire.
+
+Ces 4 cases doivent être contiguës, c'est-à-dire les unes à la suite des autres. Comme vous le voyez, les adresses se suivent : 1600, 1601, 1602, 1603. Il n'y a pas de "trou" au milieu.
+
+Chaque case du tableau contient un nombre du même type. Si le tableau est de type int, alors chaque case du tableau contiendra un int. On ne peut pas faire de tableau contenant à la fois des int et des double, par exemple.
+
+En résumé, voici ce qu'il faut retenir sur les tableaux :
+
+  - Lorsqu'un tableau est créé, il prend un espace contigu en mémoire : les cases sont les unes à la suite des 
+    autres.
+
+  - Toutes les cases d'un tableau sont du même type. Ainsi, un tableau de int contiendra uniquement des int  , 
+    et pas autre chose.
+
+Définissez un tableau
+
+Voyons comment définir un tableau de 4 int  :
+
+  1.int tableau[4];
+
+Voilà. Il suffit de rajouter entre crochets le nombre de cases que vous voulez mettre dans votre tableau. Il n'y a pas de limite (à part peut-être la taille de votre mémoire, quand même).
+
+Maintenant, comment accéder à chaque case du tableau ?
+
+Il faut écrire tableau[numeroDeLaCase]  .
+
+Attention : un tableau commence à l'indice n° 0 ! Notre tableau de 4 int a donc les indices 0, 1, 2 et 3. Il n'y a pas d'indice 4 dans un tableau de 4 cases ! C'est une source d'erreurs très courantes, souvenez-vous-en.
+
+Si je veux mettre dans mon tableau les mêmes valeurs que celles indiquées dans le schéma plus haut, je devrai donc écrire :
+
+  1.int tableau[4];
+  2.
+  3.tableau[0] = 10;
+  4.tableau[1] = 23;
+  5.tableau[2] = 505;
+  6.tableau[3] = 8;
+
+Je ne vois pas le rapport entre les tableaux et les pointeurs ?
+
+En fait, si vous écrivez juste tableau  , vous obtenez un pointeur. C'est un pointeur sur la première case du tableau. Faites le test :
+
+  1.int tableau[4];
+  2.
+  3.printf("%d", tableau);
+
+Résultat, on voit l'adresse où se trouve tableau  :
+
+1600
+
+En revanche, si vous indiquez l'indice de la case du tableau entre crochets, vous obtenez la valeur :
+
+  1.int tableau[4];
+  2.
+  3.printf("%d", tableau[0]);
+
+10
+
+De même pour les autres indices. Notez que comme tableau est un pointeur, on peut utiliser le symbole * pour connaître la première valeur :
+
+  1.int tableau[4];
+  2.
+  3.printf("%d", *tableau);
+
+10
+
+Il est aussi possible d'obtenir la valeur de la seconde case avec *(tableau + 1)  (adresse de tableau + 1). Les deux lignes suivantes sont donc identiques :
+
+  1.tableau[1] // Renvoie la valeur de la seconde case (la première case étant 0)
+  2.*(tableau + 1) // Identique : renvoie la valeur contenue dans la seconde case
+
+En clair, quand vous écrivez tableau[0], vous demandez la valeur qui se trouve à l'adresse tableau + 0 case (c'est-à-dire, dans notre cas, la valeur 10 associée à l'adresse 1600).
+
+Si vous écrivez tableau[1], vous demandez la valeur se trouvant à l'adresse tableau + 1 case (c'est-à-dire, dans notre cas, la valeur 23 associée à l'adresse 1601).
+
+Et ainsi de suite pour les autres valeurs.
+
+Attention : Il est interdit de créer un tableau dont la taille dépend d’une variable, du moins pour l’instant. C’est ce qu’on appelle une allocation dynamique, nous verrons cette notion bien plus loin dans le cours. Pour l’instant, vous devez écrire noir sur blanc le nombre correspondant à la taille du tableau.
+
+Voyons dans vidéo suivante comment créer un tableau et accéder aux différentes cases de celui-ci :
+
