@@ -923,3 +923,238 @@ Bon, nous n’avons toujours pas vu comment stocker du texte dans une variable e
 
 ##############################################################################################################
 
+Manipulez du texte avec les chaînes de caractères
+
+En programmation, une chaîne de caractères désigne… du texte, tout simplement ! Et on peut retenir ce texte sous forme de variable en mémoire.
+
+Comme nous l'avons dit plus tôt, notre ordinateur ne peut retenir que des nombres. Les lettres sont exclues. Comment diable les programmeurs font-ils pour manipuler du texte, alors ? Eh bien ils sont malins, vous allez voir !
+
+Utilisez le type char pour stocker une lettre
+
+Si le type char permet de stocker des nombres (compris entre -128 et 127), on l'utilise rarement pour ça en C.
+
+En général, même si le nombre est petit, on le stocke dans un int  . Certes, ça prend un peu plus de place en mémoire, mais aujourd'hui, la mémoire, ce n'est vraiment pas ce qui manque sur un ordinateur.
+
+Le type char est en fait prévu pour stocker une lettre ! Attention, j'ai bien dit UNE lettre.
+
+Comme la mémoire ne peut stocker que des nombres, on a inventé une table qui fait la conversion entre les nombres et les lettres. Ainsi, cette table indique par exemple que le nombre 65 équivaut à la lettre A.
+
+Le langage C permet de faire très facilement la traduction lettre <=> nombre correspondant. Pour obtenir le nombre associé à une lettre, il suffit d'écrire cette lettre entre apostrophes, comme ceci : 'A'  . À la compilation, 'A' sera remplacé par la valeur correspondante.
+
+Testons :
+
+int main(int argc, char *argv[])
+{
+    char lettre = 'A';
+
+    printf("%d\n", lettre);
+
+    return 0;
+}
+
+
+65
+
+On sait donc que la lettre A majuscule est représentée par le nombre 65. B vaut 66, C vaut 67, etc.
+
+Testez avec des minuscules, et vous verrez que les valeurs sont différentes. 'a' n'est pas identique à 'A'  : l'ordinateur fait la différence entre les majuscules et les minuscules (on dit qu'il "respecte la casse").
+
+La plupart des caractères « de base » sont codés entre les nombres 0 et 127. Une table fait la conversion entre les nombres et les lettres : la table ASCII (prononcez « Aski »). Le site AsciiTable.com propose cette table mais ce n'est pas le seul, on peut aussi la retrouver sur Wikipédia et bien d'autres sites encore.
+
+Affichez un caractère avec la fonction printf
+
+La fonction printf  peut aussi afficher un caractère via le symbole %c(c comme caractère) :
+
+int main(int argc, char *argv[])
+{
+    char lettre = 'A';
+
+    printf("%c\n", lettre);
+
+    return 0;
+}
+
+A
+
+Hourra, nous savons afficher une lettre !
+
+On peut aussi demander à l'utilisateur d'entrer une lettre en utilisant le %c dans un scanf  :
+
+
+int main(int argc, char *argv[])
+{
+    char lettre = 0;
+
+    scanf("%c", &lettre);
+    printf("%c\n", lettre);
+
+    return 0;
+}
+
+
+Si je tape la lettre B, je verrai :
+
+B
+B
+
+
+Le premier des deux B est celui que j'ai tapé au clavier, le second est celui affiché par le printf.
+
+Voici à peu près tout ce qu'il faut savoir sur le type char :
+
+  - le type char permet de stocker des nombres allant de -128 à 127, (le type unsigned char permet de stocker 
+    les nombres de 0 à 255) ;
+
+  - votre ordinateur utilise la table ASCII pour convertir les lettres en nombres et inversement ;
+
+  - on peut alors utiliser le type char pour stocker UNE lettre ;
+
+  - 'A'  est remplacé à la compilation par la valeur correspondante (65, en l'occurrence). On utilise donc les 
+    apostrophes pour obtenir la valeur d'une lettre.
+
+
+Voyez les chaînes comme des tableaux de type  char
+
+Une chaîne de caractères n'est en fait rien d'autre qu'un tableau de type char. 
+
+Si on crée un tableau :
+
+  1.char chaine[5];
+
+et qu'on met :
+
+  - dans chaine[0] la lettre 'S'  ;
+
+  - dans chaine[1] la lettre 'a'  ,
+
+…  on peut ainsi former une chaîne de caractères, c'est-à-dire du texte.
+
+Voici, de manière simplifiée, comment la chaîne est stockée en mémoire :
+
+
+Adresse       Valeur
+
+18000           'S'
+
+18001           'a'
+
+18002           'l'
+
+18003           'u'
+
+18004           't'
+
+
+Ce tableau prend 5 cases en mémoire pour représenter le mot "Salut".
+
+Pour la valeur, j'ai volontairement écrit sur le schéma les lettres entre apostrophes pour indiquer que c'est un nombre qui est stocké, et non une lettre. En réalité, dans la mémoire, ce sont bel et bien les nombres correspondant à ces lettres qui sont stockés.
+
+Toutefois, une chaîne de caractères ne contient pas que des lettres ! Le schéma est en fait incomplet. Une chaîne de caractère doit impérativement contenir un caractère spécial à la fin de la chaîne, appelé "caractère de fin de chaîne". Ce caractère s'écrit'\0'  .
+
+Pourquoi faut-il que la chaîne de caractères se termine par un \0  ?
+
+Tout simplement pour que votre ordinateur sache quand s'arrête la chaîne ! Le caractère\0permet de dire : "Stop, c'est fini, y'a plus rien à lire après, circulez !".
+
+Par conséquent, pour stocker le mot "Salut" (qui comprend 5 lettres) en mémoire, il ne faut pas un tableau de 5 char, mais de 6 :
+
+
+Adresse       Valeur
+
+18000           'S'
+
+18001           'a'
+
+18002           'l'
+
+18003           'u'
+
+18004           't'
+
+18005           '\0'
+
+
+Chaque fois que vous créez une chaîne de caractères, vous allez donc devoir penser à prévoir de la place pour le caractère de fin de chaîne. Il faut toujours ajouter un bloc de plus dans le tableau pour stocker ce caractère \0  , c'est impératif !
+
+Oublier le caractère de fin \0  est une source d'erreurs impitoyable du langage C. Je le sais pour en avoir fait les frais plus d'une fois.
+
+Grâce à \0  :
+
+  - vous n'avez pas à retenir la taille de votre tableau car il indique que le tableau s'arrête à cet 
+    endroit ;
+
+  - vous pouvez passer votre tableau de char à une fonction sans avoir à ajouter à côté une variable indiquant 
+    la taille du tableau.
+
+Cela n'est valable que pour les chaînes de caractères (c'est-à-dire le type char*  , qu'on peut aussi écrire char[]  ). Pour les autres types de tableaux, vous êtes toujours obligé de retenir la taille du tableau quelque part.
+
+Créez et initialisez une chaîne
+
+Si on veut initialiser notre tableau chaine avec le texte "Salut", on peut utiliser la méthode manuelle mais peu efficace :
+
+  1.char chaine[6]; // Tableau de 6 char pour stocker S-a-l-u-t + le \0
+  2.  
+  3.chaine[0] = 'S';
+  4.chaine[1] = 'a';
+  5.chaine[2] = 'l';
+  6.chaine[3] = 'u';
+  7.chaine[4] = 't';
+  8.chaine[5] = '\0';
+
+Cette méthode marche.
+
+On peut le vérifier avec un printf en utilisant le symbole %s   ( s pour string en anglais, qu'on traduit par "chaîne").
+
+Voici le code complet qui crée une chaîne "Salut" en mémoire, et qui l'affiche :
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+    char chaine[6]; // Tableau de 6 char pour stocker S-a-l-u-t + le \0
+
+    // Initialisation de la chaîne (on écrit les caractères un à un en mémoire)
+    chaine[0] = 'S';
+    chaine[1] = 'a';
+    chaine[2] = 'l';
+    chaine[3] = 'u';
+    chaine[4] = 't';
+    chaine[5] = '\0';
+
+    // Affichage de la chaîne grâce au %s du printf
+    printf("%s", chaine);
+
+    return 0;
+}
+Résultat :
+
+Salut
+
+Vous remarquerez que c'est un peu fatigant et répétitif de devoir écrire les caractères un à un comme on l'a fait dans le tableau chaine  .
+
+Pour initialiser une chaîne, il existe heureusement une méthode plus simple :
+
+int main(int argc, char *argv[])
+{
+    char chaine[] = "Salut"; // La taille du tableau chaine est automatiquement calculée
+
+    printf("%s", chaine);
+
+    return 0;
+}
+
+Salut
+
+À la première ligne, je crée une variable de type char[]  . J'aurais pu écrire aussi char*  , le résultat aurait été le même.
+En tapant entre guillemets la chaîne à mettre dans votre tableau, le compilateur C calcule automatiquement la taille nécessaire. C'est-à-dire qu'il compte les lettres et ajoute 1 pour placer le caractère \0  .
+
+Il écrit ensuite, une à une, les lettres du mot "Salut" en mémoire, et ajoute le \0  comme on l'a fait nous-mêmes manuellement quelques instants plus tôt. Bref, c'est bien plus pratique.
+
+Il y a toutefois un défaut : ça ne marche que pour l'initialisation ! Vous ne pouvez pas écrire plus loin dans le code :
+
+  1.chaine = "Salut";
+
+Cette technique est donc à réserver à l'initialisation. Après cela, il faudra écrire les caractères manuellement un à un en mémoire, comme on l'a fait au début.
+
+Dans cette vidéo, nous allons voir les différentes méthodes pour créer une chaîne de caractères, en respectant les bonnes pratiques :
+
