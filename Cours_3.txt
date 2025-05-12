@@ -1668,3 +1668,82 @@ Les chaînes de caractères n’ont plus de secret pour vous ! Il est donc temps
 
 ##############################################################################################################
 
+Utilisez les directives du préprocesseur
+
+Dans les codes source, on retrouve des lignes un peu particulières qu'on appelle des directives de préprocesseur. Elles commencent toujours par le symbole #.
+
+Utilisez #include pour inclure un fichier dans un autre
+
+#include ne fait rien d'autre qu'insérer un fichier dans un autre.
+
+  - Pour inclure un fichier .h se trouvant dans le dossier où est installé votre IDE, vous devez utiliser les 
+    chevrons :  < >  .
+
+  - Pour inclure un fichier .h se trouvant dans le dossier de votre projet, vous devez en revanche utiliser 
+    les guillemets :  " "  .
+
+
+Utilisez #define pour associer une valeur à un mot
+
+#define permet de définir une constante de préprocesseur, autrement dit, d'associer une valeur à un mot.
+
+L'intérêt, c'est que :
+
+  - ça ne prend pas de place en mémoire, puisque que lors de la compilation il ne reste plus que des nombres 
+    dans le code source ;
+
+  - le remplacement se fait dans tout le fichier dans lequel se trouve le #define. Si vous aviez défini une 
+    constante en mémoire dans une fonction, celle-ci n'aurait été valable que dans la fonction, puis aurait 
+    été supprimée. Le #define en revanche s'appliquera à toutes les fonctions du fichier, ce qui peut s'avérer 
+    parfois pratique selon les besoins.
+
+Les #define sont généralement placés dans des .h  , à côté des prototypes.
+
+
+Définissez la taille des tableaux avec  #define
+
+Voici un exemple :
+
+#define TAILLE_MAX      1000
+
+int main(int argc, char *argv[])
+{
+    char chaine1[TAILLE_MAX], chaine2[TAILLE_MAX];
+    // ...
+
+Mais… je croyais qu'on ne pouvait pas mettre de variable ni de constante entre les crochets lors d'une définition de tableau ?
+
+Oui, mais TAILLE_MAX n'est PAS une variable ni une constante. En effet je vous l'ai dit, le préprocesseur transforme le fichier avant compilation en :
+
+int main(int argc, char *argv[])
+{
+    char chaine1[1000], chaine2[1000];
+    // ...
+
+… et cela est valide !
+
+En définissant TAILLE_MAX ainsi, vous pouvez vous en servir pour créer des tableaux d'une certaine taille.
+
+Si à l'avenir cela s'avère insuffisant, vous n'aurez qu'à :
+
+  1. Modifier la ligne du #define  .
+
+  2. Recompiler, et vos tableaux de char prendront tous la nouvelle taille que vous aurez indiquée.
+
+
+Faites des calculs dans les #define
+
+Il est possible de faire quelques petits calculs dans les #define  .
+Par exemple, ce code crée une constante LARGEUR_FENETRE  , une autre HAUTEUR_FENETRE  , puis une troisième NOMBRE_PIXELS qui contiendra le nombre de pixels affichés à l'intérieur de la fenêtre (le calcul est simple : largeur * hauteur) :
+
+  1.#define LARGEUR_FENETRE  800
+  2.#define HAUTEUR_FENETRE  600
+  3.#define NOMBRE_PIXELS    (LARGEUR_FENETRE * HAUTEUR_FENETRE)
+
+La valeur de NOMBRE_PIXELS est remplacée avant la compilation par le code suivant : (LARGEUR_FENETRE * HAUTEUR_FENETRE), c'est-à-dire par (800 * 600), ce qui fait 480 000.
+Mettez toujours votre calcul entre parenthèses, comme je l'ai fait par sécurité pour bien isoler l'opération.
+
+Vous pouvez faire toutes les opérations de base que vous connaissez : addition (+), soustraction (-), multiplication (*), division (/) et modulo (%).
+
+Voyons dans cette courte vidéo comment créer une constante de préprocesseur et l’utiliser dans votre programme. D’une part nous verrons comment créer une constante pour l’utiliser dans une partie du code, et d’autre part comment créer un tableau statique à l’aide de ces constantes :
+
