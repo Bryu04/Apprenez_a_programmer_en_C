@@ -32,6 +32,12 @@ les directives dans un fichier .h.
                          else \
                          printf("Vous êtes encore mineur %s\n", nom);
 
+// Une autre type de directive est la directive de conditionnement
+// Par exemple, les directives #if, #elif et #endif
+// Ces directives permettent de réaliser des conditions en langage préprocesseur
+// Un exemple
+#define VERSION 2
+
 int main(int argc, const char * argv[]) {
 
     int aire = AIRE; 
@@ -56,6 +62,15 @@ int main(int argc, const char * argv[]) {
     MAJEUR(22, "Jack")
     MAJEUR(15, "Daniel")
     printf("-------------------------\n");
+
+// Compilation d'une partie du code en fonction du version
+#if VERSION == 1
+    printf("Le code est à la version 1.0 \n");
+#elif VERSION == 2
+    printf("Le code est à la version 2.0 \n");
+#else
+    printf("Le code est à la version supérieure à2.0 \n");
+#endif
 
     return 0;
 }
