@@ -2031,3 +2031,25 @@ Ils s'assurent ainsi qu'il ne pourra pas y avoir d'inclusions infinies.
 
 En résumé
 
+  - Le préprocesseur est un programme qui analyse votre code source et y effectue des modifications avant la 
+    compilation.
+
+  - L'instruction de préprocesseur #include insère le contenu d'un autre fichier.
+
+  - L'instruction #define définit une constante de préprocesseur. Elle permet de remplacer un mot-clé par une 
+    valeur dans le code source.
+
+  - Les macros sont des morceaux de code tout prêts définis à l'aide d'un #define  . Ils peuvent accepter des 
+    paramètres.
+
+  - Il est possible d'écrire des conditions en langage préprocesseur pour choisir ce qui sera compilé. On 
+    utilise notamment les mots-clés #if  , #elif et #endif  .
+
+  - Pour éviter qu'un fichier .h ne soit inclus un nombre infini de fois, on le protège à l'aide d'une 
+    combinaison de constantes de préprocesseur et de conditions. Tous vos futurs fichiers .h devront être 
+    protégés de cette manière.
+
+Je vous ai laissé souffler un peu avec ce chapitre. C'est le moment de faire une pause et un quiz tant qu'on y est ! Dans la prochaine partie, on reprendra les choses sérieuses… Et on commencera par voir comment créer vos propres types de variables. 
+
+##############################################################################################################
+
