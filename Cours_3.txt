@@ -2053,3 +2053,192 @@ Je vous ai laissé souffler un peu avec ce chapitre. C'est le moment de faire un
 
 ##############################################################################################################
 
+!!!!!!!!!!!!!!!!!!!!!!!! QUIZ : Utiliser des pointeurs et manipuler des tableaux !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Compétences évaluées
+Utiliser des pointeurs
+
+Question 1
+
+Que devez-vous faire pour créer une variable de type pointeur ?
+
+- Rajouter le symbole  !  devant le nom de la variable.
+
+- Rajouter le symbole  ;  devant le nom de la variable.
+
+- Rajouter le symbole  *  devant le nom de la variable. (o) (B)
+
+- Rajouter le symbole  %  devant le nom de la variable.
+
+""""""""" Réponse """""""""""""
+Pour créer une variable de type pointeur, on rajoute le symbole *  devant le nom de la variable.
+
+int *monPointeur;
+
+"""""""""""""""""""""""""""""""
+
+Question 2
+
+Il est important d'initialiser les variables dès leur déclaration. C'est encore plus important de le faire avec les pointeurs !
+
+Que devez-vous faire pour initialiser un pointeur, c'est-à-dire lui donner une valeur par défaut ?
+
+- Lui donner la valeur 1.
+
+- Lui donner la valeur  NULL. (o) (B)
+
+- Lui donner la valeur  void.
+
+- Lui donner la valeur  empty.
+
+""""""""" Réponse """""""""""""
+Pour initialiser un pointeur, c'est-à-dire lui donner une valeur par défaut, on n'utilise généralement pas le nombre 0 mais le mot-clé NULL (veillez à l'écrire en majuscules) :
+
+int *monPointeur = NULL;
+
+"""""""""""""""""""""""""""""""
+
+Question 3
+
+Sur une variable, comme la variable age ,&age signifie : "Je veux l'adresse à laquelle se trouve la variable age  ".
+
+- Vrai. (o) (B)
+
+- Faux.
+
+""""""""" Réponse """""""""""""
+On indique l'adresse d'une variable (au lieu de sa valeur) en utilisant le symbole  & .
+
+Sur une variable, comme la variable age  :
+
+  - age signifie : "Je veux la valeur de la variable age  " ;
+
+  - &age signifie : "Je veux l'adresse à laquelle se trouve la variable age  ".
+
+"""""""""""""""""""""""""""""""
+
+Question 4
+
+Sur un pointeur, comme pointeurSurAge ,  &pointeurSurAge signifie : "Je veux la valeur de la variable qui se trouve à l'adresse contenue dans pointeurSurAge  ".
+
+- Vrai.
+
+- Faux. (o) (B)
+
+""""""""" Réponse """""""""""""
+Les pointeurs sont semblables aux variables, à ceci près qu'au lieu de stocker un nombre, ils stockent l'adresse à laquelle se trouve une variable en mémoire.
+
+Lorsque le pointeur est créé, le système d'exploitation réserve une case en mémoire comme il l'a fait pour age  . La différence ici, c'est que la valeur de pointeurSurAge est un peu particulière : c'est l'adresse de la variable age  !
+
+En plaçant le symbole *  devant le nom du pointeur, on accède à la valeur de la variable age  . Si au contraire on utilise le symbole &  devant le nom du pointeur, on obtient l'adresse à laquelle se trouve le pointeur.
+
+Sur un pointeur, comme pointeurSurAge  :
+
+  - pointeurSurAge signifie : "Je veux la valeur de pointeurSurAge  " (cette valeur étant une adresse) ;
+
+  - *pointeurSurAge signifie : "Je veux la valeur de la variable qui se trouve à l'adresse contenue dans 
+     pointeurSurAge  ".
+
+"""""""""""""""""""""""""""""""
+
+Question 5
+
+Qu'est-ce qu'un tableau ?
+
+Attention, plusieurs réponses sont possibles.
+
+- Une suite de variables de même type, stockées côte à côte en mémoire. (o) (B)
+
+- Quelque chose qui peut contenir plusieurs nombres du même type : long  , int  , char  , double  … (o) (B)
+
+- Un mélange de variables et de fonctions.
+
+- Un mélange de variables trié par ordre croissant.
+
+
+""""""""" Réponse """""""""""""
+Les tableaux sont une suite de variables de même type, stockées côte à côte en mémoire. Concrètement, il s'agit de "grosses variables" pouvant contenir plusieurs nombres du même type : long  , int  , char  , double  …
+
+Un tableau a une dimension bien précise. Il peut occuper 2, 3, 10, 150, 2 500 cases, c'est vous qui décidez.
+
+Chaque case du tableau contient un nombre du même type. Si le tableau est de type int  , alors chaque case du tableau contiendra un int  . On ne peut pas faire de tableau contenant à la fois des int et des double   , par exemple.
+
+En résumé, voici ce qu'il faut retenir sur les tableaux :
+
+  - Lorsqu'un tableau est créé, il prend un espace contigu en mémoire : les cases sont les unes à la suite des 
+    autres.
+
+  - Toutes les cases d'un tableau sont du même type. Ainsi, un tableau de int contiendra uniquement des int  , 
+    et pas autre chose.
+
+"""""""""""""""""""""""""""""""
+
+Question 6
+
+Comment définit-on un tableau de 4  int  par exemple ?
+
+- int tableau(4);
+- int tableau[4]
+- int tableau(4)
+- int tableau[4]; (o) (B)
+
+""""""""" Réponse """""""""""""
+
+  1.int tableau[4];
+
+Il suffit de rajouter entre crochets le nombre de cases que vous voulez mettre dans votre tableau (il n'y a pas de limite, à part peut-être la taille de votre mémoire, quand même) ; et bien sûr ne pas oublier le point-virgule à la fin !
+
+"""""""""""""""""""""""""""""""
+
+Question 7
+
+Comment récupérer la première valeur du tableau tab ? 
+
+- tab[0] (o) (B)
+
+- tab[]
+
+- tab[1]
+
+- tab(0)
+
+""""""""" Réponse """""""""""""
+Un tableau commence à l'indice n° 0 et non pas 1.
+
+Notre tableau de 4 int a donc les indices 0, 1, 2 et 3, ensuite vous pouvez accéder aux valeurs du tableau à l'aide de l'opérateur [] et l'indice de la case. 
+
+Il n'y a pas d'indice 4 dans un tableau de 4 cases ! C'est une source d'erreurs très courantes, souvenez-vous-en.
+
+"""""""""""""""""""""""""""""""
+
+Question 8
+
+À quoi sert le type  char  ?
+
+Attention, plusieurs réponses sont possibles.
+
+- Il permet de stocker une lettre. (o) (B)
+
+- Il permet de stocker un mot.
+
+- Il permet de stocker des nombres. (o) (B)
+
+- Il permet de stocker une chaine de caractères. (o) (M)
+
+""""""""" Réponse """""""""""""
+Voici ce qu'il faut savoir sur le type char :
+
+  - le type char permet de stocker des nombres allant de -128 à 127, (le type unsigned char permet de stocker 
+    les nombres de 0 à 255) ;
+
+  - votre ordinateur utilise la table ASCII pour convertir les lettres en nombres et inversement ;
+
+  - on peut alors utiliser le type char pour stocker UNE lettre ;
+
+  - 'A'  est remplacé à la compilation par la valeur correspondante (65, en l'occurrence). On utilise donc les 
+    apostrophes pour obtenir la valeur d'une lettre.
+
+"""""""""""""""""""""""""""""""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
