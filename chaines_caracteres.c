@@ -3,7 +3,7 @@
 
 /*
 Dans ce petit programme, on va manipuler les chaînes de caractères.
-On va voir les 3 façon d'initier une chaine de caractères, qui est un 
+On va voir les 3 façons d'initier une chaine de caractères, qui est un 
 tableau de char
 
 */
