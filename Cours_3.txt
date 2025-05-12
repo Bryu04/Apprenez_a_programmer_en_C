@@ -1747,3 +1747,159 @@ Vous pouvez faire toutes les opérations de base que vous connaissez : addition 
 
 Voyons dans cette courte vidéo comment créer une constante de préprocesseur et l’utiliser dans votre programme. D’une part nous verrons comment créer une constante pour l’utiliser dans une partie du code, et d’autre part comment créer un tableau statique à l’aide de ces constantes :
 
+
+Découvrez les constantes prédéfinies par le processeur
+
+En plus des constantes que vous pouvez définir vous-même, il existe quelques constantes prédéfinies par le préprocesseur.
+
+Chacune de ces constantes commence et se termine par deux symboles "underscore" _(vous trouverez ce symbole sous le chiffre 8, tout du moins si vous avez un clavier AZERTY français).
+
+  - __LINE__ donne le numéro de la ligne actuelle.
+
+  - __FILE__ donne le nom du fichier actuel.
+
+  - __DATE__ donne la date de la compilation.
+
+  - __TIME__ donne l'heure de la compilation.
+
+Ces constantes peuvent être utiles pour gérer des erreurs, en faisant par exemple ceci :
+
+  1.printf("Erreur a la ligne %d du fichier %s\n", __LINE__, __FILE__);
+  2.printf("Ce fichier a ete compile le %s a %s\n", __DATE__, __TIME__);
+
+Erreur a la ligne 9 du fichier main.c
+
+Ce fichier a ete compile le Jan 13 2006 a 19:21:10
+
+Il est aussi possible de faire tout simplement :
+
+#define CONSTANTE
+… sans préciser de valeur.
+
+Cela veut dire pour le préprocesseur que le mot CONSTANTE est défini, tout simplement. Il n'a pas de valeur, mais il "existe".
+
+Quel peut en être l'intérêt ?
+
+L'intérêt est moins évident que tout à l'heure, mais il y en a un et nous allons le découvrir très rapidement.
+
+
+Créez des macros pour remplacer un mot par un code source
+
+Nous avons vu qu'avec le #define on pouvait demander au préprocesseur de remplacer un mot par une valeur. Il s'agit en fait d'un simple rechercher-remplacer fait par le préprocesseur avant la compilation.
+
+Mais ce n'est pas tout…
+
+#define permet aussi de remplacer un mot aussi par… un code source tout entier !
+Lorsqu'on fait ça, on dit qu'on crée une macro.
+
+Créez une macro simple, sans paramètres
+
+Voici un exemple  :
+
+  1.#define COUCOU() printf("Coucou");
+
+Ce qui change ici, ce sont les parenthèses qu'on a ajoutées après le mot-clé (ici, COUCOU()  ). Nous verrons à quoi elles peuvent servir tout à l'heure.
+
+Testons la macro dans un code source :
+
+#define COUCOU() printf("Coucou");
+
+int main(int argc, char *argv[])
+{
+    COUCOU()
+
+    return 0;
+}
+
+Coucou
+
+Je vous l'accorde, ce n'est pas original pour le moment. Ce qu'il faut déjà bien comprendre, c'est que les macros ne sont en fait que des bouts de code qui sont directement remplacés dans votre code source juste avant la compilation.
+
+Le code qu'on vient de voir ressemblera en fait à ça lors de la compilation :
+
+int main(int argc, char *argv[])
+{
+    printf("Coucou");
+
+    return 0;
+}
+
+
+Si vous avez compris ça, vous avez compris le principe de base des macros.
+
+Mais… on ne peut mettre qu'une seule ligne de code par macro ?
+
+Non, heureusement il est possible de mettre plusieurs lignes de code à la fois. Il suffit de placer un\  avant chaque nouvelle ligne, comme ceci :
+
+#define RACONTER_SA_VIE()   printf("Coucou, je m'appelle Brice\n"); \
+                            printf("J'habite a Nice\n"); \
+                            printf("J'aime la glisse\n");
+
+int main(int argc, char *argv[])
+{
+    RACONTER_SA_VIE()
+
+    return 0;
+}
+
+Coucou, je m'appelle Brice
+J'habite a Nice
+J'aime la glisse
+
+Remarquez dans le main que l'appel de la macro ne prend pas de point-virgule à la fin. En effet, c'est une ligne pour le préprocesseur, elle ne nécessite donc pas d'être terminée par un point-virgule.
+
+
+Créez une macro qui prend des paramètres
+
+Pour le moment, on a vu comment faire une macro sans paramètre, c'est-à-dire avec des parenthèses vides. Le principal intérêt de ce type de macros, c'est de pouvoir "raccourcir" un code un peu long, surtout s'il est amené à être répété de nombreuses fois dans votre code source.
+
+Cependant, les macros deviennent réellement intéressantes lorsqu'on leur met des paramètres. Cela marche quasiment comme avec les fonctions :
+
+#define MAJEUR(age) if (age >= 18) \
+                    printf("Vous etes majeur\n");
+
+int main(int argc, char *argv[])
+{
+    MAJEUR(22)
+
+    return 0;
+}
+
+Vous etes majeur
+
+
+Notez qu'on aurait aussi pu ajouter un else pour afficher "Vous êtes mineur". Essayez de le faire pour vous entraîner, ce n'est pas bien difficile. N'oubliez pas de mettre un antislash \  avant chaque nouvelle ligne.
+
+Le principe de notre macro est assez intuitif :
+
+#define MAJEUR(age) if (age >= 18) \
+                    printf("Vous etes majeur\n");
+
+On met entre parenthèses le nom d'une "variable" qu'on nomme age. Dans tout notre code de macro, age sera remplacé par le nombre qui est indiqué lors de l'appel à la macro (ici, c'est 22).
+
+Ainsi, notre code source précédent ressemblera à ceci juste après le passage du préprocesseur :
+
+int main(int argc, char *argv[])
+{
+    if (22 >= 18)
+    printf("Vous etes majeur\n");
+
+    return 0;
+}
+
+Le code source a été mis à la place de l'appel de la macro, et la valeur de la "variable" age a été mise directement dans le code source de remplacement.
+
+Il est possible aussi de créer une macro qui prend plusieurs paramètres :
+
+#define MAJEUR(age, nom) if (age >= 18) \
+                    printf("Vous etes majeur %s\n", nom);
+
+int main(int argc, char *argv[])
+{
+    MAJEUR(22, "Maxime")
+
+    return 0;
+}
+
+
+Réalisez des conditions en langage préprocesseur

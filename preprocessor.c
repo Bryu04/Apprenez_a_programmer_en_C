@@ -19,6 +19,19 @@ les directives dans un fichier .h.
 // On peut l'utiliser pour initialiser un tableau, contrairement aux variables int
 #define TAILLE_MAX 1000
 
+// #define peut aussi remplacer un mot par un bout de code, on dit qu'on fait une MACRO
+#define COUCOU() printf("Coucou tout le monde \n");
+#define MAVIE() printf("Bonjour, je m'appelle Angela \n"); \
+                printf("Bienvenue dans mon émission \n"); \
+                printf("Je vais vous présenter tous mes amis \n"); \
+                printf("NON pas Sarah Connor !! \n");
+
+// Un macro peut aussi prendre des paramètres en entrée comme une fonction
+#define MAJEUR(age, nom) if (age >= 18) \
+                         printf("Vous êtes majeur %s\n", nom); \
+                         else \
+                         printf("Vous êtes encore mineur %s\n", nom);
+
 int main(int argc, const char * argv[]) {
 
     int aire = AIRE; 
@@ -30,5 +43,19 @@ int main(int argc, const char * argv[]) {
     int tab[TAILLE_MAX] = {1,2,3,4,5};
 
     printf("La premier valeur du tableau est : %d\n", tab[0]);
+
+    // Exécuter le bout de code COUCOU
+    COUCOU()
+    
+    printf("--- Parler de sa vie ----\n");
+    MAVIE()
+    printf("-------------------------\n");
+
+    // ACCES Reservé au majeur
+    printf("--- Demande de l'age ---\n");
+    MAJEUR(22, "Jack")
+    MAJEUR(15, "Daniel")
+    printf("-------------------------\n");
+
     return 0;
 }
