@@ -1,0 +1,93 @@
+                           Partie 4 : Allez plus loin pour programmer comme un pro
+
+
+Créez vos propres types de variables
+
+En C, lorsque l'on cherche à faire des programmes plus complexes, on peut créer nos propres types de variables :
+
+   1. Les structures.
+
+   2. Et les énumérations.
+
+Et bonne nouvelle : c'est plutôt simple à comprendre et à manipuler !
+
+
+Définissez une structure
+
+Une structure est un assemblage de variables qui peuvent avoir différents types.
+Contrairement aux tableaux qui vous obligent à utiliser le même type dans tout le tableau, vous pouvez créer une structure comportant des variables de types long  , char  , int et double à la fois.
+
+Les structures sont généralement définies dans les fichiers .h  , au même titre que les prototypes et les define  .
+
+Pour définir une structure, il suffit de :
+
+  - commencer par taper  struct ;
+
+  - puis écrire le nom de la structure ;
+
+ASTUCE : nommez vos structures en suivant les mêmes règles que pour les noms de variables, sauf que vous mettez la première lettre en majuscule pour pouvoir faire la différence.
+Du coup, en regardant mon code, si vous voyez quelque chose comme :
+
+    - ageDuCapitaine , vous saurez qu'il s'agit d'une variable car cela commence par une lettre minuscule ;
+
+    - MorceauAudio , vous saurez qu'il s'agit d'une structure (un type personnalisé) car cela commence par une 
+      majuscule.
+
+  - ouvrir ensuite les accolades et les fermer plus loin, comme pour une fonction ;
+
+Attention, ici c'est particulier : vous DEVEZ mettre un point-virgule après l'accolade fermante. C'est obligatoire. Si vous ne le faites pas, la compilation plantera.
+
+  - placer entre les accolades les variables dont est composée votre structure. Une structure est généralement 
+    composée d'au moins deux "sous-variables ", sinon elle n'a pas trop d'intérêt. Toutes les structures que 
+    vous verrez sont en fait des "assemblages" de variables de type de base, comme long, int, double, etc. 
+
+Voici donc à quoi ressemble une structure  :
+
+
+struct NomDeVotreStructure
+{
+    int variable1;
+    int variable2;
+    int autreVariable;
+    double nombreDecimal;
+};
+
+Imaginons par exemple que vous vouliez créer une variable qui stocke les coordonnées d'un point à l'écran.
+
+Lorsqu'on travaille en 2D (2 dimensions), on a deux axes : l'axe des abscisses (de gauche à droite) et l'axe des ordonnées (de bas en haut). On a l'habitude d'exprimer les abscisses par une variable appelée x  , et les ordonnées par y  .
+
+Voyons ce que ça donne :
+
+struct Coordonnees
+{
+    int x; // Abscisses
+    int y; // Ordonnées
+};
+
+
+Notre structure s'appelle Coordonnees et est composée de deux variables x et y  , c'est-à-dire de l'abscisse et de l'ordonnée.
+
+Si on le voulait, on pourrait facilement faire une structure Coordonnees pour de la 3D : il suffirait d'ajouter une troisième variable (par exemple z  ) qui indiquerait la hauteur. 
+
+
+Placez des tableaux dans une structure
+
+Les structures peuvent contenir des tableaux. Ça tombe bien, on va pouvoir ainsi placer des tableaux de char (chaînes de caractères) sans problème !
+
+Allez, imaginons une structure Personne qui stocke diverses informations sur une personne :
+
+struct Personne
+{
+    char nom[100];
+    char prenom[100];
+    char adresse[1000];
+    
+    int age;
+    int etudiant; // Booléen : 1 = etudiant, 0 = non etudiant
+};
+
+Cette structure est composée de cinq sous-variables. Les trois premières sont des chaînes qui stockeront le nom, le prénom et l'adresse de la personne. Les deux dernières stockent l'âge et le statut étudiant de la personne (c'est un booléen, 1 = vrai = étudiant, 0 = faux = pas étudiant).
+
+Vous pouvez rajouter des variables dans la structure pour la compléter si vous le voulez. Il n'y a pas de limite au nombre de variables dans une structure.
+
+Utilisez une structure dans une fonction
