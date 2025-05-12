@@ -1650,3 +1650,21 @@ Comme d'habitude, vérifiez que votre chaîne est suffisamment grande pour accue
 
 En résumé
 
+  - Un ordinateur ne sait pas manipuler du texte, il ne connaît que les nombres. Pour régler le problème, on 
+    associe à chaque lettre de l'alphabet un nombre correspondant dans une table appelée la table ASCII.
+
+  - Le type char est utilisé pour stocker une et une seule lettre. Il stocke en réalité un nombre, mais ce 
+    nombre est automatiquement traduit par l'ordinateur à l'affichage.
+
+  - Pour créer un mot ou une phrase, on doit construire une chaîne de caractères. Pour cela, on utilise un 
+    tableau de char  .
+
+  - Toute chaîne de caractères se termine par un caractère spécial appelé \0  qui signifie "fin de chaîne".
+
+  - Il existe de nombreuses fonctions toutes prêtes de manipulation des chaînes dans la bibliothèque string. 
+    Il faut inclure string.h pour pouvoir les utiliser.
+
+Les chaînes de caractères n’ont plus de secret pour vous ! Il est donc temps d’apprendre une nouvelle notion. Passez au chapitre suivant sans tarder, vous allez travailler sur les directives du préprocesseur. Pas d'inquiétude, le prochain chapitre est plus simple que les deux précédents.
+
+##############################################################################################################
+
