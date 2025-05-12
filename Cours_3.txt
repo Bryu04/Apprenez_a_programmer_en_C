@@ -1902,4 +1902,132 @@ int main(int argc, char *argv[])
 }
 
 
+
 Réalisez des conditions en langage préprocesseur
+
+Tenez-vous bien : il est possible de réaliser des conditions en langage préprocesseur ! Voici comment cela fonctionne :
+
+#if condition
+    /* Code source à compiler si la condition est vraie */
+#elif condition2
+    /* Sinon si la condition 2 est vraie compiler ce code source */
+#endif
+
+Le mot-clé #if permet d'insérer une condition de préprocesseur. #elif signifie else if(sinon si).
+
+La condition s'arrête lorsque vous insérez un #endif  . Vous noterez qu'il n'y a pas d'accolades en préprocesseur.
+
+L'intérêt, c'est qu'on peut ainsi faire des compilations conditionnelles.
+
+En effet, si la condition est vraie, le code qui suit sera compilé. Sinon, il sera tout simplement supprimé du fichier le temps de la compilation. Il n'apparaîtra donc pas dans le programme final.
+
+
+Utilisez  #ifdef  et #ifndef
+
+Nous allons voir maintenant l'intérêt de faire un #define d'une constante sans préciser de valeur, comme je vous l'ai montré précédemment :
+
+  1.#define CONSTANTE
+
+En effet, il est possible d'utiliser:
+
+  - #ifdef pour dire « Si la constante est définie ».
+
+  - #ifndef  pour dire « Si la constante n'est pas définie ».
+
+On peut alors imaginer ceci :
+
+
+#define WINDOWS
+
+#ifdef WINDOWS
+    /* Code source pour Windows */
+#endif
+
+#ifdef LINUX
+    /* Code source pour Linux */
+#endif
+
+#ifdef MAC
+    /* Code source pour Mac */
+#endif
+
+
+C'est comme ça que font certains programmes multi-plateformes pour s'adapter à l'OS, par exemple. Alors, bien entendu, il faut recompiler le programme pour chaque OS (ce n'est pas magique).
+
+Si vous êtes sous Windows, vous écrivez un #define WINDOWS  en haut, puis vous compilez.
+
+Si vous voulez compiler votre programme pour Linux (avec la partie du code source spécifique à Linux), vous devrez alors modifier le define et mettre à la place #define LINUX. Recompilez, et cette fois c'est la portion de code source pour Linux qui sera compilée, les autres parties étant ignorées.
+
+
+Évitez les inclusions infinies grâce à #ifndef
+
+#ifndef est très utilisé dans les .h pour éviter les inclusions infinies.
+
+Une inclusion infinie ? C'est-à-dire ?
+
+Imaginez : j'ai un fichier A.h et un fichier B.h  .
+
+Le fichier A.h contient un include du fichier B.h  . Le fichier B est donc inclus dans le fichier A.
+
+Mais, et c'est là que ça commence à coincer, supposez que le fichier B.h contienne à son tour un include du fichierA.h  ! Ça arrive quelquefois en programmation : le premier fichier a besoin du second pour fonctionner, et le second a besoin du premier.
+
+Si on y réfléchit un peu, on imagine vite ce qu'il va se passer :
+
+L'ordinateur lit A.h et voit qu'il faut inclure B.h  .
+
+Il lit B.h pour l'inclure, et là il voit qu'il faut inclure A.h  .
+
+Il inclut donc A.h dans B.h  , mais dans A.h on lui indique qu'il doit inclure B.h  !
+
+Rebelote, il va voir B.h et voit à nouveau qu'il faut inclure A.h  .
+
+Etc. : vous vous doutez bien que tout cela est sans fin !
+
+En fait, à force de faire trop d'inclusions, le préprocesseur s'arrêtera en disant :
+
+"J'en ai marre des inclusions !"
+
+… ce qui fera planter votre compilation.
+
+Comment faire pour éviter cet affreux cauchemar ?
+
+Voici l'astuce. Désormais, je vous demande de faire comme ça dans TOUS vos fichiers .h sans exception :
+
+
+#ifndef DEF_NOMDUFICHIER // Si la constante n'a pas été définie le fichier n'a jamais été inclus
+#define DEF_NOMDUFICHIER // On définit la constante pour que la prochaine fois le fichier ne soit plus inclus
+
+/* Contenu de votre fichier .h (autres include, prototypes, define...) */
+
+#endif
+
+
+Vous mettrez en fait tout le contenu de votre fichier.h (à savoir vos autres include, vos prototypes, vos define…) entre le #ifndef et le #endif  .
+
+Comprenez-vous bien comment ce code fonctionne ? La première fois qu'on m'a présenté cette technique, j'étais assez désorienté : je vais essayer de vous l'expliquer.
+
+Imaginez que le fichier .hsoit inclus pour la première fois. Le préprocesseur lit la condition "Si la constante DEF_NOMDUFICHIER n'a pas été définie". Comme c'est la première fois que le fichier est lu, la constante n'est pas définie, donc le préprocesseur entre à l'intérieur du if  .
+
+La première instruction qu'il rencontre est justement :
+
+  1.#define DEF_NOMDUFICHIER
+
+Maintenant, la constante est définie. La prochaine fois que le fichier sera inclus, la condition ne sera plus vraie et donc le fichier ne risque plus d'être inclus à nouveau.
+
+Bien entendu, vous appelez votre constante comme vous voulez. Moi, je l'appelle DEF_NOMDUFICHIER par habitude.
+
+Ce qui compte en revanche, et j'espère que vous l'aviez bien compris, c'est de changer de nom de constante à chaque fichier .h différent. Il ne faut pas que ça soit la même constante pour tous les fichiers.h  , sinon seul le premier fichier .h serait lu et pas les autres !
+
+Vous remplacerez donc NOMDUFICHIER par le nom de votre fichier.h.
+
+Je vous invite à aller consulter les .h des bibliothèques standard sur votre disque dur. Vous verrez qu'ils sont TOUS construits sur le même principe :
+
+  1. Un #ifndef au début.
+
+  2. Et un #endif à la fin.
+
+Ils s'assurent ainsi qu'il ne pourra pas y avoir d'inclusions infinies.
+
+
+En résumé
+

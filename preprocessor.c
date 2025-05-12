@@ -38,6 +38,13 @@ les directives dans un fichier .h.
 // Un exemple
 #define VERSION 2
 
+// #define peut aussi être utilisé pour définir une constante sans préciser de valeur
+// Cela sera utile pour les directives #ifdef et #ifndef
+// La directive #ifndef est très utile pour éviter des inclusions en boucle infinies
+
+// Exemple : On veut compiler notre code en fonction de l'OS
+#define WINDOWS
+
 int main(int argc, const char * argv[]) {
 
     int aire = AIRE; 
@@ -64,6 +71,7 @@ int main(int argc, const char * argv[]) {
     printf("-------------------------\n");
 
 // Compilation d'une partie du code en fonction du version
+    printf("--- Version du code ---\n");
 #if VERSION == 1
     printf("Le code est à la version 1.0 \n");
 #elif VERSION == 2
@@ -71,6 +79,21 @@ int main(int argc, const char * argv[]) {
 #else
     printf("Le code est à la version supérieure à2.0 \n");
 #endif
+    printf("-------------------------\n");
 
+// Prendre en considération de l'OS de la machine
+    printf("--- OS de la machine ---\n");
+#ifdef WINDOWS
+    printf("Ce code tourne sur une machine WINDOWS \n");
+#endif
+
+#ifdef LINUX
+    printf("Ce code tourne sur une machine LINUX \n");
+#endif
+
+#ifdef MAC
+    printf("Ce code tourne sur un mac ou un macbook \n");
+#endif
+    printf("-------------------------\n");
     return 0;
 }
