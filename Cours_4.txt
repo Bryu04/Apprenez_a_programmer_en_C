@@ -453,3 +453,24 @@ enum Volume
 
 
 En résumé
+
+  - Une structure est un type de variable personnalisé que vous pouvez créer et utiliser dans vos programmes. 
+    C'est à vous de la définir, contrairement aux types de base tels que int etdouble que l'on retrouve dans 
+    tous les programmes.
+
+  - Une structure est composée de "sous-variables" qui sont en général des variables de type de base comme int 
+    et double  , mais aussi des tableaux.
+
+  - On accède à un des composants de la structure en séparant le nom de la variable et la composante d'un 
+    point : joueur.prenom  .
+
+  - Si on manipule un pointeur de structure et qu'on veut accéder à une des composantes, on utilise une flèche 
+    à la place du point : pointeurJoueur->prenom  .
+
+  - Une énumération est un type de variable personnalisé qui peut seulement prendre une des valeurs 
+    prédéfinies : FAIBLE  , MOYEN ou FORT   , par exemple.
+
+Découvrons maintenant comment lire et écrire dans des fichiers. C’est parti !
+
+##############################################################################################################
+
