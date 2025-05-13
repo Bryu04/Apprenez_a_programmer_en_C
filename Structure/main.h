@@ -5,7 +5,9 @@ main.h
 
 Role :
 
-Ce fichier contient les prototypes et les structures qui seront utilisés dans le fichier main.c 
+Ce fichier contient les prototypes et les structures qui seront utilisés dans le fichier 
+main.c. Les structures sont des assemblage de variables qui peuvent avoir différents types, 
+même des tableaux.
 
 */
 
@@ -18,6 +20,7 @@ Ce fichier contient les prototypes et les structures qui seront utilisés dans l
 
 // Création d'une structure pour se déplacer en 2D
 
+typedef struct Coordonnees Coordonnees;
 struct Coordonnees
 {
     int x; // Coordonnée Abscisses
@@ -26,6 +29,7 @@ struct Coordonnees
 
 // Création d'une structure pour les caractéristique d'une personne 
 
+typedef struct Personne Personne;
 struct Personne
 {
     char nom[100];

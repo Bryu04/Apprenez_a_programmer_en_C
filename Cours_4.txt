@@ -91,3 +91,61 @@ Cette structure est composée de cinq sous-variables. Les trois premières sont 
 Vous pouvez rajouter des variables dans la structure pour la compléter si vous le voulez. Il n'y a pas de limite au nombre de variables dans une structure.
 
 Utilisez une structure dans une fonction
+
+Maintenant que notre structure est définie dans le .h  , on va pouvoir l'utiliser dans une fonction de notre fichier .c  .
+
+Voici comment créer une variable de type Coordonnees  (la structure qu'on a définie plus haut) :
+
+#include "main.h" // Inclusion du .h qui contient les prototypes et structures
+
+int main(int argc, char *argv[])
+{
+    struct Coordonnees point; // Création d'une variable "point" de type Coordonnees
+
+    return 0;
+}
+
+
+Nous avons ainsi créé une variable point de type Coordonnees  . Cette variable est automatiquement composée de deux sous-variables : x et y  (son abscisse et son ordonnée).
+
+Faut-il obligatoirement écrire le mot-clé struct lors de la définition de la variable ?
+
+Oui, cela permet à l'ordinateur de différencier un type de base (comme int  ) d'un type personnalisé, comme Coordonnees  .
+
+Toutefois, les programmeurs trouvent souvent un peu lourd de mettre le mot struct à chaque définition de variable personnalisée. Pour régler ce problème, ils ont inventé une instruction spéciale : le typedef  .
+
+Créez un alias de structure avec l'instruction typedef
+
+Retournons dans le fichier .h qui contient la définition de notre structure de typeCoordonnees  . Nous allons ajouter une instruction appelée typedef pour créer un alias de structure et dire qu'écrire telle chose équivaut à écrire telle autre chose.
+
+Ajoutons une ligne commençant par typedef juste avant la définition de la structure :
+
+typedef struct Coordonnees Coordonnees;
+struct Coordonnees
+{
+    int x;
+    int y;
+};
+
+Cette ligne doit être découpée en trois morceaux (non, je n'ai pas bégayé le mot Coordonnees  ) :
+
+  - typedef  : indique que nous allons créer un alias de structure ;
+
+  - struct Coordonnees  : c'est le nom de la structure dont vous allez créer un alias (c'est-à-dire un "équivalent") ;
+
+  - Coordonnees  : c'est le nom de l'équivalent.
+
+En clair, cette ligne dit :
+
+"Écrire le mot Coordonnees est désormais équivalent à écrire struct Coordonnees  ".
+
+En faisant cela, vous n'aurez plus besoin de mettre le mot struct à chaque définition de variable de type Coordonnees  . On peut donc retourner dans notre main et écrire :
+
+int main(int argc, char *argv[])
+{
+    Coordonnees point; // L'ordinateur comprend qu'il s'agit de "struct Coordonnees" grâce au typedef
+    return 0;
+}
+
+Je vous recommande de faire un typedef comme je l'ai fait ici pour Coordonnees  . Ça évite d'avoir à écrire le mot struct partout. Un bon programmeur est un programmeur fainéant ! Il en écrit le moins possible.
+

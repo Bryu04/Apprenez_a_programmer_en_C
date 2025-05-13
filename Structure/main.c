@@ -10,7 +10,7 @@ main.c
 int main(int argc, const char * argv[]) {
     // Maintenant on utilise la structure crée pour déclarer une nouvelle variale
 
-    struct Coordonnees point;
+    Coordonnees point;
 
     //Aficher la valeur de la variable point
     
