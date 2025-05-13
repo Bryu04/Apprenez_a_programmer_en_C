@@ -323,3 +323,133 @@ En langage C, on initialise généralement nos structures avec la méthode simpl
 
 
 Utilisez ce raccourci
+
+Vous allez voir qu'on manipulera très souvent des pointeurs de structures. Pour être franc, je dois même vous avouer qu'en C, on utilise plus souvent des pointeurs de structures que des structures tout court.
+
+Comme les pointeurs de structures sont très utilisés, on sera souvent amené à écrire ceci :
+
+  1.(*point).x = 0;
+
+Oui mais voilà, encore une fois les programmeurs trouvent ça trop long. Les parenthèses autour de *point  , quelle plaie ! Alors, ils ont inventé le raccourci suivant :
+
+  1.point->x = 0;
+
+Ce raccourci consiste à former une flèche avec un tiret suivi d'un chevron >  .
+Écrire point->x est donc STRICTEMENT équivalent à écrire (*point).x  .
+
+On ne peut utiliser la flèche que sur un pointeur !
+Si vous travaillez directement sur la variable, vous devez utiliser le point.
+
+Utilisez ce petit exemple pour vous en souvenir :
+
+
+int main(int argc, char *argv[])
+{
+    Coordonnees monPoint;
+    Coordonnees *pointeur = &monPoint;
+
+    monPoint.x = 10; // On travaille sur une variable, on utilise le "point"
+    pointeur->x = 10; // On travaille sur un pointeur, on utilise la flèche
+
+    return 0;
+}
+
+
+On modifie la valeur du x à 10 de deux manières différentes, ici : la première fois en travaillant directement sur la variable, la seconde fois en passant par le pointeur.
+
+Reprenons maintenant notre fonction initialiserCoordonnees ; nous pouvons alors l'écrire comme ceci :
+
+void initialiserCoordonnees(Coordonnees* point)
+{
+    point->x = 0;
+    point->y = 0;
+}
+
+
+Utilisez des énumérations
+
+Les énumérations constituent une façon un peu différente de créer ses propres types de variables.
+
+Une énumération ne contient pas de sous-variables comme c'était le cas pour les structures. C'est une liste de valeurs possibles pour une variable. Une énumération ne prend donc qu'une case en mémoire, et cette case peut prendre une des valeurs que vous définissez (et une seule à la fois).
+
+Voici un exemple d'énumération :
+
+typedef enum Volume Volume;
+enum Volume
+{
+    FAIBLE, MOYEN, FORT
+};
+
+
+Vous noterez qu'on utilise un typedef là aussi, comme on l'a fait jusqu'ici.
+
+Pour créer une énumération, on utilise le mot-clé enum  .
+
+Notre énumération s'appelle ici Volume  . C'est un type de variable personnalisé qui peut prendre une des trois valeurs qu'on a indiquées : soit FAIBLE, soit MOYEN, soit FORT  .
+
+On va pouvoir créer une variable de type Volume  , par exemple musique  , qui stockera le volume actuel de la musique.
+
+On peut par exemple initialiser la musique au volume MOYEN  :
+
+  1.Volume musique = MOYEN;
+
+Voilà qui est fait. Plus tard dans le programme, on pourra modifier la valeur du volume et la mettre soit à FAIBLE, soit à FORT  .
+
+Associez des nombres aux valeurs
+
+Vous avez remarqué que j'ai écrit les valeurs possibles de l'énumération en majuscules. Cela devrait vous rappeler les constantes et les define  , non ?
+
+En effet, c'est assez similaire, mais ce n'est pourtant pas exactement la même chose. Le compilateur associe automatiquement un nombre à chacune des valeurs possibles de l'énumération.
+
+Dans le cas de notre énumération Volume  , FAIBLE vaut 0, MOYEN vaut 1 et FORT vaut 2. L'association est automatique et commence à 0.
+
+Contrairement au #define  , c'est le compilateur qui associe MOYEN  à 1 par exemple, et non le préprocesseur. Au bout du compte, ça revient un peu au même. En fait, quand on a initialisé la variable musique  à MOYEN  , on a donc mis la case en mémoire à la valeur 1.
+
+En pratique, est-ce utile de savoir que MOYEN vaut 1, FORT vaut 2, etc. ?
+
+Non. En général ça nous est égal. C'est le compilateur qui associe automatiquement un nombre à chaque valeur. Grâce à ça, vous n'avez plus qu'à écrire :
+
+if (musique == MOYEN)
+{
+    // Jouer la musique au volume moyen
+}
+
+
+Peu importe la valeur de MOYEN  , vous laissez le compilateur se charger de gérer les nombres.
+
+Du coup, votre code est très lisible : tout le monde peut facilement lire le if précédent (on comprend bien que la condition signifie "Si la musique est au volume moyen").
+
+
+Associez une valeur précise
+
+Pour le moment, c'est le compilateur qui décide d'associer le nombre 0 à la première valeur, puis 1, 2, 3 dans l'ordre. Il est possible de demander d'associer une valeur précise à chaque élément de l'énumération.
+
+Quel intérêt est-ce que ça peut bien avoir ?
+
+Supposons que sur votre ordinateur, le volume soit géré entre 0 et 100 (0 = pas de son, 100 = 100 % du son). Il est alors pratique d'associer une valeur précise à chaque élément :
+
+
+typedef enum Volume Volume;
+enum Volume
+{
+    FAIBLE = 10, MOYEN = 50, FORT = 100
+};
+
+
+Ici, le volume FAIBLE correspondra à 10 % de volume, le volume MOYEN à 50 %, etc.
+
+On pourrait facilement ajouter de nouvelles valeurs possibles comme MUET  . On associerait dans ce cas MUET  à la valeur… 0 ! Vous avez compris.
+
+Un autre petit point à noter : si vous ne précisez pas la valeur d’un élément, elle sera forcément égale à la valeur de l'élément précédent + 1.
+
+Dans le cas suivant, l’élément FORT est égal à 51 car la valeur précédente est égale à 50 :
+
+
+typedef enum Volume Volume;
+enum Volume
+{
+···FAIBLE = 10, MOYEN = 50, FORT·
+};
+
+
+En résumé

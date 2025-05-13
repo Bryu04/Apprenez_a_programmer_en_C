@@ -9,6 +9,9 @@ Ce fichier contient les prototypes et les structures qui seront utilisés dans l
 main.c. Les structures sont des assemblage de variables qui peuvent avoir différents types, 
 même des tableaux.
 
+Il contient aussi les énumérations. Ces derniers permettent aussi de créer des types de
+variables mais contrairement aux structures, une énumération estune liste de valeurs 
+possibles pour une variable. Une énumération ne prend donc qu'une case en mémoire.
 */
 
 // On commence par la directive #ifndef pour éviter les inclusions en boucles infinies
@@ -40,6 +43,13 @@ struct Personne
     bool etudiant; // Booléen : True or False
 };
 
+
+// Création d'une énumération pour le son
+typedef enum Volume Volume;
+enum Volume
+{
+    MUET = 0, FAIBLE = 10, MOYEN = 50, FORT = 100
+};
 
 // Prototypes utilisées
 void initialiserCoordonnees(Coordonnees *point);

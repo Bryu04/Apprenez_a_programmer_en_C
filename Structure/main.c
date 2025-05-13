@@ -35,6 +35,9 @@ int main(int argc, const char * argv[]) {
     printf("Tres bien, vous vous appelez %s %s\n", utilisateur.prenom, utilisateur.nom);
     printf("Et vous avez %d ans. \n", utilisateur.age);
 
+    // Création et initialisation de la variable musique
+    Volume musique = MOYEN;
+
     return 0;
 }
 
