@@ -149,3 +149,177 @@ int main(int argc, char *argv[])
 
 Je vous recommande de faire un typedef comme je l'ai fait ici pour Coordonnees  . Ça évite d'avoir à écrire le mot struct partout. Un bon programmeur est un programmeur fainéant ! Il en écrit le moins possible.
 
+Modifiez les composantes de la structure
+
+Maintenant que notre variable point est créée, nous voulons modifier ses coordonnées.
+Comment accéder au x et au y de point? Comme ceci :
+
+int main(int argc, char *argv[])
+{
+    Coordonnees point;
+    
+    point.x = 10;
+    point.y = 20;
+
+    return 0;
+}
+
+On a ainsi modifié la valeur de point  , en lui donnant une abscisse de 10 et une ordonnée de 20. Notre point se situe désormais à la position (10 ; 20) ; c'est la notation mathématique d'une coordonnée.
+
+Pour accéder à chaque composante de la structure, vous devez donc écrire :
+
+  1.variable.nomDeLaComposante
+
+Le point fait la séparation entre la variable et la composante.
+
+Si on prend la structure Personne que nous avons vue tout à l'heure, et qu'on demande le nom et le prénom, on devra faire comme ça :
+
+int main(int argc, char *argv[])
+{
+    Personne utilisateur;
+
+    printf("Quel est votre nom ? ");
+    scanf("%s", utilisateur.nom);
+    printf("Votre prenom ? ");
+    scanf("%s", utilisateur.prenom);
+
+    printf("Vous vous appelez %s %s", utilisateur.prenom, utilisateur.nom);
+
+    return 0;
+}
+
+Quel est votre nom ? Dupont
+Votre prenom ? Jean
+Vous vous appelez Jean Dupont
+
+On envoie la variable utilisateur.nom à scanf qui écrira directement dans notre variable utilisateur  . On fait de même pour prenom  , et on pourrait aussi le faire pour l'adresse, l'âge et le statut étudiant, mais je n'ai guère envie de me répéter (je dois être programmeur, c'est pour ça).
+
+Vous auriez pu faire la même chose sans connaître les structures, en créant juste une variable nom et une autre, prenom  . Mais l'intérêt ici est que vous pouvez créer une autre variable de type Personne qui aura aussi son propre nom, son propre prénom, etc.
+
+On peut donc faire :
+
+  1.Personne joueur1, joueur2;
+
+… et stocker ainsi les informations sur chaque joueur. Chaque joueur a son propre nom, son propre prénom, etc.
+
+On peut même faire encore mieux : on peut créer un tableau de Personne :
+
+  1.Personne joueurs[2];
+
+Et ensuite, vous accédez par exemple au nom du joueur n° 0 en tapant :
+
+  1.joueurs[0].nom
+
+L'avantage d'utiliser un tableau ici, c'est que vous pouvez faire une boucle pour demander les infos du joueur 1 et du joueur 2, sans avoir à répéter deux fois le même code. Il suffit de parcourir le tableau joueur et de demander à chaque fois nom, prénom, adresse…
+
+
+Initialisez une structure
+
+Pour les structures comme pour les variables, tableaux et pointeurs, il est vivement conseillé de les initialiser dès leur création pour éviter qu'elles ne contiennent n'importe quoi.
+
+En effet, une variable qui est créée prend la valeur de ce qui se trouve en mémoire là où elle a été placée. Parfois cette valeur est 0, parfois c'est un résidu d'un autre programme qui est passé par là avant vous, et la variable a alors une valeur qui n'a aucun sens, comme -84570.
+
+Pour rappel, voici comment on initialise :
+
+  - une variable : on met sa valeur à 0 (cas le plus simple) ;
+
+  - un pointeur : on met sa valeur à NULL  . NULL  est en fait un #define situé dans stdlib.h qui vaut 
+    généralement 0, mais on continue à utiliser NULL par convention sur les pointeurs pour bien voir qu'il 
+    s'agit de pointeurs et non de variables ordinaires ;
+
+  - un tableau : on met chacune de ses valeurs à 0.
+
+Pour une structure, l'initialisation ressemble un peu à celle d'un tableau.
+
+En effet, on peut faire à la déclaration de la variable :
+
+  1.Coordonnees point = {0, 0};
+
+Cela définira, dans l'ordre :
+
+  1. point.x = 0  .
+
+  2. point.y = 0  .
+
+Pour envoyer ma variable point à une fonction initialiserCoordonnees par exemple, qui se charge de faire les initialisations sur ma variable, je peux envoyer un pointeur de ma variable.
+
+En effet, si j'envoie juste ma variable, une copie en sera réalisée dans la fonction (comme pour une variable de base), et la fonction modifiera les valeurs de la copie et non celles de ma vraie variable. Revoyez le fil rouge du chapitre sur les pointeurs si vous avez oublié comment cela fonctionne.
+
+Reprenons l’exemple de la structure  Personne  et voyons comment créer et utiliser la structure dans la vidéo suivante :
+
+
+Utilisez un pointeur sur une structure
+
+Un pointeur de structure se crée de la même manière qu'un pointeur de int  , de double ou de n'importe quel autre type de base :
+
+  1.Coordonnees* point = NULL;
+
+On a ainsi un pointeur de Coordonnees appelé point  .
+
+Comme un rappel ne fera de mal à personne, je tiens à vous répéter que l'on aurait aussi pu mettre l'étoile devant le nom du pointeur, cela revient exactement au même :
+
+  1.Coordonnees *point = NULL;
+
+C'est même mieux car pour définir plusieurs pointeurs sur la même ligne, nous sommes obligés de placer l'étoile devant chaque nom de pointeur :
+
+  1.Coordonnees *point1 = NULL, *point2 = NULL;
+
+
+Envoyez la structure à une fonction
+
+Ce qui nous intéresse ici, c'est de savoir comment envoyer un pointeur de structure à une fonction pour que celle-ci puisse modifier le contenu de la variable.
+
+On va faire ceci pour cet exemple : on va simplement créer une variable de type Coordonnees  dans le main et envoyer son adresse à initialiserCoordonnees  . Cette fonction aura pour rôle de mettre tous les éléments de la structure à 0.
+
+Notre fonction initialiserCoordonnees va prendre un paramètre : un pointeur sur une structure de type Coordonnees (un Coordonnees*  , donc).
+
+int main(int argc, char *argv[])
+{
+    Coordonnees monPoint;
+
+    initialiserCoordonnees(&monPoint);
+
+    return 0;
+}
+
+void initialiserCoordonnees(Coordonnees* point)
+{
+    // Initialisation de chacun des membres de la structure ici
+}
+
+Ma variable monPoint est donc créée dans le main  .
+
+On envoie son adresse à la fonction initialiserCoordonnees qui récupère cette variable sous la forme d'un pointeur appelé point (on aurait d'ailleurs pu l'appeler n'importe comment dans la fonction, cela n'aurait pas eu d'incidence).
+
+Maintenant que nous sommes dans initialiserCoordonnees  , nous allons initialiser chacune des valeurs une à une.
+
+Il ne faut pas oublier de mettre une étoile devant le nom du pointeur pour accéder à la variable. Si vous ne le faites pas, vous risquez de modifier l'adresse, et ce n'est pas ce que nous voulons faire.
+
+Oui mais voilà, problème… On ne peut pas vraiment faire :
+
+void initialiserCoordonnees(Coordonnees* point)
+{
+    *point.x = 0;
+    *point.y = 0;
+}
+
+
+Pourquoi on ne peut pas faire ça ?
+
+Parce que le point de séparation s'applique sur le mot point et non sur *point en entier. Or, nous ce qu'on veut, c'est accéder à *point pour en modifier la valeur.
+
+Pour régler le problème, il faut placer des parenthèses autour de *point ;  le point de séparation s'appliquera à *point et non juste à point  :
+
+void initialiserCoordonnees(Coordonnees* point)
+{
+    (*point).x = 0;
+    (*point).y = 0;
+}
+
+
+La variable de type Coordonnees a été transmise à la fonction qui a initialisé x et y à 0.
+
+En langage C, on initialise généralement nos structures avec la méthode simple qu'on a vue plus haut. En C++ en revanche, on initialise plus souvent dans des fonctions. Le C++ n'est en fait rien d'autre qu'une sorte de super-amélioration des structures.
+
+
+Utilisez ce raccourci

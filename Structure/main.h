@@ -41,4 +41,9 @@ struct Personne
 };
 
 
+// Prototypes utilisées
+void initialiserCoordonnees(Coordonnees *point);
+
+void initialiserPersonne(Personne *utilisateur);
+
 #endif  // fin de main_j
