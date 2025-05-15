@@ -830,3 +830,188 @@ int main(int argc, char *argv[])
 
 Vous pouvez ainsi facilement réutiliser ce que vous savez de printf  pour écrire dans un fichier ! C'est pour cette raison d'ailleurs que j'utilise le plus souvent fprintf  pour écrire dans des fichiers.
 
+
+Lisez dans un fichier
+
+Nous pouvons utiliser quasiment les mêmes fonctions que pour l'écriture, le nom change juste un petit peu :
+
+  1. fgetc lit un caractère.
+
+  2. fgets lit une chaîne.
+
+  3. fscanf lit une chaîne "formatée".
+
+Je vais cette fois aller un peu plus vite dans l'explication de ces fonctions : si vous avez compris ce que j'ai écrit plus haut, ça ne devrait pas poser de problème.
+
+
+1. Lisez un caractère avec fgetc
+
+Tout d'abord le prototype :
+
+  1.int fgetc(FILE* pointeurDeFichier);
+
+Cette fonction retourne un int  : c'est le caractère qui a été lu.
+Si la fonction n'a pas pu lire de caractère, elle retourne EOF  .
+
+Mais comment savoir quel caractère on lit ? Si on veut lire le troisième caractère, ainsi que le dixième caractère, comment doit-on faire ?
+
+En fait, au fur et à mesure que vous lisez un fichier, vous avez un « curseur » qui avance. C'est un curseur virtuel bien entendu, vous ne le voyez pas à l'écran. Vous pouvez imaginer que ce curseur est comme la barre clignotante lorsque vous éditez un fichier sous Bloc-Notes. Il indique où vous en êtes dans la lecture du fichier.
+
+Nous verrons peu après comment savoir à quelle position le curseur est situé dans le fichier, et également comment modifier la position du curseur (pour le remettre au début du fichier par exemple, ou le placer à un caractère précis, comme le dixième caractère).
+
+fgetc  avance le curseur d'un caractère à chaque fois que vous en lisez un. Si vous appelez fgetc  une seconde fois, la fonction lira donc le second caractère, puis le troisième et ainsi de suite. Vous pouvez donc faire une boucle pour lire les caractères un par un dans le fichier.
+
+On va écrire un code qui lit tous les caractères d'un fichier un à un, et qui les écrit à chaque fois à l'écran. La boucle s'arrête quand fgetc  renvoie EOF  (qui signifie « End Of File », c'est-à-dire « fin du fichier »).
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+    int caractereActuel = 0;
+ 
+    fichier = fopen("test.txt", "r");
+ 
+    if (fichier != NULL)
+    {
+        // Boucle de lecture des caractères un à un
+        do
+        {
+            caractereActuel = fgetc(fichier); // On lit le caractère
+            printf("%c", caractereActuel); // On l'affiche
+        } while (caractereActuel != EOF); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
+ 
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+La console affichera tout le contenu du fichier, par exemple :
+
+Coucou, je suis le contenu du fichier test.txt !
+
+
+2. Lisez une chaîne avec fgets
+
+Cette fonction lit une chaîne dans le fichier. Ça vous évite d'avoir à lire tous les caractères un par un. La fonction lit au maximum une ligne (elle s'arrête au premier \n  qu'elle rencontre). Si vous voulez lire plusieurs lignes, il faudra faire une boucle.
+
+Voici le prototype de fgets  :
+
+  1.char* fgets(char* chaine, int nbreDeCaracteresALire, FILE* pointeurSurFichier);
+
+Cette fonction demande un paramètre un peu particulier, qui va en fait s'avérer très pratique : le nombre de caractères à lire. Cela demande à la fonction fgets  de s'arrêter de lire la ligne si elle contient plus de X caractères.
+Avantage : ça nous permet de nous assurer que l'on ne fera pas de dépassement de mémoire ! En effet, si la ligne est trop grosse pour rentrer dans chaine, la fonction aurait lu plus de caractères qu'il n'y a de place, ce qui aurait probablement provoqué un plantage du programme.
+
+Nous allons d'abord voir comment lire une ligne avec fgets  (nous verrons ensuite comment lire tout le fichier).
+
+Pour cela, on crée une chaîne suffisamment grande pour stocker le contenu de la ligne qu'on va lire (du moins on l'espère, car on ne peut pas en être sûr à 100 %). Vous allez voir là tout l'intérêt d'utiliser un define  pour définir la taille du tableau :
+
+
+#define TAILLE_MAX 1000 // Tableau de taille 1000
+ 
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+    char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
+ 
+    fichier = fopen("test.txt", "r");
+ 
+    if (fichier != NULL)
+    {
+        fgets(chaine, TAILLE_MAX, fichier); // On lit maximum TAILLE_MAX caractères du fichier, on stocke le tout dans "chaine"
+        printf("%s", chaine); // On affiche la chaîne
+ 
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+Le résultat est le même que pour le code de tout à l'heure, à savoir que le contenu s'écrit dans la console :
+
+Coucou, je suis le contenu du fichier test.txt !
+
+La différence, c'est qu'ici on ne fait pas de boucle. On affiche toute la chaîne d'un coup.
+Vous aurez sûrement remarqué maintenant l'intérêt que peut avoir un #define  dans son code pour définir la taille maximale d'un tableau, par exemple. En effet, TAILLE_MAX  est ici utilisé à deux endroits du code :
+
+  - une première fois pour définir la taille du tableau à créer ;
+
+  - une autre fois dans le fgets  pour limiter le nombre de caractères à lire.
+
+L'avantage ici, c'est que si vous vous rendez compte que la chaîne n'est pas assez grande pour lire le fichier, vous n'avez qu'à changer la ligne du define  et recompiler. Cela vous évite d'avoir à chercher tous les endroits du code qui indiquent la taille du tableau. Le préprocesseur remplacera tous les TAILLE_MAX  dans le code par leur nouvelle valeur.
+Comme je vous l'ai dit, fgets  lit au maximum toute une ligne à la fois. Elle s'arrête de lire la ligne si elle dépasse le nombre maximum de caractères que vous autorisez.
+
+Oui mais voilà : pour le moment, on ne sait lire qu'une seule ligne à la fois avec fgets  . Comment diable lire tout le fichier ? La réponse est simple : avec une boucle !
+
+La fonction fgets  renvoie NULL  si elle n'est pas parvenue à lire ce que vous avez demandé.
+La boucle doit donc s'arrêter dès que fgets  se met à renvoyer NULL  .
+
+On n'a plus qu'à faire un while  pour boucler tant que fgets  ne renvoie pas NULL  :
+
+
+#define TAILLE_MAX 1000
+ 
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+    char chaine[TAILLE_MAX] = "";
+ 
+    fichier = fopen("test.txt", "r");
+ 
+    if (fichier != NULL)
+    {
+        while (fgets(chaine, TAILLE_MAX, fichier) != NULL) // On lit le fichier tant qu'on ne reçoit pas d'erreur (NULL)
+        {
+            printf("%s", chaine); // On affiche la chaîne qu'on vient de lire
+        }
+ 
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+Ce code source lit et affiche tout le contenu de mon fichier, ligne par ligne.
+
+La ligne de code la plus intéressante est celle du while  :
+
+  1.while (fgets(chaine, TAILLE_MAX, fichier) != NULL)
+
+La ligne du while  fait deux choses : elle lit une ligne dans le fichier et vérifie si fgets  ne renvoie pas NULL  . Elle peut donc se traduire comme ceci : « Lire une ligne du fichier tant que nous ne sommes pas arrivés à la fin du fichier ».
+
+
+3. Lisez une chaîne "formatée" avec fscanf
+
+C'est le même principe que la fonction scanf  , là encore.
+Cette fonction lit dans un fichier qui doit avoir été écrit d'une manière précise.
+Supposons que votre fichier contienne trois nombres séparés par un espace, qui sont par exemple les trois plus hauts scores obtenus à votre jeu :  15 20 30  .
+Vous voudriez récupérer chacun de ces nombres dans une variable de type int  .
+La fonction fscanf  va vous permettre de faire ça rapidement.
+
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+    int score[3] = {0}; // Tableau des 3 meilleurs scores
+ 
+    fichier = fopen("test.txt", "r");
+ 
+    if (fichier != NULL)
+    {
+        fscanf(fichier, "%d %d %d", &score[0], &score[1], &score[2]);
+        printf("Les meilleurs scores sont : %d, %d et %d", score[0], score[1], score[2]);
+ 
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+Les meilleurs scores sont : 15, 20 et 30
+
+Comme vous le voyez, la fonction fscanf  attend trois nombres séparés par un espace ( "%d %d %d"  ). Elle les stocke ici dans notre tableau de trois blocs.
+
+On affiche ensuite chacun des nombres récupérés.
+
+Jusqu'ici, je ne vous avais fait mettre qu'un seul %d  entre guillemets pour la fonction scanf  . Vous découvrez aujourd'hui qu'on peut en mettre plusieurs, les combiner. Si votre fichier est écrit d'une façon bien précise, cela permet d'aller plus vite pour récupérer chacune des valeurs.
+
+Déplacez-vous dans un fichier
