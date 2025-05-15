@@ -705,3 +705,128 @@ Maintenant que nous avons écrit le code qui ouvre et ferme le fichier, nous n'a
 
 Nous allons commencer par voir comment écrire dans un fichier (ce qui est un peu plus simple), puis nous verrons ensuite comment lire dans un fichier.
 
+
+Écrivez dans un fichier
+
+Il existe plusieurs fonctions capables d'écrire dans un fichier. Ce sera à vous de choisir celle qui est la plus adaptée à votre cas.
+Voici les trois fonctions que nous allons étudier :
+
+  1. fputc écrit un caractère dans le fichier (UN SEUL caractère à la fois).
+
+  2. fputs écrit une chaîne dans le fichier.
+
+  3. fprintf écrit une chaîne formatée dans le fichier.
+
+
+1. Écrivez un caractère dans le fichier avec fputc
+
+Cette fonction écrit un caractère à la fois dans le fichier. Son prototype est :
+
+  1.int fputc(int caractere, FILE* pointeurSurFichier);
+
+Elle prend deux paramètres.
+
+  - Le caractère à écrire (de type int  , ce qui comme je vous l'ai dit revient plus ou moins à utiliser un 
+    char  , sauf que le nombre de caractères utilisables est ici plus grand). Vous pouvez donc écrire 
+    directement 'A'  , par exemple.
+
+  - Le pointeur sur le fichier dans lequel écrire. Dans notre exemple, notre pointeur s'appelle fichier  . 
+    L'avantage de demander le pointeur de fichier à chaque fois, c'est que vous pouvez ouvrir plusieurs 
+    fichiers en même temps, et donc lire et écrire dans chacun de ces fichiers. Vous n'êtes pas limité à un 
+    seul fichier ouvert à la fois.
+
+La fonction retourne un int, c'est un code d'erreur. Ce int vaut EOF si l'écriture a échoué, sinon il a une autre valeur.
+Comme le fichier a normalement été ouvert avec succès, je n'ai pas l'habitude de tester si chacun de mes fputc a réussi, mais vous pouvez le faire encore une fois si vous le voulez.
+
+Le code suivant écrit la lettre 'A' dans test.txt  (si le fichier existe, il est remplacé ; s'il n'existe pas, il est créé). Il y a tout dans ce code : ouverture, test de l'ouverture, écriture et fermeture.
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+ 
+    fichier = fopen("test.txt", "w");
+ 
+    if (fichier != NULL)
+    {
+        fputc('A', fichier); // Écriture du caractère A
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+Ouvrez votre fichier test.txt  .   Que voyez-vous ?
+C'est magique, le fichier contient maintenant la lettre 'A' : 
+
+
+2. Écrivez une chaîne dans le fichier avec fputs
+
+Cette fonction est très similaire à fputc  , à la différence près qu'elle écrit tout une chaîne, ce qui est en général plus pratique que d'écrire caractère par caractère.
+Cela dit, fputc reste utile lorsque vous devez écrire caractère par caractère, ce qui arrive fréquemment.
+
+Prototype de la fonction :
+
+  1.char* fputs(const char* chaine, FILE* pointeurSurFichier);
+
+Les deux paramètres sont faciles à comprendre.
+
+  - chaine  : la chaîne à écrire. Notez que le type ici est const char*  : en ajoutant le mot const dans le 
+    prototype, la fonction indique que pour elle la chaîne sera considérée comme une constante. En un mot 
+    comme en cent : elle s'interdit de modifier le contenu de votre chaîne. C'est logique quand on y pense : 
+    fputs doit juste lire votre chaîne, pas la modifier. C'est donc pour vous une information (et une 
+    sécurité) indiquant que votre chaîne ne subira pas de modification.
+
+  - pointeurSurFichier  : comme pour fputc  , il s'agit de votre pointeur de type FILE* sur le fichier que 
+    vous avez ouvert.
+
+La fonction renvoie EOF s'il y a eu une erreur, sinon c'est que cela a fonctionné. Là non plus, je ne teste en général pas la valeur de retour.
+
+Testons l'écriture d'une chaîne dans le fichier :
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+ 
+    fichier = fopen("test.txt", "w");
+ 
+    if (fichier != NULL)
+    {
+        fputs("Salut les développeurs\nBienvenue sur OpenClassrooms !", fichier);
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+Voici le fichier une fois modifié par le programme :
+
+
+3. Écrivez une chaîne "formatée" dans le fichier avec fprintf
+
+Voici un autre exemplaire de la fonction printf  . Celle-ci peut être utilisée pour écrire dans un fichier. Elle s'utilise de la même manière que printf  d'ailleurs, excepté le fait que vous devez indiquer un pointeur de FILE  en premier paramètre.
+
+Ce code demande l'âge de l'utilisateur et l'écrit dans le fichier (résultat fig. suivante) :
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+    int age = 0;
+ 
+    fichier = fopen("test.txt", "w");
+ 
+    if (fichier != NULL)
+    {
+        // On demande l'âge
+        printf("Quel age avez-vous ? ");
+        scanf("%d", &age);
+ 
+        // On l'écrit dans le fichier
+        fprintf(fichier, "Le Monsieur qui utilise le programme, il a %d ans", age);
+        fclose(fichier);
+    }
+ 
+    return 0;
+}
+
+Vous pouvez ainsi facilement réutiliser ce que vous savez de printf  pour écrire dans un fichier ! C'est pour cette raison d'ailleurs que j'utilise le plus souvent fprintf  pour écrire dans des fichiers.
+
