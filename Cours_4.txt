@@ -474,3 +474,234 @@ Découvrons maintenant comment lire et écrire dans des fichiers. C’est parti 
 
 ##############################################################################################################
 
+Manipulez des fichiers à l'aide de fonctions
+
+Les variables n'existent que dans la mémoire vive : une fois votre programme arrêté, elles sont supprimées de la mémoire et il n'est pas possible de retrouver ensuite leur valeur. Comment peut-on faire un éditeur de texte si tout le texte écrit disparaît lorsqu'on arrête le programme ?
+
+On peut lire et écrire dans des fichiers en langage C. Ces fichiers seront écrits sur le disque dur de votre ordinateur : ils restent là même si vous arrêtez le programme ou l'ordinateur.
+
+Pour lire et écrire dans des fichiers, nous allons nous servir de fonctions situées dans des bibliothèques standard.
+
+Incluez au moins les bibliothèques stdio.h et stdlib.h en haut de votre fichier .c  :
+
+  1.#include <stdlib.h>
+  2.#include <stdio.h>
+
+Je vous recommande d'ailleurs de les inclure dans tous vos futurs programmes, quels qu'ils soient.
+
+Pour commencer, voyons d'abord comment ouvrir et fermer un fichier. Nous verrons ensuite comment le modifier.
+
+
+Ouvrez un fichier avec  fopen
+
+
+Chaque fois que vous voulez ouvrir un fichier, que ce soit pour le lire ou pour y écrire, il faut :
+
+  1. Appeler la fonction d'ouverture de fichier fopen qui renvoie un pointeur sur le fichier.
+
+  2. Vérifier si l'ouverture a réussi (c'est-à-dire si le fichier existait) en testant la valeur du pointeur 
+     qu'on a reçu. Nous verrons comment faire dans un instant.
+
+Dans le chapitre sur les chaînes, nous nous sommes servis des prototypes des fonctions comme d'un mode d'emploi. Voyons justement le prototype de la fonction fopen  :
+
+  1.FILE* fopen(const char* nomDuFichier, const char* modeOuverture);
+
+Cette fonction attend deux paramètres :
+
+  1. Le nom du fichier à ouvrir.
+
+  2. Le mode d'ouverture du fichier, c'est-à-dire une indication qui mentionne ce que vous voulez faire : 
+     seulement écrire dans le fichier, seulement le lire, ou les deux à la fois.
+
+Cette fonction renvoie un pointeur sur FILE (une structure de type FILE qui est définie dans stdio.h  ). Elle renvoie un FILE*  .
+
+Il faut absolument récupérer ce pointeur pour pouvoir ensuite lire et écrire dans le fichier.
+Créons donc un pointeur de FILE  au début de notre fonction, par exemple la fonction main :
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+
+    return 0;
+}
+
+
+Le pointeur est initialisé à NULL dès le début.
+
+Initialiser un pointeur à NULL dès le début, si on n'a pas d'autre valeur à lui donner, est fondamental !
+Si vous ne le faites pas, vous augmentez considérablement le risque d'erreur par la suite.
+
+Il n'est pas nécessaire d'écrire struct FILE* fichier = NULL  . Les créateurs de stdio ont donc fait un typedef .
+La forme de la structure peut changer d'un système d'exploitation à l'autre (elle ne contient pas forcément les mêmes sous-variables partout). On ne modifie donc jamais le contenu d'un FILE directement (on ne fait pas fichier.element  , par exemple). On utilise des fonctions qui manipulent le FILE  à notre place.
+
+Maintenant, nous allons appeler la fonction fopen et récupérer la valeur qu'elle renvoie dans le pointeur fichier  . Mais avant ça, il faut que je vous explique comment se servir du second paramètre, le paramètre modeOuverture  . En effet, il y a un code à envoyer qui indiquera à l'ordinateur si vous ouvrez le fichier en mode de lecture seule, d'écriture seule, ou des deux à la fois.
+
+Voici les principaux modes d'ouverture possibles :
+
+  - "r"  : lecture seule. Vous pourrez lire le contenu du fichier, mais pas y écrire. Le fichier doit avoir 
+           été créé au préalable.
+
+  - "w"  : écriture seule. Vous pourrez écrire dans le fichier, mais pas lire son contenu. Si le fichier 
+           n'existe pas, il sera créé.
+
+  - "a"  : mode d'ajout. Vous écrirez dans le fichier, en partant de la fin du fichier. Vous ajouterez donc du 
+           texte à la fin du fichier. Si le fichier n'existe pas, il sera créé. Ce mode d'ajout peut être 
+           utile si vous voulez seulement ajouter des informations à la fin du fichier.
+
+  - "a+"  : ajout en lecture / écriture à la fin. Vous écrivez et lisez du texte à partir de la fin du 
+            fichier. Si le fichier n'existe pas, il sera créé.
+
+  - "r+"  : lecture et écriture. Vous pourrez lire et écrire dans le fichier. Le fichier doit avoir été créé 
+            au préalable.
+
+  - "w+"  : lecture et écriture, avec suppression du contenu au préalable. Le fichier est donc d'abord vidé de 
+            son contenu, vous pouvez y écrire, et le lire ensuite. Si le fichier n'existe pas, il sera créé.
+
+
+"r" (lecture), "w" (écriture) et "r+" (lecture et écriture) sont ceux que vous utiliserez le plus souvent.
+Si vous avez juste l'intention de lire un fichier, il est conseillé de mettre "r"  . Certes, le mode "r+"  aurait fonctionné aussi, mais avec "r"  vous vous assurez que le fichier ne pourra pas être modifié, ce qui est en quelque sorte une sécurité.
+
+Le mode "w+"  est un peu dangereux parce qu'il vide de suite le contenu du fichier, sans demande de confirmation.
+
+Il ne doit être utilisé que si vous voulez d'abord réinitialiser le fichier.
+
+Le code suivant ouvre le fichier test.txt en mode "r+"  (lecture et écriture) :
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+
+    fichier = fopen("test.txt", "r+");
+
+    return 0;
+}
+
+Le pointeur fichier devient alors un pointeur sur test.txt  .
+
+Où doit être situé test.txt  ?
+
+Il doit être situé dans le même dossier que votre exécutable ( .exe  ). Pour les besoins de ce chapitre, créez un fichier test.txt dans le même dossier que le .exe :
+
+
+Le fichier doit-il être de type .txt  ?
+
+Non. C'est vous qui choisissez l'extension lorsque vous ouvrez le fichier. Vous pouvez très bien inventer votre propre format de fichier.
+
+Le fichier doit-il être obligatoirement dans le même répertoire que l'exécutable ?
+
+Non plus. Il peut être dans un sous-dossier :
+
+  1.fichier = fopen("dossier/test.txt", "r+");
+
+Ici, le fichier test.txt est dans un sous-dossier appelé dossier  . Cette méthode, que l'on appelle "chemin relatif", est plus pratique. Comme ça, cela fonctionnera, peu importe l'endroit où est installé votre programme.
+
+Il est aussi possible d'ouvrir un autre fichier n'importe où ailleurs sur le disque dur. Dans ce cas, il faut écrire le chemin complet (ce qu'on appelle le "chemin absolu") :
+
+  1.fichier = fopen("C:\\Program Files\\Notepad++\\readme.txt", "r+");
+
+Ce code ouvre le fichier readme.txt situé dans C:\Program Files\Notepad++  .
+
+Il faut mettre deux "antislashs" \  à chaque fois, comme vous l'avez remarqué.
+S'il n'y en a qu'un, votre ordinateur pensera que vous essayez d'insérer un symbole spécial comme \n ou \t  .
+Pour écrire un "antislash" dans une chaîne, il faut donc l'écrire deux fois : votre ordinateur comprend alors que c'est bien le symbole \  que vous vouliez utiliser.
+
+Le défaut des chemins absolus, c'est qu'ils ne fonctionnent que sur un système d'exploitation précis. Ce n'est pas une solution portable, donc. Si vous aviez été sous Linux, vous auriez dû écrire un chemin "à la Linux", tel que :
+
+  1.fichier = fopen("/home/mateo/dossier/readme.txt", "r+");
+
+Je vous recommande donc d'utiliser des chemins relatifs plutôt que des chemins absolus. N'utilisez les chemins absolus que si votre programme est fait pour un système d'exploitation précis, et doit modifier un fichier précis quelque part sur votre disque dur.
+
+Le pointeur fichier devrait contenir l'adresse de la structure de type FILE qui sert de descripteur de fichier. Celui-ci a été chargé en mémoire pour vous par la fonction fopen()  .
+
+À partir de là, deux possibilités :
+
+  1. Soit l'ouverture a réussi : vous pouvez commencer à lire et écrire dans le fichier via des fonctions que 
+     je vais vous présenter dans la suite de ce chapitre.
+
+  2. Soit l'ouverture a échoué parce que le fichier n'existait pas ou était utilisé par un autre programme : 
+     vous devez arrêter de travailler sur le fichier.
+
+Juste après l'ouverture du fichier, il faut impérativement vérifier si l'ouverture a réussi ou non. Pour faire ça, c'est très simple : si le pointeur vaut NULL  , l'ouverture a échoué. S'il vaut autre chose que NULL  , l'ouverture a réussi.
+
+On va donc suivre systématiquement le schéma suivant :
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+
+    fichier = fopen("test.txt", "r+");
+
+    if (fichier != NULL)
+    {
+        // On peut lire et écrire dans le fichier
+    }
+    else
+    {
+        // On affiche un message d'erreur si on veut
+        printf("Impossible d'ouvrir le fichier test.txt");
+    }
+
+    return 0;
+}
+
+Faites toujours cela lorsque vous ouvrez un fichier. Si vous ne le faites pas et que le fichier n'existe pas, vous risquez un plantage du programme par la suite.
+
+Quand vous avez terminé de travailler sur un fichier, n'oubliez pas de le fermer avec la fonction fclose  .
+
+
+Fermez un fichier avec fclose
+
+Si l'ouverture du fichier a réussi, vous pouvez le lire et y écrire (nous allons voir sous peu comment faire).
+Une fois que vous aurez fini de travailler avec le fichier, il faudra le « fermer ». On utilise pour cela la fonction fclose  qui a pour rôle de libérer la mémoire, c'est-à-dire supprimer votre fichier chargé dans la mémoire vive.
+
+Son prototype est :
+
+  1.int fclose(FILE* pointeurSurFichier);
+
+Cette fonction prend un paramètre : votre pointeur sur le fichier.
+Elle renvoie un int  qui indique si elle a réussi à fermer le fichier. Ce int  vaut :
+
+  - 0  : si la fermeture a marché ;
+
+  - EOF  : si la fermeture a échoué. EOF  est un define  situé dans stdio.h  qui correspond à un nombre 
+           spécial, utilisé pour dire soit qu'il y a eu une erreur, soit que nous sommes arrivés à la fin du 
+           fichier. Dans le cas présent, cela signifie qu'il y a eu une erreur.
+
+À priori, la fermeture se passe toujours bien : je n'ai donc pas l'habitude de tester si le fclose  a marché. Vous pouvez néanmoins le faire si vous le voulez.
+
+Pour fermer le fichier, on va donc écrire :
+
+  1.fclose(fichier);
+
+Au final, le schéma que nous allons suivre pour ouvrir et fermer un fichier sera le suivant :
+
+
+int main(int argc, char *argv[])
+{
+    FILE* fichier = NULL;
+
+    fichier = fopen("test.txt", "r+");
+
+    if (fichier != NULL)
+    {
+        // On lit et on écrit dans le fichier
+        
+        // ...
+        
+        fclose(fichier); // On ferme le fichier qui a été ouvert
+    }
+
+    return 0;
+}
+
+
+Je n'ai pas mis le else  ici pour afficher un message d'erreur si l'ouverture a échoué, mais vous pouvez le faire si vous le désirez.
+Il faut toujours penser à fermer son fichier une fois que l'on a fini de travailler avec. Cela permet de libérer de la mémoire.
+Si vous oubliez de libérer la mémoire, votre programme risque à la fin de prendre énormément de mémoire qu'il n'utilise plus. Sur un petit exemple comme ça ce n'est pas flagrant, mais sur un gros programme, bonjour les dégâts !
+
+Oublier de libérer la mémoire, ça arrive. Ça vous arrivera d'ailleurs très certainement. Dans ce cas, vous serez témoin de ce que l'on appelle des fuites mémoire. Votre programme se mettra alors à utiliser plus de mémoire que nécessaire sans que vous arriviez à comprendre pourquoi. Bien souvent, il s'agit simplement d'un ou deux « détails », comme des petits fclose  oubliés.
+
+Maintenant que nous avons écrit le code qui ouvre et ferme le fichier, nous n'avons plus qu'à insérer le code qui le lit et y écrit.
+
+Nous allons commencer par voir comment écrire dans un fichier (ce qui est un peu plus simple), puis nous verrons ensuite comment lire dans un fichier.
+
