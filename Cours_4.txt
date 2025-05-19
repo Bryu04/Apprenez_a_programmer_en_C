@@ -1106,3 +1106,39 @@ La particularité de ces fonctions est qu'elles ne nécessitent pas de pointeur 
 
 Renommez un fichier avec rename
 
+Voici le prototype de cette fonction :
+
+  1.int rename(const char* ancienNom, const char* nouveauNom);
+
+La fonction renvoie 0 si elle a réussi à renommer, sinon elle renvoie une valeur différente de 0 :
+
+
+int main(int argc, char *argv[])
+{
+    rename("test.txt", "test_renomme.txt");
+
+    return 0;
+}
+
+
+Supprimez un fichier avec remove
+
+Cette fonction supprime un fichier sans demander son reste :
+
+  1.int remove(const char* fichierASupprimer);
+
+Cette fonction supprime le fichier indiqué sans demander de confirmation : le fichier n'est pas mis dans la corbeille, il est littéralement supprimé du disque dur.
+
+Il n'est pas possible de récupérer un fichier supprimé (à moins de faire appel à des outils spécifiques de récupération de fichiers sur le disque, mais l'opération peut être longue, complexe, et ne pas aboutir).
+
+Cette fonction tombe à pic pour la fin du chapitre, je n'ai justement plus besoin du fichier test.txt  , je peux donc me permettre de le supprimer :
+
+int main(int argc, char *argv[])
+{
+    remove("test.txt");
+
+    return 0;
+}
+
+
+En résumé
