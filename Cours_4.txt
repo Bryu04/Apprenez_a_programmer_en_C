@@ -1014,4 +1014,95 @@ On affiche ensuite chacun des nombres récupérés.
 
 Jusqu'ici, je ne vous avais fait mettre qu'un seul %d  entre guillemets pour la fonction scanf  . Vous découvrez aujourd'hui qu'on peut en mettre plusieurs, les combiner. Si votre fichier est écrit d'une façon bien précise, cela permet d'aller plus vite pour récupérer chacune des valeurs.
 
+
 Déplacez-vous dans un fichier
+
+Je vous ai parlé d'une espèce de « curseur » virtuel tout à l'heure. Nous allons l'étudier maintenant plus en détail.
+Chaque fois que vous ouvrez un fichier, il existe en effet un curseur qui indique votre position dans le fichier. Vous pouvez imaginer que c'est exactement comme le curseur de votre éditeur de texte (tel Bloc-Notes). Il indique où vous êtes dans le fichier, et donc où vous allez écrire.
+En résumé, le système de curseur vous permet d'aller lire et écrire à une position précise dans le fichier.
+
+Il existe trois fonctions à connaître :
+
+  1. ftell indique à quelle position vous êtes actuellement dans le fichier.
+
+  2. fseek positionne le curseur à un endroit précis.
+
+  3. rewind remet le curseur au début du fichier (c'est équivalent à demander à la fonction fseek de 
+     positionner le curseur au début).
+
+
+1. Situez-vous dans un fichier avec ftell
+
+Cette fonction est très simple à utiliser. Elle renvoie la position actuelle du curseur sous la forme d'un long  :
+
+  1.long ftell(FILE* pointeurSurFichier);
+
+Le nombre renvoyé indique donc la position du curseur dans le fichier.
+
+
+2. Positionnez le curseur dans un fichier avec fseek
+
+Le prototype de fseek  est le suivant :
+
+  1.int fseek(FILE* pointeurSurFichier, long deplacement, int origine);
+
+La fonction fseek  permet de déplacer le curseur d'un certain nombre de caractères (indiqué par deplacement  ) à partir de la position indiquée par origine  .
+
+  - Le nombre deplacement  peut être un nombre positif (pour se déplacer en avant), nul (= 0) ou négatif (pour 
+    se déplacer en arrière).
+
+  - Quant au nombre origine  , vous pouvez mettre comme valeur l'une des trois constantes (généralement des 
+    define  ) listées ci-dessous :
+
+      - SEEK_SET  : indique le début du fichier ;
+
+      - SEEK_CUR  : indique la position actuelle du curseur ;
+
+      - SEEK_END  : indique la fin du fichier.
+
+Voici quelques exemples pour bien comprendre comment on jongle avec deplacement  et origine  .
+
+  - Le code suivant place le curseur deux caractères après le début :
+
+  1.fseek(fichier, 2, SEEK_SET);
+
+  - Le code suivant place le curseur quatre caractères avant la position courante :
+
+  1.fseek(fichier, -4, SEEK_CUR);
+
+Remarquez que deplacement  est négatif car on se déplace en arrière.
+
+  - Le code suivant place le curseur à la fin du fichier :
+
+  1.fseek(fichier, 0, SEEK_END);
+
+Si vous écrivez après avoir fait un fseek  qui mène à la fin du fichier, cela ajoutera vos informations à la suite dans le fichier (le fichier sera complété).
+En revanche, si vous placez le curseur au début et que vous écrivez, cela écrasera le texte qui se trouvait là. Il n'y a pas de moyen d'« insérer » de texte dans le fichier, à moins de coder soi-même une fonction qui lit les caractères d'après pour s'en souvenir avant de les écraser !
+
+Mais comment puis-je savoir à quelle position je dois aller lire et écrire dans le fichier ?
+
+C'est à vous de le gérer. Si c'est un fichier que vous avez vous-même écrit, vous savez comment il est construit. Vous savez donc où aller chercher vos informations : par exemple les meilleurs scores sont en position 0, les noms des derniers joueurs sont en position 50, etc.
+
+Nous travaillerons sur un TP un peu plus tard dans lequel vous comprendrez, si ce n'est pas déjà le cas, comment on fait pour aller chercher l'information qui nous intéresse. N'oubliez pas que c'est vous qui définissez comment votre fichier est construit. C'est donc à vous de dire : « Je place le score du meilleur joueur sur la première ligne, celui du second meilleur joueur sur la seconde ligne, etc. »
+
+La fonction fseek  peut se comporter bizarrement sur des fichiers ouverts en mode texte. En général, on l'utilise plutôt pour se déplacer dans des fichiers ouverts en mode binaire.
+Quand on lit et écrit dans un fichier en mode texte, on le fait généralement caractère par caractère. La seule chose qu'on se permet en mode texte avec fseek  , c'est de revenir au début ou de se placer à la fin.
+
+
+3. Replacez le curseur au début du fichier avec rewind
+
+Cette fonction est équivalente à utiliser fseek  pour nous renvoyer à la position 0 dans le fichier.
+
+  1.void rewind(FILE* pointeurSurFichier);
+
+Nous terminerons ce chapitre en douceur par l'étude de deux fonctions très simples :
+
+  - rename renomme un fichier ;
+
+  - remove  supprime un fichier.
+
+La particularité de ces fonctions est qu'elles ne nécessitent pas de pointeur de fichier pour fonctionner. Il suffira simplement d'indiquer le nom du fichier à renommer ou supprimer.
+
+
+Renommez un fichier avec rename
+

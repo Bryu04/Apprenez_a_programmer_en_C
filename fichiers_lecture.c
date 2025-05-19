@@ -92,6 +92,90 @@ int main(int argc, const char * argv[]) {
         printf("---- Fin de la lecture des scores ----\n");
     }
     
+    // Se déplacer dans un fichier.
+    // Utilisation de la fonction ftell
+    // La fonction ftell nous dit la position actuelle où on se trouve dans un fichier.
+    monficher2 = NULL;
+    long position = 0;
+    // Ouverture du fichier
+    monficher2 = fopen("test_read_2.txt", "r");
+
+    if (monficher2 != NULL)
+    {
+        printf("------------------- Fonction ftell ---------------------\n");
+        position = ftell(monficher2);
+        printf("On se trouve à la position : %ld\n", position);
+        printf("Debut de la lecture du fichier test_read_2.txt \n");
+        while (fgets(chaine2, TAILLE_MAX, monficher2) != NULL)
+        {
+            printf("%s", chaine2);
+        }
+        printf("\n");
+        printf("Fin de la lecture du fichier test_read_2.txt \n");
+        position = ftell(monficher2);
+        printf("Maintenant, on se trouve à la position : %ld\n", position);
+        fclose(monficher2);
+        printf("------------------------------------------------------\n");
+    }
+
+    // Utilisation de la fonction fseek
+    // La fonction fseek permet de placer le curseur à un endroit précis dans un fichier.
+    monficher2 = NULL;
+    position = 0;
+    // Ouverture du fichier
+    monficher2 = fopen("test_read_2.txt", "r");
+
+    if (monficher2 != NULL)
+    {
+        printf("------------------- Fonction fseek ---------------------\n");
+        position = ftell(monficher2);
+        printf("On se trouve à la position : %ld\n", position);
+        // Changement de l'endroit du curseur
+        fseek(monficher2, 10, SEEK_SET);
+        position = ftell(monficher2);
+        printf("Nouveau point de départ : %ld\n", position);
+        printf("Debut de la lecture du fichier test_read_2.txt \n");
+        while (fgets(chaine2, TAILLE_MAX, monficher2) != NULL)
+        {
+            printf("%s", chaine2);
+        }
+        printf("\n");
+        printf("Fin de la lecture du fichier test_read_2.txt \n");
+        position = ftell(monficher2);
+        printf("Maintenant, on se trouve à la position : %ld\n", position);
+        fclose(monficher2);
+        printf("------------------------------------------------------\n");
+    }
+
+    // Utilisation de la fonction rewind
+    // La fonction rewind, comme la fonction fseek, permet de déplacer le curseur
+    // dans un fichier ouvert, mais seulement à la position 0 du fichier.
+    monficher2 = NULL;
+    position = 0;
+    // Ouverture du fichier
+    monficher2 = fopen("test_read_2.txt", "r");
+
+    if (monficher2 != NULL)
+    {
+        printf("------------------- Fonction rewind ---------------------\n");
+        position = ftell(monficher2);
+        printf("Debut de la lecture du fichier test_read_2.txt \n");
+        while (fgets(chaine2, TAILLE_MAX, monficher2) != NULL)
+        {
+            printf("%s", chaine2);
+        }
+        printf("\n");
+        printf("Fin de la lecture du fichier test_read_2.txt \n");
+        position = ftell(monficher2);
+        printf("Maintenant, on se trouve à la position : %ld\n", position);
+        // On retourne au début du fichier
+        rewind(monficher2);
+        position = ftell(monficher2);
+        printf("Cette fois-ci, on se retrouve à la position : %ld\n", position);
+        fclose(monficher2);
+        printf("---------------------------------------------------------\n");
+    }
+
 
     return 0;
 }
