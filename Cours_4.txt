@@ -1142,3 +1142,22 @@ int main(int argc, char *argv[])
 
 
 En résumé
+
+  - La bibliothèque standard fournit des fonctions pour pouvoir manipuler les fichiers ; cependant, il ne faut 
+    pas oublier d’inclure les bibliothèques stdio.h et stdlib.h .
+
+  - La fonction fopen permet d’ouvrir un fichier. Il faut préciser en paramètre le chemin vers le fichier, et 
+    indiquer le mode d'ouverture pour travailler sur le fichier selon votre besoin.
+
+  - Les fonctions fputc ,  fputs et fprintf permettent d’écrire dans un fichier.
+
+  - Pour lire dans un fichier, il faut utiliser les fonctions fgetc ,  fgets et  fscanf .
+
+  - Toujours fermer le fichier à l’aide de la fonction fclose après avoir terminé les manipulations sur 
+    celui-ci.
+
+Je ne sais pas si vous vous souvenez, mais dans le chapitre des tableaux, je vous ai vaguement parlé d’allocation dynamique. Surprise ! Il est maintenant temps de découvrir cette notion. Rendez-vous au prochain chapitre...
+
+##############################################################################################################
+
+
