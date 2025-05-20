@@ -1160,4 +1160,298 @@ Je ne sais pas si vous vous souvenez, mais dans le chapitre des tableaux, je vou
 
 ##############################################################################################################
 
+Créez des variables grâce à l'allocation dynamique
+
+Il est impératif de bien savoir manipuler les pointeurs pour pouvoir suivre ce chapitre !
+Si vous avez encore des doutes, je vous recommande d'aller refaire un tour sur le chapitre des pointeurs.
+
+Quand on déclare une variable, on dit qu'on demande à allouer de la mémoire :
+
+  1.int monNombre = 0;
+
+Lorsque le programme arrive à une ligne comme celle-ci, il se passe en fait les choses suivantes :
+
+  1. Votre programme demande au système d'exploitation (Windows, Linux, Mac OS…) la permission d'utiliser un 
+     peu de mémoire.
+
+  2. Le système d'exploitation répond à votre programme en lui indiquant où il peut stocker cette variable (il 
+     lui donne l'adresse qu'il lui a réservée).
+
+  3. Lorsque la fonction est terminée, la variable est automatiquement supprimée de la mémoire. Votre 
+     programme dit au système d'exploitation : "Je n'ai plus besoin de l'espace en mémoire que tu m'avais 
+     réservé à telle adresse".
+
+
+Trouvez la taille d'une variable en fonction de son type
+
+Selon le type de variable que vous demandez de créer, vous avez besoin de plus ou moins de mémoire. Le problème, c'est que l'espace pris en mémoire dépend des machines : peut-être que chez vous un int occupe 8 octets, qui sait ?
+
+Pour vérifier quelle taille occupe chacun des types sur votre ordinateur, nous allons utiliser l'opérateur sizeof().
+
+Contrairement aux apparences, ce n'est pas une fonction, mais une fonctionnalité de base du langage C. Vous devez juste indiquer entre parenthèses le type que vous voulez analyser.
+
+Pour connaître la taille d'un int  , on écrit :
+
+  1.sizeof(int)
+
+À la compilation, cela sera remplacé par un nombre : le nombre d'octets que prend int en mémoire. Testez pour voir, en affichant la valeur à l'aide d'un printf  , par exemple :
+
+  1.printf("char : %d octets\n", sizeof(char));
+  2.printf("int : %d octets\n", sizeof(int));
+  3.printf("long : %d octets\n", sizeof(long));
+  4.printf("double : %d octets\n", sizeof(double));
+
+Avoir des types différents était utile à une époque où l'on n'avait pas beaucoup de mémoire dans nos ordinateurs : on utilisait le minimum de mémoire possible via le type le plus adapté.
+
+Aujourd'hui, cela ne sert plus vraiment, car la mémoire d'un ordinateur est très grande.
+
+Cela dit, cela a encore un intérêt si vous créez des programmes pour de l'informatique embarquée (pour des Smartphones, par exemple) où la mémoire disponible est plus faible.
+
+Peut-on afficher la taille d'un type personnalisé qu'on a créé (une structure) ?
+
+Oui ! sizeof marche aussi sur les structures :
+
+
+typedef struct Coordonnees Coordonnees;
+struct Coordonnees
+{
+    int x;
+    int y;
+};
+
+int main(int argc, char *argv[])
+{
+    printf("Coordonnees : %d octets\n", sizeof(Coordonnees));
+
+    return 0;
+}
+
+
+Coordonnees : 8 octets
+
+Plus une structure contient de sous-variables, plus elle prend de mémoire. 
+
+Revenons à nos moutons : si on déclare une variable de type int  :
+
+  1.int nombre = 18;
+
+… et que sizeof(int) indique 4 octets sur notre ordinateur, alors la variable occupera 4 octets en mémoire !
+Supposons que la variable nombre soit allouée à l'adresse 1600 en mémoire. On aurait alors :
+
+Adresse          Valeur
+
+1599              ...
+1600
+1601
+1602              18
+1603
+1604              ...
+
+
+Notre variable nombre de type int qui vaut 18 occupe 4 octets dans la mémoire. Elle commence à l'adresse 1600 et termine à l'adresse 1603. La prochaine variable ne pourra donc être stockée qu'à partir de l'adresse 1604 !
+
+Si on avait fait la même chose avec un char  , on n'aurait occupé qu'un seul octet en mémoire :
+
+Adresse          Valeur
+
+1599              ...
+1600              18 
+1601              ...
+1602              ...
+1603              ...
+1604              ...
+
+
+Imaginez maintenant un tableau de int  ! Chaque case du tableau occupera 4 octets.
+
+Si notre tableau fait 100 cases :
+
+  1.int tableau[100];
+
+… on occupera alors en réalité 4 * 100 = 400 octets en mémoire.
+
+Même si le tableau est vide, il prend 400 octets ?
+
+Bien sûr ! La place en mémoire est réservée : aucun autre programme n'a le droit d'y toucher (à part le vôtre). Une fois qu'une variable est déclarée, elle prend immédiatement de la place en mémoire.
+
+Notez que si on crée un tableau de type Coordonnees  :
+
+  1.Coordonnees tableau[100];
+
+… on utilisera cette fois : 8 * 100 = 800 octets en mémoire.
+
+Il est important de bien comprendre ces petits calculs pour la suite du chapitre.
+
+
+Allouez manuellement de la mémoire au système
+
+Commencez par inclure la bibliothèque <stdlib.h>  .  Elle contient deux fonctions dont nous allons avoir besoin :
+
+  1. malloc  (pour "Memory Allocation" ou allocation de mémoire, en français) : elle demande au système 
+     d'exploitation la permission d'utiliser de la mémoire.
+
+  2. free  (libérer, en français) : elle indique au système que l'on n'a plus besoin de la mémoire qu'on avait 
+     demandée. La place en mémoire est libérée, un autre programme peut maintenant s'en servir au besoin.
+
+Pour faire une allocation manuelle de mémoire, vous devez toujours suivre ces trois étapes :
+
+  1. Appeler malloc pour demander de la mémoire.
+
+  2. Vérifier la valeur retournée par malloc pour savoir si le système a bien réussi à allouer la mémoire.
+
+  3. Libérer la mémoire avec free une fois qu'on a fini d'utiliser la mémoire. Si on ne le fait pas, on 
+     s'expose à des fuites de mémoire, c'est-à-dire que votre programme risque de prendre beaucoup de mémoire 
+     alors qu'il n'a en réalité plus besoin de tout cet espace.
+
+Ces trois étapes vous rappellent-elles le chapitre sur les fichiers ? Elles devraient ! Le principe est exactement le même : on alloue, on vérifie si l'allocation a marché, on utilise la mémoire, puis on la libère quand on a fini de l'utiliser.
+
+
+Étape 1 : Demandez une allocation de mémoire avec malloc
+
+Voici le prototype de la fonction malloc :
+
+  1.void* malloc(size_t nombreOctetsNecessaires);
+
+La fonction prend en paramètre le nombre d'octets à réserver. Il suffit donc d'écrire sizeof(int)  dans ce paramètre pour réserver suffisamment d'espace pour stocker un int  .
+Mais regardez ce que la fonction renvoie : un void*  !
+Dans le chapitre sur les fonctions, je vous avais dit que void signifiait "vide", et qu'on utilisait ce type pour indiquer que la fonction ne retournait aucune valeur. Alors ici, on aurait une fonction qui retourne un "pointeur sur vide" ?
+En fait, cette fonction renvoie un pointeur indiquant l'adresse que le système a réservée pour votre variable. Si le système a trouvé de la place pour vous à l'adresse 1600, la fonction renvoie donc un pointeur contenant l'adresse 1600.
+Le problème, c'est que la fonction malloc ne sait pas quel type de variable vous cherchez à créer puisque vous ne lui donnez qu'un paramètre : le nombre d'octets en mémoire dont vous avez besoin. Si vous demandez 4 octets, ça pourrait aussi bien être un int qu'un long   , par exemple.
+
+Comme malloc ne sait pas quel type elle doit retourner, elle renvoie le type void*  . Ce sera un pointeur sur n'importe quel type.
+On peut dire que c'est un pointeur universel.
+
+Passons à la pratique : si je veux créer manuellement une variable de type int en mémoire, je devrai indiquer à malloc que j'ai besoin de sizeof(int) octets en mémoire. Je récupère le résultat du malloc dans un pointeur sur int  :
+
+  1.int* memoireAllouee = NULL; // On crée un pointeur sur int
+  2.
+  3.memoireAllouee = malloc(sizeof(int)); // La fonction malloc inscrit dans notre pointeur l'adresse qui a 
+    été reservée.
+
+
+memoireAllouee est un pointeur contenant une adresse qui vous a été réservée par le système, par exemple l'adresse 1600 pour reprendre mes schémas précédents.
+
+
+Étape 2 : Testez le pointeur pour vérifier la valeur retournée par malloc
+
+La fonction malloc a donc renvoyé dans notre pointeur memoireAllouee l'adresse qui a été réservée pour vous en mémoire. Deux possibilités :
+
+  1. Si l'allocation a marché, notre pointeur contient une adresse.
+
+  2. Si l'allocation a échoué, notre pointeur contient l'adresseNULL  .
+
+Il est peu probable qu'une allocation échoue, mais ça peut arriver : si vous demandez à utiliser 34 Go de mémoire vive, il y a peu de chances que le système vous réponde favorablement.
+
+Il est néanmoins recommandé de toujours tester si l'allocation a marché.
+
+Si l'allocation a échoué, c'est qu'il n'y avait plus de mémoire de libre (c'est un cas critique). Dans un tel cas, le mieux est d'arrêter immédiatement le programme parce que, de toute manière, il ne pourra pas continuer convenablement.
+
+La fonction exit() arrête immédiatement un programme. Elle prend en paramètre la valeur que le programme doit retourner.
+
+Cela correspond en fait au return du main()  .
+
+
+int main(int argc, char *argv[])
+{
+    int* memoireAllouee = NULL;
+
+    memoireAllouee = malloc(sizeof(int));
+    if (memoireAllouee == NULL) // Si l'allocation a échoué
+    {
+        exit(0); // On arrête immédiatement le programme
+    }
+
+    // On peut continuer le programme normalement sinon
+
+    return 0;
+}
+
+Si le pointeur est différent de NULL  , le programme peut continuer, sinon il faut afficher un message d'erreur, ou même mettre fin au programme.
+
+
+Étape 3 : Libérez de la mémoire avec free
+
+Tout comme on utilisait la fonction fclose pour fermer un fichier dont on n'avait plus besoin, on va utiliser la fonction free pour libérer la mémoire dont on ne se sert plus.
+
+  1.void free(void* pointeur);
+
+La fonction free a juste besoin de l'adresse mémoire à libérer. On va donc lui envoyer notre pointeur : memoireAllouee dans notre exemple :
+
+
+int main(int argc, char *argv[])
+{
+    int* memoireAllouee = NULL;
+
+    memoireAllouee = malloc(sizeof(int));
+    if (memoireAllouee == NULL) // On vérifie si la mémoire a été allouée
+    {
+        exit(0); // Erreur : on arrête tout !
+    }
+
+    // On peut utiliser ici la mémoire
+    free(memoireAllouee); // On n'a plus besoin de la mémoire, on la libère
+
+    return 0;
+}
+
+
+Analysez un exemple concret d'utilisation
+
+On va programmer quelque chose qu'on a appris à faire il y a longtemps : demander l'âge de l'utilisateur et le lui afficher. La seule différence avec ce qu'on faisait avant, c'est qu'ici la variable va être allouée manuellement :
+
+
+int main(int argc, char *argv[])
+{
+    int* memoireAllouee = NULL;
+
+    memoireAllouee = malloc(sizeof(int)); // Allocation de la mémoire
+    if (memoireAllouee == NULL)
+    {
+        exit(0);
+    }
+
+    // Utilisation de la mémoire
+    printf("Quel age avez-vous ? ");
+    scanf("%d", memoireAllouee);
+    printf("Vous avez %d ans\n", *memoireAllouee);
+
+    free(memoireAllouee); // Libération de mémoire
+
+    return 0;
+}
+
+Quel age avez-vous ? 31
+Vous avez 31 ans
+
+
+memoireAllouee  est un pointeur : on ne l'utilise pas de la même manière qu'une vraie variable.
+
+  - Pour obtenir la valeur de la variable, il faut placer une étoile devant :*memoireAllouee (regardez le 
+    printf  ).
+
+  - Pour indiquer l'adresse, on a juste besoin d'écrire le nom du pointeur  :memoireAllouee (regardez le 
+    scanf  ).
+
+On a déjà vu ça dans le chapitre sur les pointeurs, mais il est probable que vous confondiez encore. Faites-y attention. 🤓
+
+Bref : on y a alloué dynamiquement une variable de type int  .
+Ce qu'on a écrit revient finalement au même que d'utiliser la méthode automatique :
+
+
+int main(int argc, char *argv[])
+{
+    int maVariable = 0; // Allocation de la mémoire (automatique)
+
+    // Utilisation de la mémoire
+    printf("Quel age avez-vous ? ");
+    scanf("%d", &maVariable);
+    printf("Vous avez %d ans\n", maVariable);
+
+    return 0;
+} // Libération de la mémoire (automatique à la fin de la fonction)
+
+Quel age avez-vous ? 31
+Vous avez 31 ans
+
+Dans cette vidéo, revenons sur ce qu'on vient de voir pour créer une variable grâce à l’allocation dynamique :
 
