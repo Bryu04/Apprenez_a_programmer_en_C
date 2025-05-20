@@ -1455,3 +1455,116 @@ Vous avez 31 ans
 
 Dans cette vidéo, revenons sur ce qu'on vient de voir pour créer une variable grâce à l’allocation dynamique :
 
+En résumé, il y a deux façons de créer une variable, c'est-à-dire d'allouer de la mémoire :
+
+  1. Automatiquement : c'est la méthode que vous connaissez et qu'on a utilisée jusqu'ici.
+
+  2. Manuellement : c'est la méthode que je vous enseigne dans ce chapitre.
+
+Je trouve la méthode dynamique un peu compliquée et inutile, j'ai tort ?
+
+Un peu plus compliquée… certes. Mais inutile, non ! Nous sommes parfois obligés d'allouer manuellement de la mémoire, comme nous allons le voir maintenant.
+
+
+Créez un tableau dont la taille n'est connue qu'à l'exécution
+
+
+Pour le moment, on a utilisé l'allocation dynamique uniquement pour créer une petite variable. Or en général, on ne se sert pas de l'allocation dynamique pour cela. On utilise la méthode automatique qui est plus simple.
+
+Quand a-t-on besoin de l'allocation dynamique, alors ?
+
+Le plus souvent, on s'en sert pour créer un tableau dont on ne connaît pas la taille avant l'exécution du programme.
+
+Imaginons par exemple un programme qui stocke l'âge de tous les amis de l'utilisateur dans un tableau. Vous pourriez créer un tableau de int pour stocker les âges, comme ceci :
+
+  1.int ageAmis[15];
+
+Mais qui vous dit que l'utilisateur a 15 amis ? Peut-être qu'il en a plus que ça !
+
+Lorsque vous écrivez le code source, vous ne connaissez pas la taille que vous devez donner à votre tableau. Vous ne le saurez qu'à l'exécution, lorsque vous demanderez à l'utilisateur combien il a d'amis.
+
+L'intérêt de l'allocation dynamique est là : on va demander le nombre d'amis à l'utilisateur, puis on fera une allocation dynamique pour créer un tableau ayant exactement la taille nécessaire (ni trop petit, ni trop grand). Si l'utilisateur a 15 amis, on créera un tableau de 15 int  ; s'il en a 28, on créera un tableau de 28 int  , etc.
+
+Comme je vous l'ai appris, il est interdit en C de créer un tableau en indiquant sa taille à l'aide d'une variable :
+
+  1.int amis[nombreDAmis];
+
+Ce code fonctionne peut-être sur certains compilateurs, mais uniquement dans des cas précis, il est recommandé de ne pas l'utiliser !
+
+L'allocation dynamique permet de créer un tableau qui a exactement la taille de la variable nombreDAmis   , et cela grâce à un code qui fonctionnera partout !
+
+Demandons au malloc de nous réserver nombreDAmis * sizeof(int)  octets en mémoire :
+
+  1.amis = malloc(nombreDAmis * sizeof(int));
+
+Ce code permet de créer un tableau de type int qui a une taille correspondant exactement au nombre d'amis !
+Voici ce que fait le programme dans l'ordre :
+
+  1. Il demande à l'utilisateur combien il a d'amis.
+
+  2. Il crée un tableau de int ayant une taille égale à son nombre d'amis (via malloc  ).
+
+  3. Il demande l'âge de chacun de ses amis un à un, qu'on stocke dans le tableau.
+
+  4. Il affiche l'âge des amis pour montrer qu'on a bien mémorisé tout cela.
+
+  5. À la fin, puisqu'on n'a plus besoin du tableau contenant l'âge des amis, il le libère avec la fonction 
+     free  .
+
+
+int main(int argc, char *argv[])
+{
+    int nombreDAmis = 0, i = 0;
+    int* ageAmis = NULL; // Ce pointeur va servir de tableau après l'appel du malloc
+
+    // On demande le nombre d'amis à l'utilisateur
+    printf("Combien d'amis avez-vous ? ");
+    scanf("%d", &nombreDAmis);
+
+    if (nombreDAmis > 0) // Il faut qu'il ait au moins un ami (je le plains un peu sinon :p)
+    {
+        ageAmis = malloc(nombreDAmis * sizeof(int)); // On alloue de la mémoire pour le tableau
+        if (ageAmis == NULL) // On vérifie si l'allocation a marché ou non
+        {
+            exit(0); // On arrête tout
+        }
+
+        // On demande l'âge des amis un à un
+        for (i = 0 ; i < nombreDAmis ; i++)
+        {
+            printf("Quel age a l'ami numero %d ? ", i + 1);
+            scanf("%d", &ageAmis[i]);
+        }
+
+        // On affiche les âges stockés un à un
+        printf("\n\nVos amis ont les ages suivants :\n");
+        for (i = 0 ; i < nombreDAmis ; i++)
+        {
+            printf("%d ans\n", ageAmis[i]);
+        }
+
+        // On libère la mémoire allouée avec malloc, on n'en a plus besoin
+        free(ageAmis);
+    }
+
+    return 0;
+}
+
+Combien d'amis avez-vous ? 5
+Quel age a l'ami numero 1 ? 16
+Quel age a l'ami numero 2 ? 18
+Quel age a l'ami numero 3 ? 20
+Quel age a l'ami numero 4 ? 26
+Quel age a l'ami numero 5 ? 27
+
+Vos amis ont les ages suivants :
+16 ans
+18 ans
+20 ans
+26 ans
+27 ans
+
+
+J'ai choisi cet exemple parce qu'il est simple. Dans la suite du cours, nous aurons l'occasion d'utiliser le malloc pour des choses bien plus intéressantes que le stockage de l'âge de ses amis.
+
+En résumé
