@@ -1587,3 +1587,205 @@ Vous êtes maintenant incollable sur les bases de la programmation en C. Enfin p
 
 ##############################################################################################################
 
+Sécurisez la saisie de texte
+
+La saisie de texte est un des aspects les plus délicats du langage C. Vous connaissez la fonction scanf  , que vous avez vue au début du cours. Vous vous dites : quoi de plus simple et de plus naturel ? Eh bien figurez-vous que non, en fait, c'est tout sauf simple.
+Ceux qui vont utiliser votre programme sont des humains. Tout humain qui se respecte fait des erreurs et peut avoir des comportements inattendus. Si vous lui demandez : « Quel âge avez-vous ? », qu'est-ce qui vous garantit qu'il ne va pas vous répondre « Je m'appelle François je vais bien merci » ?
+Le but de ce chapitre est de vous faire découvrir les problèmes que l'on peut rencontrer en utilisant la fonction scanf   , et de vous montrer une alternative plus sûre avec la fonction fgets  .
+
+
+Comprenez les limites de la fonction scanf
+
+scanf() est une fonction à double tranchant :
+
+  - elle est facile à utiliser quand on débute (c'est pour ça que je vous l'ai présentée) ;
+
+  - mais son fonctionnement est complexe, elle peut même être dangereuse dans certains cas.
+
+Je vais vous montrer ses limites par deux exemples concrets.
+
+
+Exemple 1 : une chaîne de caractères qui contient des espaces
+
+Supposons qu'on demande une chaîne de caractères à l'utilisateur, mais qu'il insère un espace :
+
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(int argc, char *argv[])
+{
+    char nom[20] = {0};
+ 
+    printf("Quel est votre nom ? ");
+    scanf("%s", nom);
+    printf("Ah ! Vous vous appelez donc %s !\n\n", nom);
+ 
+    return 0;
+}
+
+Quel est votre nom ? Jean Dupont
+Ah ! Vous vous appelez donc Jean !
+
+
+Pourquoi le Dupont a disparu ?
+
+La fonction scanf s'arrête si elle tombe sur un espace, une tabulation ou une entrée.
+Vous ne pouvez donc pas récupérer la chaîne si celle-ci comporte un espace.
+
+En fait, le mot "Dupont" se trouve toujours en mémoire, dans ce qu'on appelle le "buffer". La prochaine fois qu'on appellera scanf  , la fonction lira toute seule le mot "Dupont" qui était resté en attente dans la mémoire.
+
+
+Exemple 2 : une chaîne de caractères trop longue
+
+Il y a un autre problème, beaucoup plus grave : celui du dépassement de mémoire.
+
+Dans le code que nous venons de voir, il y a la ligne suivante :
+
+  1.char nom[5] = {0};
+
+J'ai alloué 5 cases pour mon tableau de char appelé nom  , il y a donc la place d'écrire 4 caractères (le dernier étant toujours réservé au caractère de fin de chaîne\0) :
+
+Que se passe-t-il si on écrit plus de caractères qu'il n'y a d'espace prévu pour les stocker ?
+
+Quel est votre nom ? Patrice
+Ah ! Vous vous appelez donc Patrice !
+
+Ce que vous voyez là est un véritable cauchemar de programmeur : on vient de faire un "dépassement de mémoire" ("buffer overflow", en anglais).
+
+On avait alloué 5 cases pour stocker le nom, mais en fait il en fallait 8. La fonction scanf a donc continué à écrire à la suite en mémoire comme si de rien n'était ! Elle a écrit dans des zones mémoire qui n'étaient pas prévues pour cela.
+
+Les caractères en trop ont écrasé d'autres informations en mémoire :
+
+Pourquoi c'est dangereux ?
+
+Si le programme ne contrôle pas ce genre de cas, l'utilisateur peut écrire ce qu'il veut à la suite en mémoire. En particulier, il peut insérer du code en mémoire et faire en sorte qu'il soit exécuté par le programme.
+
+C'est l'attaque par "buffer overflow" (une attaque de pirate célèbre mais difficile à réaliser).
+
+Si cela vous intéresse, vous pouvez lire l'article « Dépassement de tampon » de Wikipédia (attention, c'est quand même assez compliqué).
+
+Dans ce chapitre, nous allons voir comment sécuriser la saisie de nos données, en empêchant l'utilisateur de faire déborder et de provoquer un "buffer overflow".
+
+
+Récupérez une chaîne de caractères
+
+Plusieurs fonctions standard en C permettent de récupérer une chaîne de texte  :
+
+  - gets  lit toute une chaîne de caractères mais elle ne contrôle pas les "buffer overflow" !
+
+  - fgets  contrôle le nombre de caractères écrits en mémoire.
+
+Nous allons donc voir comment utiliser fgets en remplacement de scanf!
+
+
+Comprenez le principe de la fonction fgets
+
+Le prototype de la fonction fgets, situé dans stdio.h, est le suivant :
+
+  1.char *fgets( char *str, int num, FILE *stream );
+
+Les paramètres sont les suivants :
+
+  - str: un pointeur vers un tableau alloué en mémoire où la fonction va pouvoir écrire le texte entré par 
+    l'utilisateur.
+
+  - num: la taille du tableau str envoyé en premier paramètre. Si vous avez alloué un tableau de 10 char, 
+    fgets lira 9 caractères au maximum (il réserve toujours un caractère d'espace pour pouvoir écrire le \0 de 
+    fin de chaîne).
+
+  - stream: un pointeur sur le fichier à lire. Dans notre cas, le fichier à lire est l'entrée standard, 
+    c'est-à-dire le clavier. Pour demander à lire l'entrée standard, on enverra le pointeur stdin, qui est 
+    automatiquement défini dans les "headers" de la bibliothèque standard du C pour représenter le clavier. 
+    Toutefois, il est aussi possible d'utiliser fgets pour lire des fichiers, comme on a pu le voir dans le 
+    chapitre sur les fichiers.
+
+La fonction fgets retourne :
+
+  - le même pointeur que str si la fonction s'est déroulée sans erreur ;
+
+  - ou NULL s'il y a eu une erreur.
+
+Il suffit donc de tester si la fonction a renvoyé NULL pour savoir s'il y a eu une erreur :
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(int argc, char *argv[])
+{
+    char nom[10];
+ 
+    printf("Quel est votre nom ? ");
+    fgets(nom, 10, stdin);
+    printf("Ah ! Vous vous appelez donc %s !\n\n", nom);
+ 
+    return 0;
+}
+
+
+Quel est votre nom ? Mateo
+Ah ! Vous vous appelez donc Mateo
+!
+
+Quand vous pressez "Entrée", fgets conserve le \n correspondant à l'appui sur la touche "Entrée". Ça se voit dans la console car il y a un saut à la ligne après "Mateo".
+On ne peut rien faire pour empêcher fgets d'écrire le caractère\n   , mais rien ne nous interdit de créer notre propre fonction de saisie qui va appeler fgets et supprimer automatiquement à chaque fois les\n!
+
+
+Créez votre propre fonction de saisie utilisant fgets
+
+On peut facilement créer notre propre fonction de saisie pour qu'elle fasse quelques corrections pour nous. Nous l'appellerons : lire. Elle renverra 1 si tout s'est bien passé, 0 s'il y a eu une erreur.
+
+Éliminez le saut de ligne\n
+
+La fonction lire va appeler fgets et , si tout s'est bien passé, va chercher le caractère\n à l'aide de la fonction strchr que l'on a déjà vue. Si un \n est trouvé, elle le remplace par un\0(fin de chaîne) pour éviter de conserver une "Entrée".
+
+Voici le code, commenté pas à pas :
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> // Penser à inclure string.h pour strchr()
+ 
+int lire(char *chaine, int longueur)
+{
+    char *positionEntree = NULL;
+ 
+    // On lit le texte saisi au clavier
+    if (fgets(chaine, longueur, stdin) != NULL)  // Pas d'erreur de saisie ?
+    {
+        positionEntree = strchr(chaine, '\n'); // On recherche l'"Entrée"
+        if (positionEntree != NULL) // Si on a trouvé le retour à la ligne
+        {
+            *positionEntree = '\0'; // On remplace ce caractère par \0
+        }
+        return 1; // On renvoie 1 si la fonction s'est déroulée sans erreur
+    }
+    else
+    {
+        return 0; // On renvoie 0 s'il y a eu une erreur
+    }
+}
+
+Ici, j'appelle la fonction fgets directement dans un if  pour éviter d'avoir à récupérer la valeur de fgets dans un pointeur juste pour tester si celui-ci est NULL ou non.
+
+À partir du premier if, je sais si fgets s'est bien déroulée ou s'il y a eu un problème (le premier paramètre de la fonction (pointeur) est égal à (NULL), le second paramètre est inférieur ou égal à zéro, ou les deux).
+
+Si tout s'est bien passé, je peux alors partir à la recherche du \n avec strchr et remplacer cet\n par un \0 :
+
+La chaîne écrite par fgets était "Mateo\n\0". Nous avons remplacé le \n par un \0, ce qui a donné : "Mateo\0\0". Ce n'est pas grave d'avoir deux \0 d'affilée : l'ordinateur s'arrête au premier \0 qu'il rencontre et considère que la chaîne de caractères s'arrête là :
+
+int main(int argc, char *argv[])
+{
+    char nom[10];
+ 
+    printf("Quel est votre nom ? ");
+    lire(nom, 10);
+    printf("Ah ! Vous vous appelez donc %s !\n\n", nom);
+ 
+    return 0;
+}
+
+Quel est votre nom ? Mateo
+Ah ! Vous vous appelez donc Mateo !
+
