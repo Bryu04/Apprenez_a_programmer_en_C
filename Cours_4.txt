@@ -1567,4 +1567,23 @@ Vos amis ont les ages suivants :
 
 J'ai choisi cet exemple parce qu'il est simple. Dans la suite du cours, nous aurons l'occasion d'utiliser le malloc pour des choses bien plus intéressantes que le stockage de l'âge de ses amis.
 
+
 En résumé
+
+  - Une variable occupe plus ou moins d'espace en mémoire en fonction de son type.
+
+  - On peut connaître le nombre d'octets occupés par un type à l'aide de sizeof()  .
+
+  - L'allocation dynamique consiste à réserver manuellement de l'espace en mémoire pour une variable ou un 
+    tableau.
+
+  - L'allocation est effectuée avec malloc() et il ne faut surtout pas oublier de libérer la mémoire avec 
+    free() dès qu'on n'en a plus besoin.
+
+  - L'allocation dynamique permet notamment de créer un tableau dont la taille est déterminée par une variable 
+    au moment de l'exécution.
+
+Vous êtes maintenant incollable sur les bases de la programmation en C. Enfin presque ! Il nous reste un dernier chapitre avant de terminer cette partie : la saisie de texte sécurisée. Allez, on y va !
+
+##############################################################################################################
+
