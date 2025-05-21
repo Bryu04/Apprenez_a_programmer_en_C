@@ -2034,3 +2034,454 @@ J’ai l’impression que vous avez terminé la partie 2 de ce cours. Ne change
 
 ##############################################################################################################
 
+!!!!!!!!!!!!!!!!!!!!!!!!! QUIZ : Utiliser les pointeurs pour aller plus loin en C !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Compétences évaluées
+Utiliser des pointeurs
+
+Description
+Pour ce quiz, vous allez réaliser, au fil des questions, un jeu en console : le jeu du Pendu (un grand classique où il faut deviner un mot caché, lettre par lettre).
+
+Prenez le temps avant de répondre à chaque question. Vous retrouverez le corrigé du programme complet dans la réponse à la dernière question de ce quiz. Bonne chance !
+
+Voici un rappel du déroulement du jeu du Pendu :
+
+  1. Supposons que le mot caché soit "ROUGE".
+  2. Le joueur propose une lettre à l'ordinateur, par exemple la lettre "A".
+  3. L'ordinateur vérifie si cette lettre se trouve dans le mot caché.
+  4. Si oui, on dévoile la lettre du mot. Si non, on indique que la lettre ne s'y trouve pas et on diminue le 
+     nombre de coups restants.
+  5. Quand il ne reste plus de coups (0), le jeu est terminé et on a perdu.
+
+
+Voici à quoi devrait ressembler une partie en console lorsque votre programme sera terminé :
+
+
+Bienvenue dans le Pendu !
+Il vous reste 10 coups a jouer
+Quel est le mot secret ? *****
+Proposez une lettre : A
+Il vous reste 9 coups a jouer
+Quel est le mot secret ? *****
+Proposez une lettre : O
+Il vous reste 9 coups a jouer
+Quel est le mot secret ? *O***
+Proposez une lettre : E
+Il vous reste 9 coups a jouer
+Quel est le mot secret ? *O**E
+Proposez une lettre : R
+
+
+Et ainsi de suite jusqu'à ce que le joueur ait découvert toutes les lettres du mot (ou bien qu'il ne lui reste plus de coups à jouer) :
+
+Il vous reste 8 coups a jouer
+Quel est le mot secret ? ROU*E
+Proposez une lettre : G
+Gagne ! Le mot secret etait bien : ROUGE
+
+
+Prenons la fonction main suivante qu’on va modifier au fur et à mesure des questions : 
+
+#include <stdio.h>
+#include <ctype.h>
+
+int main(int argc, char* argv[])
+{
+    char lettre = 0; // Stocke la lettre proposée par l'utilisateur (retour du scanf)
+    char motSecret[] = "ROUGE"; // C'est le mot à trouver
+    int coupsRestants = 10; // Compteur de coups restants (0 = mort)
+    
+    return 0;
+}
+
+
+Ajoutons une fonction qui permet de calculer la taille du mot : 
+
+int tailleMot(char motSecret[])
+{
+    int nombreLettres = 0;
+    for(int i = 0; motSecret[i] != '\0'; i++)
+    {
+        nombreLettres++;
+    }
+    return nombreLettres;
+}
+
+
+
+Question 1
+
+Quelle ligne devez-vous ajouter dans la fonction  main  pour enregistrer la taille du mot dans la variable  nombreLettres  ?
+
+  - tailleMot(motSecret);
+
+  - int nombreLettres = tailleMot(motSecret); (o) (B)
+
+  - nombreLettres = tailleMot(motSecret);
+
+  - tailleMot(motSecret) = nombreLettres;
+
+
+"""""""""""" Réponse """""""""""""""""
+La fonction  tailleMot  calcule le nombre de lettres contenues dans le tableau de  char  et retourne un entier contenant le nombre de lettres. Vous devez donc créer une variable de type  int  et lui assigner la valeur de retour de la fonction  tailleMot  avec comme paramètre  motSecret  .
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 2
+
+Vous allez créer un tableau  LettreTrouvee  de booléen à l’aide d’un pointeur, en effet ce tableau aura la même taille que le tableau qui contient chaque lettre du mot. Chaque case sera associée à une lettre trouvée ou non. Les cases du tableau sont au départ initialisées à 0, ce qui signifie "Lettre non trouvée". Au fur et à mesure de l'avancement du jeu, ce tableau sera modifié. Pour chaque lettre du mot secret trouvée, la case correspondante du tableau  lettreTrouvee  sera mise à 1. 
+
+Il faut donc donc tout d’abord créer un pointeur  LettreTrouvee  et l’initialiser à  NULL  .
+
+Quelle instruction devez-vous ajouter au  main  pour déclarer et initialiser le pointeur  LettreTrouvee  ?
+
+  - int *lettreTrouvee;
+
+  - int lettreTrouvee = NULL;
+
+  - int lettreTrouvee;
+
+  - int *lettreTrouvee = NULL; (o) (B)
+
+
+"""""""""""" Réponse """""""""""""""""
+Pour créer une variable de type pointeur, on doit rajouter le symbole  *  devant le nom de la variable. Pour initialiser un pointeur, c'est-à-dire lui donner une valeur par défaut, on n'utilise généralement pas le nombre 0 mais le mot-clé  NULL  .
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 3
+
+Une fois le pointeur lettreTrouvee déclaré, vous devez ensuite allouer la mémoire avec le nombre de lettres grâce à la fonction malloc: 
+
+  1.lettreTrouvee = malloc(nombreLettres * sizeof(int));
+
+Vous allez maintenant créer une fonction  initTableau  qui permet d'initialiser l’ensemble des cases de notre tableau à 0. N'oubliez pas d'appeler cette fonction dans votre code.
+
+N’oubliez pas : notre tableau  lettreTrouvee  est un pointeur.
+
+Quelle serait la bonne définition de la fonction  initTableau  ?
+
+
+  - int* initTableau(int* lettreTrouvee, int taille)
+    {
+       for(int i = 0; i < taille; i++)
+       {
+         lettreTrouvee[i] = 0;
+       }
+       return *lettreTrouvee; 
+    }
+
+  - int* initTableau(int lettreTrouvee[], int taille)
+    {
+       for(int i = 0; i < taille; i++)
+       {
+          lettreTrouvee[i] = 0;
+       }
+    }
+
+  - void initTableau(int* lettreTrouvee, int taille) (o) (B)
+    {
+       for(int i = 0; i < taille; i++)
+       {
+          lettreTrouvee[i] = 0;
+       }
+    }
+
+  - void initTableau(int* lettreTrouvee, int taille) 
+    {
+       for(int i = 0; i < taille; i++)
+       { 
+          *lettreTrouvee[i] = 0;
+       }
+    }
+
+"""""""""""" Réponse """""""""""""""""
+La fonction va prendre en paramètre le pointeur du tableau et le nombre de lettres. La fonction sera de type  void  car on va directement modifier le tableau grâce au pointeur. On peut ensuite itérer sur l’ensemble des cases car on connait la taille du tableau grâce à la variable  taille  . Il ne manque plus qu’à assigner la valeur 0 dans chaque case du tableau, effectivement l’opérateur  []  permet de dé-référencer chaque case du tableau.
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 4
+
+Pour la suite du jeu, vous allez créer une fonction qui permet de savoir si le joueur a gagné ou pas. Elle renverra :
+
+  - un booléen 1 si le joueur a gagné,
+  - sinon 0.
+
+Voici une partie de cette fonction (il manque quelques instructions) : 
+
+int gagne(int *lettreTrouvee, int nombreLettres)
+{
+    int i = 0;
+    int joueurGagne = 1;
+ 
+    for (i = 0 ; i < nombreLettres ; i++)
+    {
+    }
+ 
+    return joueurGagne;
+}
+
+Quelles instructions devez-vous ajouter dans la boucle  for  de la question pour finaliser la fonction ?
+
+  - if (lettreTrouvee[i] == 1)
+       joueurGagne = 0;
+    else
+       joueurGagne = 1;
+
+  - if (lettreTrouvee[i] == 1)
+       joueurGagne = 1;
+    else
+       joueurGagne = 0;
+
+  - if (lettreTrouvee[i] == 1)
+       joueurGagne = 0;
+ 
+  - if (lettreTrouvee[i] == 0) (o) (B)
+       joueurGagne = 0;
+
+
+"""""""""""" Réponse """""""""""""""""
+Le tableau  lettreTrouvee  permet de connaître chaque lettre trouvée dans le mot mystère. S’il reste encore une case qui a la valeur 0, alors la partie n’est pas encore gagnée. Dans ce cas, il faut vérifier chaque case du tableau et si une case contient la valeur 0, on doit assigner la valeur 0 à la variable  joueurGagne  .
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 5
+
+Le jeu continue tant qu'il reste des coups et tant que le joueur n'a pas gagné. Vous allez donc mettre en place une boucle  while  pour continuer le jeu tant que ces conditions sont toujours vraies. C’est dans cette boucle que vous allez demander au joueur de proposer une lettre pour tenter de trouver le mot mystère.
+
+Quelle condition devez-vous placer dans la boucle  while  pour continuer le jeu ?
+
+  - coupsRestants > 0 && !gagne(lettreTrouvee, nombreLettres) (o) (B)
+
+  - coupsRestants > 0 && gagne(lettreTrouvee, nombreLettres)
+
+  - coupsRestants < 0 && !gagne(lettreTrouvee, nombreLettres)
+
+  - coupsRestants < 0 && gagne(lettreTrouvee, nombreLettres)
+
+
+"""""""""""" Réponse """""""""""""""""
+Si le joueur n'a plus de coups à jouer, c'est qu'il a perdu. S'il a gagné, c'est… qu'il a gagné. Dans les deux cas, il faut arrêter le jeu, donc arrêter la boucle du jeu qui redemande à chaque fois une nouvelle lettre.
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 6
+
+Vous allez maintenant ajouter quelques informations utiles dans la boucle, notamment le nombre de coups restants et les lettres trouvées. Voici pour commencer deux différents  print  :
+
+  1.printf("\n\nIl vous reste %d coups a jouer", coupsRestants);
+  2.printf("\nQuel est le mot secret ? ");
+
+Il vous faut afficher le mot secret et masquer par des  *  les lettres non trouvées. Quelle est la bonne implémentation pour afficher les lettres trouvées et pour afficher des étoiles pour les lettres non trouvées du mot secret ?
+
+ 
+  - for (int i = 0 ; i < nombreLettres ; i++)
+    {
+        if (lettreTrouvee[i])
+            printf("*");
+        else
+            printf("%c", motSecret[i]);
+    }
+
+  - for (int i = 0 ; i <= nombreLettres ; i++)
+    {
+        if (lettreTrouvee[i])
+            printf("%c", motSecret[i]);
+        else
+            printf("*");
+    }
+
+  - for (int i = 0 ; i < nombreLettres ; i++) (o) (B)
+    {
+        if (lettreTrouvee[i])
+            printf("%c", motSecret[i]);
+        else
+            printf("*");
+    }
+
+  - for (int i = 0 ; i <= nombreLettres ; i--)
+    {
+        if (lettreTrouvee[i])
+           printf("%c", motSecret[i]);
+        else
+           printf("*");
+    }
+
+"""""""""""" Réponse """""""""""""""""
+L'affichage du mot secret masqué par des  *  se fait grâce à une boucle  for  . On analyse chaque lettre pour savoir si elle a été trouvée (  if lettreTrouvee[i]  ). Si c'est le cas, on affiche la lettre. Sinon, on affiche une  *  de remplacement pour masquer la lettre.
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 7
+
+Maintenant que vous avez affiché ce qu'il fallait, vous allez demander au joueur de saisir une lettre :
+
+  1.printf("\nProposez une lettre : ");
+  2.lettre = lireCaractere();
+
+Et comme je suis sympa, je vous donne la définition de la fonction  lireCaractere()  . Celle-ci lit le premier caractère tapé, le met en majuscule et vide le "buffer", c'est-à-dire qu'elle vide les autres caractères qui auraient pu persister dans la mémoire.
+
+
+char lireCaractere()
+{
+    char caractere = 0;
+ 
+    caractere = getchar(); // On lit le premier caractère
+    caractere = toupper(caractere); // On met la lettre en majuscule si elle ne l'est pas déjà
+ 
+    // On lit les autres caractères mémorisés un à un jusqu'au \n (pour les effacer)
+    while (getchar() != '\n') ;
+ 
+    return caractere; // On retourne le premier caractère qu'on a lu
+}
+
+
+On vérifie si la lettre entrée se trouve dans  motSecret  . On fait appel pour cela à une fonction maison appelée  rechercheLettre  . Nous verrons peu après le code de cette fonction. Pour le moment, tout ce que vous avez besoin de savoir, c'est que cette fonction renvoie "vrai" si la lettre se trouve dans le mot, "faux" si elle ne s'y trouve pas.
+Si la lettre n'a pas été trouvée, on diminue le nombre de coups restants :
+
+// Si ce n'était PAS la bonne lettre
+if (!rechercheLettre(lettre, motSecret, lettreTrouvee))
+{
+     coupsRestants--; // On enlève un coup au joueur
+}
+
+Mon  if  commence par un point d'exclamation  !  qui signifie "non". La condition se lit donc "Si la lettre n'a pas été trouvée".
+
+Vous devez maintenant implémenter cette fameuse fonction  rechercheLettre  . Laquelle de ces 4 définitions de la fonction  rechercheLettre  est la bonne  ?
+
+
+  - int rechercheLettre(char lettre, char motSecret[], int* lettreTrouvee) (o) (B)
+    {
+        int i = 0, bonneLettre = 0;
+        for (i = 0 ; motSecret[i] != '\0' ; i++)
+        {
+            if (lettre == motSecret[i])
+            {
+                bonneLettre = 1;
+                lettreTrouvee[i] = 1;
+            }
+        }
+        return bonneLettre;
+    }
+
+  - int rechercheLettre(char lettre, char motSecret[], int* lettreTrouvee)
+    {
+        int i = 0, bonneLettre = 0;
+        for (i = 0 ; motSecret[i] != '\0' ; i++)
+        {
+            if (lettre == motSecret[i])
+            {
+                bonneLettre = 0;
+                lettreTrouvee[i] = 0;
+            }
+        }
+        return bonneLettre;
+    }
+
+  - int rechercheLettre(char lettre, char motSecret[], int* lettreTrouvee)
+    {
+        int i = 0, bonneLettre = 0;
+        for (i = 0 ; motSecret[i] != '\0' ; i++)
+        {
+            if (lettre == motSecret[i])
+            {
+                bonneLettre = 0;
+                lettreTrouvee[i] = 1;
+            }
+            bonneLettre = 1;
+        }
+        return bonneLettre;
+    }
+
+  - int rechercheLettre(char lettre, char motSecret[], int* lettreTrouvee)
+    {
+        int i = 0, bonneLettre = 0;
+        for (i = 0 ; motSecret[i] != '\0' ; i++)
+        {
+            if (lettre == lettreTrouvee[i])
+            {
+                bonneLettre = 1;
+                lettreTrouvee[i] = 1;
+            }
+        }
+        return bonneLettre;
+    }
+
+"""""""""""" Réponse """""""""""""""""
+On parcourt la chaîne  motSecret  caractère par caractère. À chaque fois, on vérifie si la lettre que le joueur a proposée est une lettre du mot. Si la lettre correspond, alors on fait deux choses :
+
+  1. on change la valeur du booléen  bonneLettre  à 1, pour que la fonction retourne 1 car la lettre se 
+     trouvait effectivement dans  motSecret  ;
+  
+  2. on met à jour le tableau  lettreTrouvee  à la position actuelle pour indiquer que cette lettre a été 
+     trouvée.
+""""""""""""""""""""""""""""""""""""""
+
+Question 8
+
+La boucle principale du jeu s'arrête là. On recommence donc au début de la boucle et on vérifie s'il reste des coups à jouer et si on n'a pas déjà gagné. Lorsqu'on sort de la boucle principale du jeu, il reste à afficher si on a gagné ou non avant que le programme ne s'arrête :
+
+if (gagne(lettreTrouvee, nombreLettres))
+    printf("\n\nGagne ! Le mot secret etait bien : %s", motSecret);
+else
+    printf("\n\nPerdu ! Le mot secret etait : %s", motSecret);
+
+Avant de terminer le programme, vous devez libérer la mémoire du pointeur  lettreTrouvee  . Quelle instruction devez-vous ajouter à la fin du programme pour libérer la mémoire du pointeur  lettreTrouvee  ?
+
+  - free()
+
+  - free(*lettreTrouvee)
+
+  - free(lettreTrouvee) (o) (B)
+
+  - free(int lettreTrouvee)
+
+"""""""""""" Réponse """""""""""""""""
+La fonction  free  prend un pointeur en paramètre et désalloue la case mémoire pointée par ce pointeur. Le pointeur passé à  free  doit être préalablement alloué avec  calloc  ,  malloc  ou  realloc  . Si le pointeur est  NULL  , aucune action n'est entreprise.
+
+""""""""""""""""""""""""""""""""""""""
+
+Question 9
+
+Vous allez maintenant déclarer les fonctions dans un fichier d’en-tête  main.h  , quelles sont les lignes que vous devez ajouter à ce fichier ?
+
+  - 1.int tailleMot(motSecret[]);
+    2.void initTableau(*lettreTrouvee, taille);
+    3.int gagne(*lettreTrouvee, nombreLettres);
+    4.char lireCaractere();
+    5.int rechercheLettre(lettre, motSecret[], *lettreTrouvee);
+
+  - 1.int tailleMot(char motSecret[]); (o) (B)
+    2.void initTableau(int* lettreTrouvee, int taille);
+    3.int gagne(int *lettreTrouvee, int nombreLettres);
+    4.char lireCaractere();
+    5.int rechercheLettre(char lettre, char motSecret[], int* lettreTrouvee);
+
+  - 1.int tailleMot(char motSecret[])
+    2.void initTableau(int* lettreTrouvee, int taille)
+    3.int gagne(int *lettreTrouvee, int nombreLettres)
+    4.char lireCaractere()
+    5.int rechercheLettre(char lettre, char motSecret[], int* lettreTrouvee)
+
+  - 1.tailleMot(motSecret[]);
+    2.initTableau(*lettreTrouvee, taille);
+    3.gagne(*lettreTrouvee, nombreLettres);
+    4.lireCaractere();
+    5.rechercheLettre(lettre, motSecret[], *lettreTrouvee);
+
+
+"""""""""""" Réponse """""""""""""""""
+Pour déclarer une fonction, il faut préciser le prototype dans un fichier d’en-tête. Celui-ci permet de spécifier :
+
+  - le type de retour de la fonction,
+  - son nombre d’arguments
+  - et leur type.
+
+…Mais il ne comporte pas le corps de cette fonction.
+
+Attention, n’oubliez pas le point-virgule à la fin du prototype.
+
+""""""""""""""""""""""""""""""""""""""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
