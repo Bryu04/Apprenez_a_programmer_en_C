@@ -2017,3 +2017,20 @@ Ensuite, modifiez votre fonction lireDouble pour qu'elle accepte aussi le symbol
 
 En résumé
 
+  - La fonction scanf a des limites. On ne peut pas, par exemple, écrire plusieurs mots à la fois facilement.
+
+  - Un "buffer overflow" survient lorsqu'on dépasse l'espace réservé en mémoire : si l'utilisateur entre 10 
+    caractères alors qu'on n'avait réservé que 5 cases en mémoire.
+
+  - L'idéal est de faire appel à la fonction fgets pour récupérer du texte saisi par l'utilisateur.
+
+  - Il faut en revanche éviter à tout prix d'utiliser la fonction gets qui n'offre pas de protection contre le 
+    "buffer overflow".
+
+  - Vous pouvez écrire votre propre fonction de saisie du texte qui fait appel à fgets comme on l'a fait, afin 
+    d'améliorer son fonctionnement.
+
+J’ai l’impression que vous avez terminé la partie 2 de ce cours. Ne changeons pas les bonnes habitudes, il est temps de faire un quiz afin d’évaluer vos nouvelles connaissances !
+
+##############################################################################################################
+
