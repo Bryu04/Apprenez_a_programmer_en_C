@@ -49,6 +49,23 @@ int lecture(char *chaine, int longueur)
 }
 
 
+// Création d'une fonction qui lui va récupérer la sortie de la fonction lecture pour récupérer des nombres
+long lecturelong()
+{
+    char nombreTexte[100] = {0};
+
+    if (lecture(nombreTexte, 100))
+    {
+        // Si la lecture du texte est ok, convertir le nombre en long et le retourner
+        return strtol(nombreTexte, NULL, 10);
+    }
+    else
+    {
+        return 0; // Si erreur, on retourne la valeur 0
+    }
+    
+}
+
 int main(int argc, const char * argv[]) {
     // Ici on va demande à l'utilisateur de rentrer son nom
 
@@ -56,6 +73,14 @@ int main(int argc, const char * argv[]) {
     printf("Quel est votre nom ? : ");
     lecture(nom, 10);
     printf("Ah vous vous appelez %s !!\n", nom);
+    printf("-------------------------------------\n");
+
+    // Récupérer des nombres de manière sécurisé
+    long age = 0;
+    printf("Quel est votre age ? : ");
+    age = lecturelong();
+    printf("Ah vous avez donc %ld ans !! \n", age);
+    printf("-------------------------------------\n");
 
     return 0;
 }

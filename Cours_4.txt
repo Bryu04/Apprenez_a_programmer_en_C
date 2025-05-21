@@ -1911,3 +1911,87 @@ On boucle tant qu'on n'a pas récupéré le caractère \n et le symbole EOF(fin 
 
 
 Convertissez la chaîne en nombre
+
+Notre fonction lire est maintenant efficace mais elle ne sait lire que du texte.
+
+Mais comment fait-on pour récupérer un nombre ?
+
+Avec fgets, vous ne pouvez récupérer que du texte, mais il existe d'autres fonctions qui permettent de convertir ensuite un texte en nombre.
+
+
+Convertissez une chaîne en long avec strtol
+
+Le prototype de la fonction strtol est un peu particulier :
+
+  1.long strtol( const char *start, char **end, int base );
+
+  1. La fonction lit la chaîne de caractères que vous lui envoyez :start.
+
+  2. Elle essaie de la convertir en long en utilisant la base indiquée (généralement, on travaille en base 10 
+     car on utilise 10 chiffres différents de 0 à 9, donc vous mettrez 10).
+
+  3. Elle retourne le nombre qu'elle a réussi à lire.
+
+Quant au pointeur de pointeur end, la fonction s'en sert pour renvoyer la position du premier caractère qu'elle a lu et qui n'était pas un nombre. On ne s'en servira pas, on peut donc lui envoyer NULL pour lui faire comprendre qu'on ne veut rien récupérer.
+
+La chaîne doit commencer par un nombre, tout le reste est ignoré.
+Elle peut être précédée d'espaces.
+
+
+Voici quelques exemples d'utilisation pour bien comprendre le principe :
+
+  1.long i;
+  2.
+  3.i = strtol( "148", NULL, 10 ); // i = 148
+  4.i = strtol( "148.215", NULL, 10 ); // i = 148
+  5.i = strtol( "   148.215", NULL, 10 ); // i = 148
+  6.i = strtol( "   148+34", NULL, 10 ); // i = 148
+  7.i = strtol( "   148 feuilles mortes", NULL, 10 ); // i = 148
+  8.i = strtol( "   Il y a 148 feuilles mortes", NULL, 10 ); // i = 0 (erreur : la chaîne ne commence pas par 
+    un nombre)
+
+
+Toutes les chaînes qui commencent par un nombre (ou éventuellement des espaces suivis d'un nombre) seront converties en long jusqu'à la première lettre ou jusqu'au premier caractère invalide :., +, etc.
+La dernière chaîne de la liste ne commençant pas par un nombre, elle ne peut pas être convertie.
+La fonction strtol renverra donc 0.
+On peut créer une fonction lireLong qui va appeler notre première fonction lire(qui lit du texte), et ensuite convertir le texte saisi en nombre :
+
+
+long lireLong()
+{
+    char nombreTexte[100] = {0}; // 100 cases devraient suffire
+ 
+    if (lire(nombreTexte, 100))
+    {
+        // Si lecture du texte ok, convertir le nombre en long et le retourner
+        return strtol(nombreTexte, NULL, 10);
+    }
+    else
+    {
+        // Si problème de lecture, renvoyer 0
+        return 0;
+    }
+}
+
+
+Vous pouvez tester dans un main très simple :
+
+int main(int argc, char *argv[])
+{
+    long age = 0;
+ 
+    printf("Quel est votre age ? ");
+    age = lireLong();
+    printf("Ah ! Vous avez donc %d ans !\n\n", age);
+ 
+    return 0;
+}
+
+
+Quel est votre age ? 18
+Ah ! Vous avez donc 18 ans !
+
+
+
+Convertissez une chaîne en double avec strtod
+
