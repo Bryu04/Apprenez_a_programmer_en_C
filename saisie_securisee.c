@@ -8,6 +8,19 @@ Dans ce programme, on va regarder les limite de scanf et crée un propre fonctio
 #include <stdlib.h>
 #include <string.h>
 
+// Création d'une fonction qui va vider le "buffer", endroit où la saisie du clavier est 
+// stocké temporairemment avant d'être récupérer par scanf, fgets, getchar (ou d'autres 
+// fonctions)
+void viderBuffer()
+{
+    int c = 0;
+    while (c != '\n' && c != EOF)
+    {
+        c = getchar();
+    }
+    
+}
+
 // Création d'une fonction qui va lire la saisie de l'utilisateur
 
 int lecture(char *chaine, int longueur)
@@ -22,10 +35,15 @@ int lecture(char *chaine, int longueur)
         {
             *positionEntree = '\0'; // On remplace le caractère par \0
         }
+        else
+        {
+            viderBuffer();   // On vide la mémoire stdin ou buffer
+        }
         return 1; // On retourne 1 si pas d'erreur
     }
     else
     {
+        viderBuffer();   // On vide la mémoire stdin ou buffer
         return 0; // On retourne 0 s'il y a une erreur
     }
 }

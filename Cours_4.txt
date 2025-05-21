@@ -1789,3 +1789,125 @@ int main(int argc, char *argv[])
 Quel est votre nom ? Mateo
 Ah ! Vous vous appelez donc Mateo !
 
+
+Videz le buffer
+
+Nous ne sommes pas encore au bout de nos ennuis. Nous n'avons pas étudié ce qui se passait si l'utilisateur tentait de mettre plus de caractères qu'il n'y avait de place !
+
+Quel est votre nom ? Jean Edouard Albert 1er
+Ah ! Vous vous appelez donc Jean Edou !
+La fonction fgets étant sécurisée, elle s'est arrêtée de lire au bout du 9e caractère car nous avions alloué un tableau de 10 char(il ne faut pas oublier le caractère de fin de chaîne \0qui occupe la 10e position).
+
+Le problème, c'est que le reste de la chaîne qui n'a pas pu être lu, à savoir "ard Albert 1er", n'a pas disparu : Il est toujours dans le "buffer".
+
+Le "buffer" est une zone mémoire qui reçoit directement l'entrée clavier qui sert d'intermédiaire entre le clavier et votre tableau de stockage.
+
+En C, on dispose d'un pointeur vers le "buffer" : stdin.
+
+Je crois qu'un petit schéma ne sera pas de refus pour mettre les idées au clair :
+
+Lorsque l'utilisateur tape du texte au clavier, le système d'exploitation copie directement le texte tapé dans le "buffer" stdin. Il est là pour recevoir temporairement l'entrée du clavier.
+
+Le rôle de la fonction fgets est justement d'extraire du "buffer" les caractères qui s'y trouvent et de les copier dans la zone mémoire que vous lui indiquez (votre tableau chaine).
+
+Après avoir effectué son travail de copie, fgets enlève du "buffer" tout ce qu'elle a pu copier.
+
+Si tout s'est bien passéfgets a donc pu copier tout le buffer dans votre chaîne, et ainsi le buffer se retrouve vide à la fin de l'exécution de la fonction. Mais si l'utilisateur entre beaucoup de caractères, et que la fonction fgets ne peut copier qu'une partie d'entre eux, seuls les caractères lus seront supprimés du "buffer". Tous ceux qui n'auront pas été lus y resteront !
+
+Testons avec une longue chaîne :
+
+
+int main(int argc, char *argv[])
+{
+    char nom[10];
+ 
+    printf("Quel est votre nom ? ");
+    lire(nom, 10);
+    printf("Ah ! Vous vous appelez donc %s !\n\n", nom);
+ 
+    return 0;
+}
+
+Quel est votre nom ? Jean Edouard Albert 1er
+Ah ! Vous vous appelez donc Jean Edou !
+
+
+La fonction fgets a copié les 9 premiers caractères. Les autres sont toujours dans le buffer :
+
+Si vous faites un autre fgets ensuite, celui-ci va aller récupérer ce qui était resté en mémoire dans le buffer !
+
+Testons ce code :
+
+int main(int argc, char *argv[])
+{
+    char nom[10];
+ 
+    printf("Quel est votre nom ? ");
+    lire(nom, 10);
+    printf("Ah ! Vous vous appelez donc %s !\n\n", nom);
+    lire(nom, 10);
+    printf("Ah ! Vous vous appelez donc %s !\n\n", nom);
+ 
+    return 0;
+}
+
+Nous appelons deux fois la fonction lire. Pourtant, on ne vous laisse pas taper deux fois votre nom : la fonction fgets ne demande pas à l'utilisateur de taper du texte la seconde fois car elle trouve du texte à récupérer dans le "buffer" !
+
+Quel est votre nom ? Jean Edouard Albert 1er
+Ah ! Vous vous appelez donc Jean Edou !
+ 
+Ah ! Vous vous appelez donc ard Alber !
+
+
+Si l'utilisateur tape trop de caractères, la fonction fgets nous protège contre le débordement de mémoire, mais il reste toujours des traces du texte en trop dans le "buffer". Il faut le vider.
+
+On va donc améliorer notre fonctionlireet appeler une sous-fonction viderBuffer pour faire en sorte que le "buffer" soit vidé si on a rentré trop de caractères :
+
+
+void viderBuffer()
+{
+    int c = 0;
+    while (c != '\n' && c != EOF)
+    {
+        c = getchar();
+    }
+}
+ 
+int lire(char *chaine, int longueur)
+{
+    char *positionEntree = NULL;
+ 
+    if (fgets(chaine, longueur, stdin) != NULL)
+    {
+        positionEntree = strchr(chaine, '\n');
+        if (positionEntree != NULL)
+        {
+            *positionEntree = '\0';
+        }
+        else
+        {
+            viderBuffer();
+        }
+        return 1;
+    }
+    else
+    {
+        viderBuffer();
+        return 0;
+    }
+}
+
+La fonction lire appelle viderBuffer dans deux cas :
+
+  1. Si la chaîne était trop longue (on le sait parce qu'on n'a pas trouvé de caractère \n dans la chaîne 
+     copiée).
+
+  2. S'il y a eu une erreur (peu importe laquelle), il faut vider là aussi le "buffer" par sécurité pour qu'il 
+     n'y ait plus rien.
+
+La fonction viderBuffer lit dans le "buffer", caractère par caractère, grâce à getchar. Cette fonction renvoie un int(et non un char, allez savoir pourquoi, peu importe).
+On se contente de récupérer ce int dans la variable temporaire c.
+On boucle tant qu'on n'a pas récupéré le caractère \n et le symbole EOF(fin de fichier), qui signifient tous deux "vous êtes arrivé à la fin du buffer". On s'arrête de boucler dès que l'on tombe sur l'un de ces deux caractères.
+
+
+Convertissez la chaîne en nombre
