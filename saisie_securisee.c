@@ -49,7 +49,7 @@ int lecture(char *chaine, int longueur)
 }
 
 
-// Création d'une fonction qui lui va récupérer la sortie de la fonction lecture pour récupérer des nombres
+// Création d'une fonction qui lui va récupérer la sortie de la fonction lecture pour récupérer des nombres entiers
 long lecturelong()
 {
     char nombreTexte[100] = {0};
@@ -58,6 +58,33 @@ long lecturelong()
     {
         // Si la lecture du texte est ok, convertir le nombre en long et le retourner
         return strtol(nombreTexte, NULL, 10);
+    }
+    else
+    {
+        return 0; // Si erreur, on retourne la valeur 0
+    }
+    
+}
+
+// Création d'une fonction qui va récupérer la sortie de la fonction lecture mais le 
+// transformer en double (pour des nombres décimals)
+double lecturedouble()
+{
+    char nombreTexte2[100] = {0};
+
+    if (lecture(nombreTexte2, 100))
+    {
+        // Si la lecture du texte est ok, convertir en double et le retourner
+        // Avant de convertir, on va chercher s'il y a une virgule et le remplacer par un 
+        // point
+        char *positionEntree = NULL;
+        positionEntree = strchr(nombreTexte2, ','); // On recherche la virgule
+        if (positionEntree != NULL)
+        {
+            *positionEntree = '.';  // On le remplace par un point.
+        }
+        // Puis on convertit en double et le retourner
+        return strtod(nombreTexte2, NULL);
     }
     else
     {
@@ -80,6 +107,13 @@ int main(int argc, const char * argv[]) {
     printf("Quel est votre age ? : ");
     age = lecturelong();
     printf("Ah vous avez donc %ld ans !! \n", age);
+    printf("-------------------------------------\n");
+
+    // On fait de même pour les nombres décimales
+    double poids = 0;
+    printf("Combien pesez-vous ? : ");
+    poids = lecturedouble();
+    printf("Ah vous pesez donc %f kg !! \n", poids);
     printf("-------------------------------------\n");
 
     return 0;

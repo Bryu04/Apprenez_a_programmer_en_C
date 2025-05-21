@@ -1995,3 +1995,25 @@ Ah ! Vous avez donc 18 ans !
 
 Convertissez une chaîne en double avec strtod
 
+La fonction strtod est identique à strtol   , sauf qu'elle essaie de lire un nombre décimal et renvoie un double:
+
+  1.double strtod( const char *start, char **end );
+
+Le troisième paramètre base a disparu ici, mais il y a toujours le pointeur de pointeur end qui ne nous sert à rien.
+
+Contrairement à strtol, la fonction prend cette fois en compte le point décimal. En revanche, elle ne connaît pas la virgule (ça se voit que ça a été codé par des Anglais).
+
+Essayez d'écrire la fonction lireDouble (c'est exactement comme lireLong  , à part que cette fois, on appelle strtod et on retourne undouble). Vous devriez alors pouvoir faire ceci :
+
+Combien pesez-vous ? 67.4
+Ah ! Vous pesez donc 67.400000 kg !
+
+Ensuite, modifiez votre fonction lireDouble pour qu'elle accepte aussi le symbole virgule comme séparateur décimal :
+
+  1. Remplacez la virgule par un point dans la chaîne de texte lue (grâce à la fonction de recherche strchr).
+
+  2. Puis envoyez la chaîne modifiée à strtod.
+
+
+En résumé
+
