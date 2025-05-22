@@ -24,3 +24,6 @@ struct Liste
 
 // Prototypes des fonctions qui va manipuler notre liste chainées
 Liste *initialisation();
+void insertion(Liste *liste, int nvNombre);
+void suppression(Liste *liste);
+void afficherListe(Liste *liste);

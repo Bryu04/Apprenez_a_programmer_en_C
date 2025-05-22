@@ -163,3 +163,146 @@ Si tout s'est bien passé, on définit les valeurs de notre premier élément :
 
 Nous avons créé en mémoire une liste composée d'un seul élément :
 
+
+Ajoutez un élément
+
+Où va-t-on ajouter un nouvel élément ? Au début de la liste, à la fin, au milieu ?
+
+On a le choix. Pour l'instant, je propose de l'ajouter en début de liste parce que c'est simple à comprendre.
+
+Nous devons créer une fonction capable d'insérer un nouvel élément en début de liste. Imaginons un cas où la liste est composée de trois éléments et on souhaite en ajouter un nouveau au début :
+
+Il va falloir adapter le pointeur premier de la liste ainsi que le pointeur suivant de notre nouvel élément pour "insérer" correctement celui-ci dans la liste :
+
+
+void insertion(Liste *liste, int nvNombre)
+{
+    /* Création du nouvel élément */
+    Element *nouveau = malloc(sizeof(*nouveau));
+    if (liste == NULL || nouveau == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    nouveau->nombre = nvNombre;
+
+    /* Insertion de l'élément au début de la liste */
+    nouveau->suivant = liste->premier;
+    liste->premier = nouveau;
+}
+
+
+La fonction insertion() prend en paramètres :
+
+  - l'élément de contrôle liste(qui contient l'adresse du premier élément) ;
+
+  - et le nombre à stocker dans le nouvel élément que l'on va créer.
+
+Dans un premier temps, on alloue l'espace nécessaire au stockage du nouvel élément et on y place le nouveau nombre nvNombre. Il reste alors une étape délicate : l'insertion du nouvel élément dans la liste chaînée.
+Nous avons ici choisi pour simplifier d'insérer l'élément en début de liste. Pour mettre à jour correctement les pointeurs, nous devons procéder dans cet ordre précis :
+
+  1. Faire pointer notre nouvel élément vers son futur successeur, qui est l'actuel premier élément de la 
+     liste.
+
+  2. Faire pointer le pointeur premier vers notre nouvel élément.
+
+On ne peut pas suivre ces étapes dans l'ordre inverse !
+Si vous faites d'abord pointer premier vers notre nouvel élément, vous perdez l'adresse du premier élément de la liste.
+
+Cela aura pour effet d'insérer correctement notre nouvel élément dans la liste chaînée :
+
+
+Supprimez un élément
+
+La suppression ne pose pas de difficulté supplémentaire. Il faut cependant adapter les pointeurs de la liste dans le bon ordre pour ne perdre aucune information :
+
+void suppression(Liste *liste)
+{
+    if (liste == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    if (liste->premier != NULL)
+    {
+        Element *aSupprimer = liste->premier;
+        liste->premier = liste->premier->suivant;
+        free(aSupprimer);
+    }
+}
+
+
+  1. On vérifie que le pointeur qu'on nous envoie n'est pas NULL, sinon on ne peut pas travailler.
+
+  2. On vérifie ensuite qu'il y a au moins un élément dans la liste, sinon il n'y a rien à faire.
+
+  3. Ces vérifications effectuées, on peut sauvegarder l'adresse de l'élément à supprimer dans un pointeur 
+     aSupprimer.
+
+  4. On adapte ensuite le pointeur premier vers le nouveau premier élément, qui est actuellement en seconde 
+     position de la liste chaînée.
+
+  5. On supprime l'élément correspondant à notre pointeur aSupprimer avec un free :
+
+
+Il faut bien comprendre qu'on doit faire les choses dans un ordre précis :
+
+  1. Faire pointer premier vers le second élément.
+
+  2. Supprimer le premier élément avec un free.
+
+Si on fait l'inverse, on perd l'adresse du second élément.
+
+
+Affichez la liste chaînée
+
+
+Il suffit de partir du premier élément et d'afficher chaque élément un à un en "sautant" de bloc en bloc :
+
+void afficherListe(Liste *liste)
+{
+    if (liste == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    Element *actuel = liste->premier;
+
+    while (actuel != NULL)
+    {
+        printf("%d -> ", actuel->nombre);
+        actuel = actuel->suivant;
+    }
+    printf("NULL\n");
+}
+
+
+  1. On part du premier élément et on affiche le contenu de chaque élément de la liste (un nombre).
+
+  2. On se sert du pointeur suivant pour passer à l'élément qui suit à chaque fois.
+
+On peut tester la création de notre liste chaînée et son affichage avec un main:
+
+int main()
+{
+    Liste *maListe = initialisation();
+
+    insertion(maListe, 4);
+    insertion(maListe, 8);
+    insertion(maListe, 15);
+    suppression(maListe);
+
+    afficherListe(maListe);
+
+    return 0;
+}
+
+
+En plus du premier élément (que l'on a laissé ici à 0), on en ajoute trois nouveaux à cette liste. Puis on en supprime un.
+
+Au final, le contenu de la liste chaînée sera donc :
+
+8 -> 4 -> 0 -> NULL
+
+
+À vous de jouer
+
