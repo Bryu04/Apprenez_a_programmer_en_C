@@ -1,0 +1,165 @@
+                                        Partie 5 (Bonus) : structurez vos données
+
+
+Stockez les données avec les listes chaînées
+
+
+Un tableau peut être représenté en mémoire comme ceci :
+
+Un tableau de 4 cases en mémoire (représentation horizontale)
+
+J'ai choisi ici de représenter le tableau horizontalement, mais il serait aussi possible de le présenter verticalement, peu importe.
+
+Le problème des tableaux est qu'ils sont figés. Impossible de les agrandir (à moins d'en créer de nouveaux, plus grands) ; ou d'y insérer une case au milieu (à moins de décaler tous les autres éléments) :
+
+Le langage C ne propose pas d'autre système de stockage de données, mais il est possible de le créer soi-même de toutes pièces. Encore faut-il savoir comment s'y prendre : c'est justement ce que ce chapitre et les suivants vous proposent de découvrir.
+
+Une liste chaînée est un moyen d'organiser une série de données en mémoire. Cela consiste à assembler des structures en les liant entre elles à l'aide de pointeurs.
+
+On pourrait les représenter comme ceci :
+
+
+Une liste chaînée est un assemblage de structures liées par des pointeurs
+
+Chaque élément peut contenir ce que l'on veut : un ou plusieurs int, double… En plus de cela, chaque élément possède un pointeur vers l'élément suivant :
+
+Chaque élément contient une donnée (ex. : un int) et un pointeur vers l'élément suivant
+
+
+Retenez comment les éléments sont agencés entre eux : ils forment une chaîne de pointeurs, d'où le nom de "liste chaînée".
+
+Contrairement aux tableaux, les éléments d'une liste chaînée ne sont pas placés côte à côte dans la mémoire. Chaque case pointe vers une autre case en mémoire, qui n'est pas nécessairement stockée juste à côté.
+
+
+Construisez une liste chaînée
+
+Nous allons essayer de créer une structure qui fonctionne sur le principe que nous venons de découvrir.
+Tout ce que nous allons faire ici fait appel à des techniques du langage C que vous connaissez déjà. Il n'y a aucun élément nouveau, nous allons nous contenter de créer nos propres structures et fonctions, et les transformer en un système logique, capable de se réguler tout seul.
+
+Créez la structure de la liste des éléments
+
+Nous allons créer une liste chaînée de nombres entiers.
+
+On pourrait aussi bien créer une liste chaînée contenant des nombres décimaux ou même des tableaux et des structures. Le principe des listes chaînées s'adapte à n'importe quel type de données, mais ici, je propose de faire simple pour que vous compreniez bien le principe.
+
+Chaque élément de la liste aura la structure suivante :
+
+
+typedef struct Element Element;
+struct Element
+{
+    int nombre;
+    Element *suivant;
+};
+
+
+Que contient cette structure ?
+
+  - Une donnée, ici un nombre de type int: on pourrait remplacer cela par n'importe quelle autre donnée (un 
+    double, un tableau…). Cela correspond à ce que vous voulez stocker, c'est à vous de l'adapter en fonction 
+    des besoins de votre programme.
+
+Si on veut travailler de manière générique, l'idéal est de faire un pointeur sur void :void*. Cela permet de faire pointer vers n'importe quel type de données.
+
+  - Un pointeur vers un élément du même type appelé suivant. C'est ce qui permet de lier les éléments les uns 
+    aux autres : chaque élément sait où se trouve l'élément suivant en mémoire. Souvenez-vous : les cases ne 
+    sont pas côte à côte en mémoire ; c'est la grosse différence par rapport aux tableaux. Cela offre 
+    davantage de souplesse car on peut plus facilement ajouter de nouvelles cases par la suite au besoin.
+
+En revanche, il ne sait pas quel est l'élément précédent, il est donc impossible de revenir en arrière à partir d'un élément avec ce type de liste. On parle de liste "simplement chaînée", alors que les listes "doublement chaînées" ont des pointeurs dans les deux sens et n'ont pas ce défaut. Elles sont néanmoins plus complexes.
+
+
+Créez également la structure de contrôle
+
+En plus de la structure qu'on vient de créer (que l'on dupliquera autant de fois qu'il y a d'éléments), nous allons avoir besoin d'une autre structure pour contrôler l'ensemble de la liste chaînée. Elle aura la forme suivante :
+
+
+typedef struct Liste Liste;
+struct Liste
+{
+    Element *premier;
+};
+
+
+Cette structure Liste contient un pointeur vers le premier élément de la liste. En effet, il faut conserver l'adresse du premier élément pour savoir où commence la liste. Si on connaît le premier élément, on peut retrouver tous les autres en "sautant" d'élément en élément à l'aide des pointeurs suivant.
+
+Une structure composée d'une seule sous-variable n'est en général pas très utile. Néanmoins, je pense que l'on aura besoin d'y ajouter des sous-variables plus tard, je préfère donc prendre les devants en créant ici une structure. On pourrait par exemple y stocker en plus la taille de la liste, c'est-à-dire le nombre d'éléments qu'elle contient.
+
+Nous n'aurons besoin de créer qu'un seul exemplaire de la structure Liste. Elle permet de contrôler toute la liste :
+
+Retenez le dernier élément de la liste
+
+Il faudra bien arrêter de parcourir la liste à un moment donné.
+
+Avec quoi pourrait-on signifier à notre programme "Stop, ceci est le dernier élément" ?
+
+Il suffit de faire pointer le dernier élément de la liste vers NULL, c'est-à-dire de mettre son pointeur suivant à NULL :
+
+Nous avons créé deux structures qui permettent de gérer une liste chaînée :
+
+  1. Element, qui correspond à un élément de la liste et que l'on peut dupliquer autant de fois que 
+     nécessaire.
+
+  2. Liste, qui contrôle l'ensemble de la liste. Nous n'en aurons besoin qu'en un seul exemplaire.
+
+C'est bien, mais il manque encore l'essentiel : les fonctions qui vont manipuler la liste chaînée. En effet, on ne va pas modifier "à la main" le contenu des structures à chaque fois qu'on en a besoin ! Il vaut mieux passer par des fonctions qui automatisent le travail.
+
+
+Gérez la liste à l'aide de fonctions
+
+
+À première vue, on peut dire qu'on aura besoin de fonctions pour :
+
+  - initialiser la liste ;
+
+  - ajouter un élément ;
+
+  - supprimer un élément ;
+
+  - afficher le contenu de la liste ;
+
+  - supprimer la liste entière.
+
+
+Initialisez la liste
+
+La fonction d'initialisation est la toute première que l'on doit appeler. Elle crée la structure de contrôle et le premier élément de la liste :
+
+
+Liste *initialisation()
+{
+    Liste *liste = malloc(sizeof(*liste));
+    Element *element = malloc(sizeof(*element));
+
+    if (liste == NULL || element == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    element->nombre = 0;
+    element->suivant = NULL;
+    liste->premier = element;
+
+    return liste;
+}
+
+On commence par créer la structure de contrôle liste.
+
+Le type de données est Liste et la variable s'appelle liste.
+La majuscule permet de les différencier.
+
+On alloue dynamiquement la structure de contrôle avec un malloc. La taille à allouer est calculée automatiquement avec sizeof(*liste). L'ordinateur saura qu'il doit allouer l'espace nécessaire au stockage de la structure Liste.
+
+On aurait aussi pu écrire sizeof(Liste), mais si plus tard on décide de modifier le type du pointeur liste, on devra aussi adapter le sizeof.
+
+On alloue ensuite de la même manière la mémoire nécessaire au stockage du premier élément. On vérifie si les allocations dynamiques ont fonctionné. En cas d'erreur, on arrête immédiatement le programme en faisant appel à exit().
+Si tout s'est bien passé, on définit les valeurs de notre premier élément :
+
+  - la donnée nombre est mise à 0 par défaut ;
+
+  - le pointeur suivant pointe vers NULL car le premier élément de notre liste est aussi le dernier pour le 
+    moment. Rappel : le dernier élément doit pointer vers NULL pour signaler qu'il est en fin de liste.
+
+
+Nous avons créé en mémoire une liste composée d'un seul élément :
+
