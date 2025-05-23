@@ -329,3 +329,22 @@ Vous pouvez télécharger le projet des listes chaînées comprenant les fonctio
 
 
 En résumé
+
+  - Les listes chaînées constituent un nouveau moyen de stocker des données en mémoire. Elles sont plus 
+    flexibles que les tableaux car on peut ajouter et supprimer des « cases » à n'importe quel moment.
+
+  - Il n'existe pas en langage C de système de gestion de listes chaînées, il faut l'écrire nous-mêmes ! C'est 
+    un excellent moyen de progresser en algorithmique et en programmation en général.
+
+  - Dans une liste chaînée, chaque élément est une structure qui contient l'adresse de l'élément suivant.
+
+  - Il est conseillé de créer une structure de contrôle (du type Liste dans notre cas) qui retient l'adresse 
+    du premier élément.
+
+  - Il existe une version améliorée – mais plus complexe – des listes chaînées appelée « listes doublement 
+    chaînées », dans lesquelles chaque élément possède en plus l'adresse de celui qui le précède.
+
+Vous en savez maintenant un peu plus sur ce que sont les listes chaînées. Dans le prochain chapitre, nous allons voir deux variantes de listes chaînées. Rendez-vous dans le prochain chapitre pour voir les piles et les files.
+
+##############################################################################################################
+
