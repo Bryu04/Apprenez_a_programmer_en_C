@@ -19,6 +19,7 @@ typedef struct Liste Liste;
 struct Liste
 {
     Element *premier; // Un pointeur qui pointe sur le premier élément de la liste chainée
+    int nbElements;  // Le nombre d'éléments présent dans la liste
 };
 
 
@@ -27,3 +28,8 @@ Liste *initialisation();
 void insertion(Liste *liste, int nvNombre);
 void suppression(Liste *liste);
 void afficherListe(Liste *liste);
+void rechercheIndice(Liste *liste, int nombre);
+void insertionMilieu(Liste *liste, int nvNombre, int position);
+void suppressionMilieu(Liste *liste, int position);
+Liste *suppressionListe(Liste *liste);
+void tailleListe(Liste *liste);

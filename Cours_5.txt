@@ -306,3 +306,26 @@ Au final, le contenu de la liste chaînée sera donc :
 
 À vous de jouer
 
+
+Nous venons de faire le tour des principales fonctions nécessaires à la gestion d'une liste chaînée. Voici d'autres fonctions que je vous invite à écrire, ce sera un très bon exercice !
+
+  - Insertion d'un élément en milieu de liste : si on veut pouvoir ajouter un élément au milieu, il faut créer 
+    une fonction spécifique qui prend un paramètre supplémentaire : l'adresse de celui qui précèdera notre 
+    nouvel élément dans la liste. Votre fonction va parcourir la liste chaînée jusqu'à tomber sur l'élément 
+    indiqué. Elle y insèrera le petit nouveau juste après.
+
+  - Suppression d'un élément en milieu de liste : le principe est le même que pour l'insertion en milieu de 
+    liste. Cette fois, vous devez ajouter en paramètre l'adresse de l'élément à supprimer.
+
+  - Destruction de la liste : il suffit de supprimer tous les éléments un à un !
+
+  - Taille de la liste : cette fonction indique combien il y a d'éléments dans votre liste chaînée. L'idéal, 
+    plutôt que d'avoir à calculer cette valeur à chaque fois, serait de maintenir à jour un entier nbElements 
+    dans la structure Liste. Il suffit d'incrémenter ce nombre à chaque fois qu'on ajoute un élément, et de le 
+    décrémenter quand on en supprime un.
+
+Je vous conseille de regrouper toutes les fonctions de gestion de la liste chaînée dans des fichiers liste_chainee.c et liste_chainee.h   , par exemple. Ce sera votre première bibliothèque ! Vous pourrez la réutiliser dans tous les programmes dans lesquels vous aurez besoin de listes chaînées.
+Vous pouvez télécharger le projet des listes chaînées comprenant les fonctions que nous avons découvertes ensemble. Cela vous fera une bonne base de départ.
+
+
+En résumé
