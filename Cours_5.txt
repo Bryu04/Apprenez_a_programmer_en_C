@@ -706,3 +706,163 @@ Maintenant que vous êtes incollable sur les listes chaînées, nous allons voi
 
 ##############################################################################################################
 
+Stockez et retrouvez des données grâce aux tables de hachage
+
+Les listes chaînées ont un gros défaut lorsqu'on souhaite lire ce qu'elles contiennent : il n'est pas possible d'accéder directement à un élément précis. Il faut parcourir la liste en avançant d'élément en élément jusqu'à trouver celui qu'on recherche. Cela pose des problèmes de performance dès que la liste chaînée devient volumineuse.
+
+Les tables de hachage représentent une autre façon de stocker des données. Elles sont basées sur les tableaux du langage C. Elles permettent de retrouver instantanément un élément précis, que la table contienne 100, 1 000, 10 000 cases ou plus encore !
+
+
+Comprenez l'intérêt d'une table de hachage
+
+Les listes chaînées permettent d'ajouter ou de supprimer des cases à tout moment. Toutefois, elles ont quand même un gros défaut : si on cherche à récupérer un élément précis de la liste, il faut parcourir celle-ci en entier jusqu'à ce qu'on le retrouve !
+
+Imaginons une liste chaînée qui contienne des informations sur des élèves : leur nom, leur âge et leur moyenne. Chaque élève sera représenté par une structure  Eleve  .
+
+Nous avons travaillé auparavant sur des listes chaînées qui contenaient des int  . Cela dit, on peut stocker ce qu'on veut dans une liste, même un pointeur vers une structure, comme je le propose ici.
+
+Si je veux retrouver les informations sur Luc Doncieux, il va falloir parcourir toute la liste pour se rendre compte qu'il était à la fin :
+
+Bien entendu, si on avait cherché Julien Lefebvre, cela aurait été beaucoup plus rapide puisqu'il est au début de la liste. Néanmoins, pour évaluer l'efficacité d'un algorithme, on doit toujours envisager le pire des cas. Et le pire, c'est Luc.
+
+Ici, on dit que l'algorithme de recherche d'un élément a une complexité en O(n)
+, car il faut parcourir toute la liste chaînée pour retrouver un élément donné, dans le pire des cas où celui-ci est à la fin. Si la liste contient 9 éléments, il faudra 9 itérations au maximum pour retrouver un élément.
+
+Dans cet exemple, notre liste chaînée ne contient que quatre éléments. L'ordinateur retrouvera Luc Doncieux très rapidement. Mais imaginez que celui-ci se trouve à la fin d'une liste chaînée de 10 000 éléments ! Ce n'est pas acceptable de devoir parcourir jusqu'à 10 000 éléments pour retrouver une information.
+
+C'est là que les tables de hachage entrent en jeu.
+
+Si vous vous souvenez bien, les tableaux ne connaissaient pas ce problème. Pour accéder à l'élément d'indice 2 dans mon tableau, il me suffisait d'écrire ceci :
+
+  1.int tableau[4] = {12, 7, 14, 33};
+  2.printf("%d", tableau[2]);
+
+Si on lui donne tableau[2], l'ordinateur va directement à la case mémoire où se trouve stocké le nombre 14. Il ne parcourt pas les cases du tableau une à une.
+
+Mais alors, les tableaux ne sont "pas si mauvais", en fait ? Mais dans ce cas, on perd l'avantage des listes chaînées qui nous permettaient d'ajouter et de retirer des cases à tout moment !
+
+En effet, les listes chaînées sont plus flexibles. Les tableaux, eux, permettent un accès plus rapide. Les tables de hachage constituent quelque part un compromis entre les deux.
+
+Il y a un défaut important avec les tableaux dont on n'a pas beaucoup parlé jusqu'ici : les cases sont identifiées par des numéros qu'on appelle des indices. Il n'est pas possible de demander à l'ordinateur : "Dis-moi quelles sont les données qui se trouvent à la caseLuc Doncieux ".
+
+Pour retrouver l'âge et la moyenne de Luc Doncieux, on ne peut donc pas écrire :
+
+  1.tableau["Luc Doncieux"];
+
+Ce serait pourtant pratique de pouvoir accéder à une case du tableau rien qu'avec le nom ! Eh bien avec les tables de hachage, c'est possible !
+
+Les tables de hachage ne font pas partie du langage C. Il s'agit simplement d'un concept. On va réutiliser les briques de base du C que l'on connaît déjà pour créer un nouveau système intelligent. 
+
+Puisque notre tableau doit forcément être numéroté par des indices, comment fait-on pour retrouver le bon numéro de case si on connaît seulement le nom "Luc Doncieux" ?
+
+Un tableau reste un tableau, et celui-ci ne fonctionne qu'avec des indices numérotés.
+
+Imaginez un tableau dans lequel chaque case a un indice et possède un pointeur vers une structure de type Eleve :
+
+
+                               Indice       Valeur
+                                 0            *   ->  Julien
+		                                     Lefebvre
+                                                      21 ans
+                                                      14/20
+
+                                 1            *   -> Aurélie
+    		                                     Bassoli
+ 		                                      20 ans
+		                                      15/20
+
+                                 2            *   ->  Yann
+						     Martinez
+ 						      18 ans
+						      17/20
+
+				 3            *   ->   Luc
+						     Doncieux
+						       18 ans
+						       11/20
+
+
+
+Si on veut retrouver la case correspondant à Luc Doncieux, il faut transformer son nom en indice du tableau, et donc associer chaque nom à un numéro de case :
+
+  - Julien Lefebvre = 0 ;
+
+  - Aurélie Bassoli = 1 ;
+
+  - Yann Martinez = 2 ;
+
+  - Luc Doncieux = 3.
+
+On ne peut pas écrire tableau["Luc Doncieux"] comme je l'ai fait précédemment. Ce n'est pas valide en C.
+
+Comment transformer une chaîne de caractères en numéro ?
+
+Il faut écrire une fonction qui prend en entrée une chaîne de caractères, fait des calculs avec, puis retourne en sortie un numéro correspondant à cette chaîne.
+
+Ce numéro sera l'indice de la case dans notre tableau :
+
+
+Écrivez une fonction de hachage
+
+Toute la difficulté consiste à écrire une fonction de hachage correcte. Comment transformer une chaîne de caractères en un nombre unique ?
+
+Tout d'abord, mettons les choses au clair : une table de hachage ne contient pas 4 cases comme sur mes exemples, mais plutôt 100, 1 000 ou même plus. Peu importe la taille du tableau, la recherche de l'élément sera aussi rapide.
+
+On dit que c'est une complexité en  O(1)
+   car on trouve directement l'élément que l'on recherche. La fonction de hachage nous retourne un indice : il suffit de "sauter" directement à la case correspondante du tableau. Plus besoin de parcourir toutes les cases !
+
+Imaginons donc un tableau de 100 cases dans lequel on va stocker des pointeurs vers des structures Eleve.
+
+  1.Eleve* tableau[100];
+
+Nous devons écrire une fonction qui, à partir d'un nom, génère un nombre compris entre 0 et 99 (les indices du tableau). C'est là qu'il faut être inventif. Il existe des méthodes mathématiques très complexes pour "hacher" des données, c'est-à-dire les transformer en nombres.
+
+Les algorithmes MD5 et SHA1 sont des fonctions de hachage célèbres, mais elles sont trop poussées pour nous ici.
+
+Vous pouvez inventer votre propre fonction de hachage. Ici, pour faire simple, je vous propose d'additionner les valeurs ASCII de chaque lettre du nom, c'est-à-dire pour Luc Doncieux, de faire la somme suivante :
+
+  1.'L' + 'u' + 'c' + ' ' + 'D' + 'o' + 'n' + 'c' + 'i' + 'e' + 'u' + 'x'
+
+On va toutefois avoir un problème : cette somme dépasse 100 ! Comme notre tableau ne fait que 100 cases, si on s'en tient à ça, on risque de sortir des limites du tableau.
+
+Chaque lettre dans la table ASCII peut être numérotée jusqu'à 255. On a donc vite fait de dépasser 100.
+
+Pour régler le problème, on peut utiliser l'opérateur modulo %  . Vous vous souvenez de lui ? Il donne le reste de la division !
+
+Si on fait le calcul :
+
+
+  1.sommeLettres % 100
+
+… on obtiendra forcément un nombre compris entre 0 et 99.
+
+Par exemple, si la somme fait 4 315, le reste de la division par 100 est 15. La fonction de hachage retournera donc 15.
+
+Voici à quoi pourrait ressembler cette fameuse fonction :
+
+
+int hachage(char *chaine)
+{
+    int i = 0, nombreHache = 0;
+
+    for (i = 0 ; chaine[i] != '\0' ; i++)
+    {
+        nombreHache += chaine[i];
+    }
+    nombreHache %= 100;
+
+    return nombreHache;
+}
+
+
+Si on lui envoie hachage("Luc Doncieux")  , elle renvoie 55. Avec hachage("Yann Martinez")  , on obtient 80.
+
+Grâce à cette fonction de hachage, vous savez donc dans quelle case de votre tableau vous devez placer vos données ! Lorsque vous voudrez y accéder plus tard pour en récupérer les données, il suffira de hacher à nouveau le nom de la personne pour retrouver l'indice de la case du tableau où sont stockées les informations !
+
+Je vous recommande de créer une fonction de recherche qui se chargera de hacher la clé (le nom) et de vous renvoyer un pointeur vers les données que vous recherchiez.
+
+Cela donnerait par exemple :
+infosSurLuc = rechercheTableHachage(tableau, "Luc Doncieux");
+
+
+Gérez les collisions
