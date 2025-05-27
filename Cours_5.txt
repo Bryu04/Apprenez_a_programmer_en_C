@@ -557,3 +557,136 @@ Vérifiez que vous voyez bien ce qui se passe dans ce programme. Si vous compren
 
 Vous pouvez télécharger le projet complet des piles si vous le désirez.
 
+
+Construisez une structure de file
+
+Les files ressemblent assez aux piles, si ce n'est qu'elles fonctionnent dans le sens inverse !
+
+Comprenez le fonctionnement des files
+
+Dans ce système, les éléments s'entassent les uns à la suite des autres. Le premier qu'on fait sortir de la file est le premier à être arrivé. On parle ici d'algorithme FIFO ("First In First Out", c'est-à-dire "Le premier qui arrive est le premier à sortir").
+
+C'est ce qu'il se passe par exemple dans la file d'attente pour un guichet de cinéma, le premier arrivé est le premier servi.
+
+En programmation, les files mettent en attente des informations dans l'ordre dans lequel elles sont arrivées.
+Dans un logiciel de messagerie instantanée, trois messages reçus à peu de temps d'intervalle forment en fait une file en mémoire : ils sont placés les uns à la suite des autres. Le premier message arrivé s'afficher à l'écran, puis le second, et ainsi de suite.
+
+En C, une file est une liste chaînée où chaque élément pointe vers le suivant, tout comme les piles. Le dernier élément de la file pointe vers NULL :
+
+
+Créez un système de file
+
+Nous allons créer une structure Element et une structure de contrôleFile:
+
+typedef struct Element Element;
+struct Element
+{
+    int nombre;
+    Element *suivant;
+};
+
+typedef struct File File;
+struct File
+{
+    Element *premier;
+};
+
+Comme pour les piles, chaque élément de la file sera de type Element.
+
+À l'aide du pointeur premier, nous disposerons toujours du premier élément, et nous pourrons remonter jusqu'au dernier.
+
+
+Enfilage d'un élément
+
+La fonction d'enfilage ajoute un élément à la file.
+Il y a deux cas à gérer :
+
+  1. La file est vide : on crée la file en faisant pointer premier vers le nouvel élément créé.
+
+  2. La file n'est pas vide : on parcourt toute la file en partant du premier élément jusqu'à arriver au 
+     dernier. On rajoutera notre nouvel élément après le dernier.
+
+Voici comment on peut faire dans la pratique :
+
+void enfiler(File *file, int nvNombre)
+{
+    Element *nouveau = malloc(sizeof(*nouveau));
+    if (file == NULL || nouveau == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    nouveau->nombre = nvNombre;
+    nouveau->suivant = NULL;
+
+    if (file->premier != NULL) /* La file n'est pas vide */
+    {
+        /* On se positionne à la fin de la file */
+        Element *elementActuel = file->premier;
+        while (elementActuel->suivant != NULL)
+        {
+            elementActuel = elementActuel->suivant;
+        }
+        elementActuel->suivant = nouveau;
+    }
+    else /* La file est vide, notre élément est le premier */
+    {
+        file->premier = nouveau;
+    }
+}
+
+
+Vous voyez dans ce code le traitement des deux cas possibles, chacun devant être géré à part.
+La différence par rapport aux piles, c'est qu'il faut se placer à la fin de la file pour ajouter le nouvel élément : un while   , et le tour est joué !
+
+
+Défilage d'un élément
+
+Le défilage ressemble étrangement au dépilage. Étant donné qu'on possède un pointeur vers le premier élément de la file, il nous suffit de l'enlever et de renvoyer sa valeur.
+
+int defiler(File *file)
+{
+    if (file == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    int nombreDefile = 0;
+
+    /* On vérifie s'il y a quelque chose à défiler */
+    if (file->premier != NULL)
+    {
+        Element *elementDefile = file->premier;
+
+        nombreDefile = elementDefile->nombre;
+        file->premier = elementDefile->suivant;
+        free(elementDefile);
+    }
+
+    return nombreDefile;
+}
+
+À vous de jouer !
+
+Il resterait à écrire une fonction afficherFile  , comme on l'avait fait pour les piles, pour vérifier si la file se comporte correctement.
+
+Réalisez ensuite un main pour faire tourner votre programme. Vous devriez obtenir ceci :
+
+
+Etat de la file :
+4 8 15 16 23 42
+
+Je defile 4
+Je defile 8
+
+Etat de la file :
+15 16 23 42
+
+
+À terme, vous devriez pouvoir créer votre propre bibliothèque de files, avec des fichiers file.h et file.c   , par exemple.
+
+Je vous propose de télécharger le projet complet de gestion des files, si vous le désirez. Il inclut la fonction afficherFile.
+
+
+En résumé
+

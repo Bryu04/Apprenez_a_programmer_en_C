@@ -19,12 +19,25 @@ struct Element
 typedef struct Pile Pile;
 struct Pile
 {
-    Element *premier; // Un pointeur qui pointe sur le premier élément de la liste chainée
+    Element *premier; // Un pointeur qui pointe sur le premier élément de la Pile
+};
+
+// On fait une autre structure de controle (qui sera la file)
+typedef struct File File;
+struct File
+{
+    Element *premier; // Un pointeur qui pointe sur le premier élément de la File
 };
 
 
-// Prototypes des fonctions qui va manipuler les empilement et déempilement
+// Prototypes des fonctions qui va manipuler les empilement et déempilement pour la Pile
 Pile *initialiser();
 void empiler(Pile *pile, int nvNombre);
 int depiler(Pile *pile);
 void afficherPile(Pile *pile);
+
+// Prototypes des fonctions qui va manipuler les enfilage et défilage pour la File
+File *initialisation();
+void enfiler(File *file, int nvNombre);
+int defiler(File *file);
+void afficherFile(File *file);
