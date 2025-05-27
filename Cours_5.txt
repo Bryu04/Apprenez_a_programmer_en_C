@@ -690,3 +690,19 @@ Je vous propose de télécharger le projet complet de gestion des files, si vous
 
 En résumé
 
+  - Les piles et les files permettent d'organiser en mémoire des données qui arrivent au fur et à mesure.
+
+  - Elles utilisent un système de liste chaînée pour assembler les éléments.
+
+  - Dans le cas des piles, les données s'ajoutent les unes au-dessus des autres. Lorsqu'on extrait une donnée, 
+    on récupère la dernière qui vient d'être ajoutée (la plus récente). On parle d'algorithme LIFO pour "Last 
+    In First Out".
+
+  - Dans le cas des files, les données s'ajoutent les unes à la suite des autres. On extrait la première 
+    donnée à avoir été ajoutée dans la file (la plus ancienne). On parle d'algorithme FIFO pour "First In 
+    First Out".
+
+Maintenant que vous êtes incollable sur les listes chaînées, nous allons voir un dernier point, concernant les tables de hachage. Allez, plus qu’un chapitre !
+
+##############################################################################################################
+
