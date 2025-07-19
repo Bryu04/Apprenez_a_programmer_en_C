@@ -1,13 +1,13 @@
 /*
 
 main.h
-Dans ce fichier, on va créer des listes chaînées à partir des structures qui seront utilisées dans le programme main.c
-Puis on va utiliser une table de hachage pour permettre de parcourir les éléments de la liste plus vite.
+Dans ce fichier, on va créer une table de hachage à partir des structures qui seront utilisées dans le programme main.c
+
 */
 
-// Création d'une structure pour créer une liste chainée qui contient des infos sur des 
+// Création d'une structure pour créer une tableau qui contient des infos sur des 
 // éleves (nom, age et leur moyenne générale)
-// Ici chaque élément de cette liste aura cette structure générique
+// Ici chaque élément de ce tableau aura cette structure générique
 
 typedef struct Eleve Eleve;
 struct Eleve
@@ -15,26 +15,26 @@ struct Eleve
     char nom[100]; // Le nom complet
     int age;  // Une donnée; ici leur age
     int moyenne; // Leur moyenne générale
-    Eleve *suivant;  // Un pointeur qui pointe sur le prochain éleve (de même type) de 
-                     // la liste
+    
 };
 
+// Constant pour le tableau
+#define TABLE_SIZE 100
 
-// Il nous faut aussi une structure de controle de la liste chainée
-typedef struct Liste Liste;
-struct Liste
+// Et on créer une structure pour la tableau de hachage
+typedef struct TableHachage TableHachage;
+struct TableHachage
 {
-    Eleve *premier; // Un pointeur qui pointe sur le premier éleve de la liste chainée
-    int nbEleve;  // Le nombre d'éleves présent dans la liste
+    Eleve *table[TABLE_SIZE];
 };
+
 
 
 // Prototypes des fonctions qui va manipuler notre liste chainées
-Liste *initialisation();
-void insertion(Liste *liste, char nvNom[100], int nvAge, int nvNote);
-void insertionMilieu(Liste *liste, char nvNom[100], int nvAge, int nvNote, int position);
-void afficherListe(Liste *liste);
-void suppression(Liste *liste);
-void suppressionMilieu(Liste *liste, int position);
-Liste *suppressionListe(Liste *liste);
-void tailleListe(Liste *liste);
+TableHachage *initialisation();
+void insertion(TableHachage *tablehachage, char nvNom[100], int nvAge, int nvNote);
+void afficherTable(TableHachage *tablehachage);
+void suppression(TableHachage *tablehachage, char supNom[100]);
+TableHachage *suppressionTable(TableHachage *tablehachage);
+void nombreEleve(TableHachage *tablehachage);
+int hachage(char *chaine);
