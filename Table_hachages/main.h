@@ -30,7 +30,7 @@ struct TableHachage
 
 
 
-// Prototypes des fonctions qui va manipuler notre liste chainées
+// Prototypes des fonctions qui va manipuler notre table de hachage
 TableHachage *initialisation();
 void insertion(TableHachage *tablehachage, char nvNom[100], int nvAge, int nvNote);
 void afficherTable(TableHachage *tablehachage);
@@ -38,3 +38,48 @@ void suppression(TableHachage *tablehachage, char supNom[100]);
 TableHachage *suppressionTable(TableHachage *tablehachage);
 void nombreEleve(TableHachage *tablehachage);
 int hachage(char *chaine);
+
+/////////////////////// GESTION DES COLLISIONS //////////////////////
+
+// Méthode 1 : Adressage ouvert
+typedef struct TableHachage_OpenAddressing TabHacOA;
+struct TableHachage_OpenAddressing
+{
+    Eleve *table[TABLE_SIZE];
+};
+
+// Prototypes des fonctions pour l'adressage ouvert
+//TableHachage *initialisation();
+//void insertion(TableHachage *tablehachage, char nvNom[100], int nvAge, int nvNote);
+//void afficherTable(TableHachage *tablehachage);
+//void suppression(TableHachage *tablehachage, char supNom[100]);
+//TableHachage *suppressionTable(TableHachage *tablehachage);
+//void nombreEleve(TableHachage *tablehachage);
+//int hachage(char *chaine);
+
+// Méthode 2 : Chaînage
+
+typedef struct Eleve_Chain ChainEleve;
+struct Eleve_Chain
+{
+    char nom[100]; // Le nom complet
+    int age;  // Une donnée; ici leur age
+    int moyenne; // Leur moyenne générale
+    ChainEleve *suivant; // Un pointeur qui pointe sur le prochain élément (de même 
+                         // type) de la liste
+    
+};
+
+typedef struct TableHachage_Chainage TabHacChain;
+struct TableHachage_Chainage
+{
+    ChainEleve *table[TABLE_SIZE];
+};
+
+// Prototypes des fonctions pour les chaînages
+TabHacChain *initialiser();
+void insertionchain(TabHacChain *tabhachain, char nvNom[100], int nvAge, int nvNote);
+void afficherChainTable(TabHacChain *tabhachain);
+void suppressionchain(TabHacChain *tabhachain, char supNom[100]);
+TabHacChain *suppressionChainTable(TabHacChain *tabhachain);
+void nombreEleveChain(TabHacChain *tabhachain);
