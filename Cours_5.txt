@@ -743,7 +743,7 @@ Mais alors, les tableaux ne sont "pas si mauvais", en fait ? Mais dans ce cas, o
 
 En effet, les listes chaînées sont plus flexibles. Les tableaux, eux, permettent un accès plus rapide. Les tables de hachage constituent quelque part un compromis entre les deux.
 
-Il y a un défaut important avec les tableaux dont on n'a pas beaucoup parlé jusqu'ici : les cases sont identifiées par des numéros qu'on appelle des indices. Il n'est pas possible de demander à l'ordinateur : "Dis-moi quelles sont les données qui se trouvent à la caseLuc Doncieux ".
+Il y a un défaut important avec les tableaux dont on n'a pas beaucoup parlé jusqu'ici : les cases sont identifiées par des numéros qu'on appelle des indices. Il n'est pas possible de demander à l'ordinateur : "Dis-moi quelles sont les données qui se trouvent à la case Luc Doncieux ".
 
 Pour retrouver l'âge et la moyenne de Luc Doncieux, on ne peut donc pas écrire :
 
@@ -866,3 +866,89 @@ infosSurLuc = rechercheTableHachage(tableau, "Luc Doncieux");
 
 
 Gérez les collisions
+
+Quand la fonction de hachage renvoie le même nombre pour deux clés différentes, on dit qu'il y a collision.
+
+Dans notre cas, si nous avions un anagramme de Luc Doncieux qui s'appelle Luc Doncueix, la somme des lettres est la même, donc le résultat de la fonction de hachage sera le même !
+
+Deux raisons peuvent expliquer une collision.
+
+  1. La fonction de hachage n'est pas très performante. C'est notre cas : nous avons écrit une fonction très 
+     simple (mais néanmoins suffisante) pour nos exemples. Les fonctions MD5 et SHA1 mentionnées plus tôt sont 
+     de bonne qualité car elles produisent très peu de collisions. SHA1 est aujourd'hui préférée à MD5 car 
+     c'est celle des deux qui en produit le moins.
+
+  2. Le tableau dans lequel on stocke nos données est trop petit. Si on crée un tableau de 4 cases et qu'on 
+     souhaite stocker 5 personnes, on aura à coup sûr une collision, c'est-à-dire que notre fonction de 
+     hachage donnera le même indice pour deux noms différents.
+
+Si une collision survient, pas de panique ! Deux solutions s'offrent à vous, au choix :
+
+  1. L'adressage ouvert.
+
+  2. Et le chaînage.
+
+Solution 1 : l'adressage ouvert
+
+S'il reste de la place dans votre tableau, vous pouvez utiliser la technique dite du hachage linéaire. Le principe est simple. La case est occupée ? Pas de problème, allez à la case suivante. Ah, elle est occupée aussi ? Allez à la suivante !
+
+Ainsi de suite, continuez jusqu'à trouver la prochaine case libre dans le tableau. Si vous arrivez à la fin du tableau, retournez à la première case et continuez.
+
+Cette méthode est simple à mettre en place, mais si vous avez beaucoup de collisions, vous allez passer beaucoup de temps à chercher la prochaine case libre.
+
+Il existe des variantes (hachage double, hachage quadratique…) qui consistent à hacher à nouveau selon une autre fonction en cas de collision. Elles sont plus efficaces, mais plus complexes à mettre en place.
+
+Solution 2 : le chaînage
+
+Une autre solution consiste à créer une liste chaînée à l'emplacement de la collision. Vous avez deux données (ou plus) à stocker dans la même case ? Utilisez une liste chaînée et créez un pointeur vers cette liste depuis le tableau :
+
+
+                          Indice     Valeur
+                             0         *   -> Element 1 -> Element 2 -> NULL
+                             1         *
+                             2         *
+                             3         *
+
+
+
+Bien entendu, on en revient au défaut des listes chaînées : s'il y a 300 éléments à cet emplacement du tableau, il va falloir parcourir la liste chaînée jusqu'à trouver le bon.
+
+Ici, comme vous le voyez, tout est affaire de compromis. Les listes chaînées ne sont pas toujours idéales, mais les tables de hachage ont aussi leurs limites. On peut combiner les deux pour tenter de tirer le meilleur de chacune de ces structures de données.
+
+Quoi qu'il en soit, le point critique dans une table de hachage est la fonction de hachage. Moins elle produit de collisions, mieux c'est. À vous de trouver la fonction de hachage qui convient le mieux à votre cas !
+
+En résumé
+
+- Les listes chaînées sont flexibles, mais il peut être long de retrouver un élément précis à l'intérieur car 
+  il faut les parcourir case par case.
+
+- Les tables de hachage sont des tableaux. On y stocke des données à un emplacement déterminé par une fonction 
+  de hachage.
+
+- La fonction de hachage prend en entrée une clé (ex. : une chaîne de caractères) et retourne en sortie un 
+  nombre.
+
+- Ce nombre est utilisé pour déterminer à quel indice du tableau sont stockées les données.
+
+- Une bonne fonction de hachage doit produire peu de collisions, c'est-à-dire qu'elle doit éviter de renvoyer 
+  le même nombre pour deux clés différentes.
+
+- En cas de collision, on peut utiliser l'adressage ouvert (recherche d'une autre case libre dans le tableau) 
+  ou bien le chaînage (combinaison avec une liste chaînée).
+
+Toutes les bonnes choses ont une fin, et c’est malheureusement le cas de ce cours.
+
+Merci de l'avoir suivi !
+
+Comme le langage C n’a plus de secret pour vous, laissez-vous tenter par le C++ !
+
+Poursuivez votre apprentissage avec le C++
+
+Pourquoi ne pas apprendre le C++ ?
+C'est un langage cousin du C et bonne nouvelle, j'ai aussi créé des cours sur le sujet !
+Avec ce que vous venez d'apprendre sur le C, vous ne serez pas dépaysé, et vous comprendrez rapidement les premiers chapitres !
+
+Grâce au C++, vous pourrez faire de la programmation orientée objet (POO). C'est un petit peu complexe au premier abord, mais cette façon de programmer vous permet ensuite d'être très efficace !
+
+##############################################################################################################
+
