@@ -42,20 +42,24 @@ int hachage(char *chaine);
 /////////////////////// GESTION DES COLLISIONS //////////////////////
 
 // Méthode 1 : Adressage ouvert
+
+typedef enum { LIBRE, OCCUPE, SUPPRIME} EtatCase;
+
 typedef struct TableHachage_OpenAddressing TabHacOA;
 struct TableHachage_OpenAddressing
 {
-    Eleve *table[TABLE_SIZE];
+    Eleve table[TABLE_SIZE];
+    EtatCase etats[TABLE_SIZE];
 };
 
 // Prototypes des fonctions pour l'adressage ouvert
-//TableHachage *initialisation();
-//void insertion(TableHachage *tablehachage, char nvNom[100], int nvAge, int nvNote);
-//void afficherTable(TableHachage *tablehachage);
-//void suppression(TableHachage *tablehachage, char supNom[100]);
-//TableHachage *suppressionTable(TableHachage *tablehachage);
-//void nombreEleve(TableHachage *tablehachage);
-//int hachage(char *chaine);
+TabHacOA *initiation();
+void insertionOA(TabHacOA *tabhacoa, char nvNom[100], int nvAge, int nvNote);
+void afficherTableOA(TabHacOA *tabhacoa);
+void suppressionOA(TabHacOA *tabhacoa, char supNom[100]);
+TabHacOA *suppressionTableOA(TabHacOA *tabhacoa);
+void nombreEleveOA(TabHacOA *tabhacoa);
+
 
 // Méthode 2 : Chaînage
 

@@ -55,6 +55,62 @@ int main(int argc, const char * argv[]) {
     //afficherListe(maclasseCM);
 
     printf("########### TEST AVEC DES COLLISION #################\n");
+    printf("------- Méthode 1 : Adressage linéaire --------\n");
+    //Initialisation
+    TabHacOA *maclasseCE1 = initiation();
+
+    //Insertion des nouveaux élèves
+    insertionOA(maclasseCE1, "Alice Monster", 18, 26);
+    insertionOA(maclasseCE1, "Ball Singer", 15, 27);
+    insertionOA(maclasseCE1, "Charlie Chocolatrie", 13, 12);
+    insertionOA(maclasseCE1, "Bill Sanger", 25, 24);
+
+    // Afficher notre table
+    afficherTableOA(maclasseCE1);
+
+    // Afficher le nombre d'élèves
+    nombreEleveOA(maclasseCE1);
+    printf("--------------------\n");
+
+    // Supprimer un élève de la table
+    suppressionOA(maclasseCE1, "Alice Monster");
+
+    // Afficher notre table
+    afficherTableOA(maclasseCE1);
+
+    // Afficher le nombre d'élèves
+    nombreEleveOA(maclasseCE1);
+    printf("--------------------\n");
+
+    // Insertion des nouveaux élèves
+    insertionOA(maclasseCE1, "Silent Mac Roe", 15, 30);
+    insertionOA(maclasseCE1, "Charlote Chicolarie", 25, 14);
+
+    // Afficher notre table
+    afficherTableOA(maclasseCE1);
+
+    // Afficher le nombre d'élèves
+    nombreEleveOA(maclasseCE1);
+    printf("--------------------\n");
+
+    // Supprimer un élève de la table
+    suppressionOA(maclasseCE1, "Charlote Chicolarie");
+
+    // Afficher notre table
+    afficherTableOA(maclasseCE1);
+
+    // Afficher le nombre d'élèves
+    nombreEleveOA(maclasseCE1);
+    printf("--------------------\n");
+
+    // Supprimer la liste chainée (Attention : il faut bien indiquer la variable au début de la fonction pour que le pointeur soit bien redirigé vers NULL)
+
+    maclasseCE1 = suppressionTableOA(maclasseCE1);
+
+    // Afficher notre table
+    //afficherTableOA(maclasseCE1);
+
+    printf("-----------------------------------------------\n");
     printf("------- Méthode 2 : Chaînage --------\n");
     // Initialisation
     TabHacChain *maclasseCM2 = initialiser();
@@ -278,6 +334,165 @@ int hachage(char *chaine)
 
 // Méthode 1 : Adressage ouvert
 
+TabHacOA *initiation()
+{
+    TabHacOA *tabhacoa = malloc(sizeof(*tabhacoa));
+
+    // On vérifie que l'allocation de la mémoire s'est bien passé
+    if (tabhacoa == NULL)
+    {
+        // On arrête tout
+        exit(EXIT_FAILURE);
+    }
+    
+    // Si c'est bien passé, on initie les valeurs pour chaque sous-variables
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        tabhacoa->etats[i] = LIBRE;
+    }
+    
+    return tabhacoa;
+}
+
+// Maintenant on va ajouter un nouveau élevè dans la table.
+void insertionOA(TabHacOA *tabhacoa, char nvNom[100], int nvAge, int nvNote)
+{
+    // Ici on va utiliser la fonction de hachage sur le nom
+    int index = hachage(nvNom);
+    // Ici, on va faire de l'adressage linéaire pour gérer les collisions
+    // Linéaire : index = (i+1) % TABLE_SIZE
+    int original_index = index;
+    int i = 0;
+    // Puis, on recherche une case libre
+    while (tabhacoa->etats[index] == OCCUPE)
+    {
+        // On ajoute 1 à notre compteur
+        i++;
+        index = (original_index + i) % TABLE_SIZE;
+
+        // Si on boucle entièrement, on arrête
+        if (index == original_index)
+        {
+            printf("Erreur : la table est pleine, impossible d'ajouter %s\n", nvNom);
+            return;
+        }
+    }
+    
+    
+    // On copie les valeurs
+    strcpy(tabhacoa->table[index].nom, nvNom);
+    tabhacoa->table[index].age = nvAge;
+    tabhacoa->table[index].moyenne = nvNote;
+
+    // Et on change la case en OCCUPE
+    tabhacoa->etats[index] = OCCUPE;
+
+}
+
+void afficherTableOA(TabHacOA *tabhacoa)
+{
+    printf("Contenu de la table de hachage (adressage ouvert) :\n");
+
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        if (tabhacoa->etats[i] == OCCUPE)
+        {
+            Eleve *eleve = &(tabhacoa->table[i]);
+            printf("Index %d : %s, âge : %d, moyenne : %d\n", 
+                   i, eleve->nom, eleve->age, eleve->moyenne);
+        }
+    }
+}
+
+// On va aussi créer une fonction pour supprimer un élève de la table
+void suppressionOA(TabHacOA *tabhacoa, char supNom[100])
+{
+    // On vérifie si la table a déjà été crée avant
+    if (tabhacoa == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    // Ici on va utiliser la fonction de hachage sur le nom
+    int original_index = hachage(supNom);
+    // Ici, on va faire de l'adressage linéaire pour gérer les collisions
+    // Linéaire : index = (i+1) % TABLE_SIZE
+    int index = original_index;
+    int i = 0;
+
+    while (tabhacoa->etats[index] != LIBRE)
+    {
+        if (tabhacoa->etats[index] == OCCUPE && strcmp(tabhacoa->table[index].nom, supNom) == 0)
+        {
+            // "Supprimer" l’élève en marquant la case comme supprimée
+            tabhacoa->etats[index] = SUPPRIME;
+            tabhacoa->table[index].nom[0] = '\0'; // Optionnel : effacer le nom
+            printf("L'élève %s a été supprimé.\n", supNom);
+            return;
+        }
+
+        // Probing linéaire
+        i++;
+        index = (original_index + i) % TABLE_SIZE;
+
+        if (index == original_index)
+        {
+            // On a bouclé
+            break;
+        }
+    }
+
+    printf("Erreur : l'élève %s n'existe pas dans la table.\n", supNom);
+    
+}
+
+// Supprimer la table complete
+TabHacOA *suppressionTableOA(TabHacOA *tabhacoa)
+{
+    // Ici on va d'abord supprimer les éléments un à un avant de supprimer la liste
+    // On vérifie si la liste existe déjà
+    if (tabhacoa == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    // On va balayer dans tous le tableau et supprimer tous les données
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        tabhacoa->etats[i] = LIBRE;  // On remet à zéro tous les états
+        tabhacoa->table[i].nom[0] = '\0';  // Optionnel : efface le nom pour "visuel"
+        tabhacoa->table[i].age = 0;
+        tabhacoa->table[i].moyenne = 0;    
+    }
+    
+    // Quand on a fini de supprimer tous les éléments de la liste, on peut supprimer la liste
+    free(tabhacoa);
+
+    //
+    return NULL;
+
+}
+
+// Pour connaitre le nombre d'élèves
+void nombreEleveOA(TabHacOA *tabhacoa)
+{
+    if (tabhacoa == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    int compteur = 0;
+
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        if (tabhacoa->etats[i] == OCCUPE)
+        {
+            compteur++;
+        }
+    }
+
+    printf("Il y a %d élève(s) dans la table.\n", compteur);
+}
 
 // Méthode 2 : Chaînages
 
